@@ -1,0 +1,14 @@
+useDynLib(frab, .registration=TRUE)
+exportPattern("^[[:alpha:]]+")
+import("mathjaxr")
+
+importFrom(Rcpp,evalCpp) 
+
+importFrom("disordR","disord")
+importFrom("disordR","hashcal")
+importFrom("disordR","hash")
+importFrom("disordR","consistent")
+importFrom("disordR","elements")
+importFrom("disordR","is.disord")
+importFrom("disordR","lapply")
+

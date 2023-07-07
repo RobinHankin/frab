@@ -1,0 +1,19 @@
+Package: frab
+Type: Package
+Title: The frab package
+Version: 0.0-1
+Authors@R: person(given=c("Robin", "K. S."), family="Hankin", role = c("aut","cre"), email="hankin.robin@gmail.com", comment = c(ORCID = "0000-0001-5982-0415"))
+Maintainer: Robin K. S. Hankin <hankin.robin@gmail.com>
+Description: Functionality so that c(a=1,b=2,c=3) + c(b=3,a=-1) will return c(b=5,c=3).
+     Uses 'disordR' discipline.
+License: GPL (>= 2)
+LazyData: yes
+Depends: methods, magrittr, cubature, R (>= 3.5.0)
+Suggests: knitr, markdown, rmarkdown
+VignetteBuilder: knitr
+Imports: Rcpp (>= 1.0-7), mathjaxr, disordR (>= 0.0-9)
+LinkingTo: Rcpp
+URL: https://github.com/RobinHankin/frabgroup
+BugReports: https://github.com/RobinHankin/frabgroup
+RoxygenNote: 7.1.1
+RdMacros: mathjaxr,Rdpack
