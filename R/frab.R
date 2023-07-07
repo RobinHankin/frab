@@ -128,8 +128,38 @@ setClass("frab",slots=c(x="numeric"))  # x is a named vector
          )
 }
 
-`frab_compare_numeric` <- function(e1,e2){stop("not yet implemented.  It makes sense, but not yet implemented.")}
-`numeric_compare_frab` <- function(e1,e2){stop("not yet implemented.  It makes sense, but not yet implemented.")}
+`frab_eq_num` <- function(e1,e2){disord(symbols(e1)[powers(e1) == e2],h=hashcal(as.namedvector(e1)))}
+`frab_gt_num` <- function(e1,e2){disord(symbols(e1)[powers(e1) >  e2],h=hashcal(as.namedvector(e1)))}
+`frab_ge_num` <- function(e1,e2){disord(symbols(e1)[powers(e1) >= e2],h=hashcal(as.namedvector(e1)))}
+`frab_lt_num` <- function(e1,e2){disord(symbols(e1)[powers(e1) <  e2],h=hashcal(as.namedvector(e1)))}
+`frab_le_num` <- function(e1,e2){disord(symbols(e1)[powers(e1) <= e2],h=hashcal(as.namedvector(e1)))}
+
+`frab_compare_numeric` <- function(e1,e2){  # rfrab() > 3
+  switch(.Generic,
+         "==" = frab_eq_num(e1, e2),
+         ">"  = frab_gt_num(e1, e2),
+         ">=" = frab_ge_num(e1, e2),
+         "<"  = frab_lt_num(e1, e2),
+         "<=" = frab_le_num(e1, e2),
+         stop(gettextf("Comparison operator %s not implemented in this case", dQuote(.Generic)))
+         ) }
+    
+
+`num_eq_frab` <- function(e1,e2){disord(symbols(e2)[powers(e2) == e1],h=hashcal(as.namedvector(e2)))}
+`num_gt_frab` <- function(e1,e2){disord(symbols(e2)[powers(e2) >  e1],h=hashcal(as.namedvector(e2)))}
+`num_ge_frab` <- function(e1,e2){disord(symbols(e2)[powers(e2) >= e1],h=hashcal(as.namedvector(e2)))}
+`num_lt_frab` <- function(e1,e2){disord(symbols(e2)[powers(e2) <  e1],h=hashcal(as.namedvector(e2)))}
+`num_le_frab` <- function(e1,e2){disord(symbols(e2)[powers(e2) <= e1],h=hashcal(as.namedvector(e2)))}
+
+`numeric_compare_frab` <- function(e1,e2){  # 4 <= rfrab()
+  switch(.Generic,
+         "==" = frab_eq_num(e1, e2),
+         ">"  = frab_gt_num(e1, e2),
+         ">=" = frab_ge_num(e1, e2),
+         "<"  = frab_lt_num(e1, e2),
+         "<=" = frab_le_num(e1, e2),
+         stop(gettextf("Comparison operator %s not implemented in this case", dQuote(.Generic)))
+         ) }
 
 `frab_compare_error` <- function(e1,e2){
   stop(gettextf("binary operator %s not implemented in this case", dQuote(.Generic)))
@@ -159,15 +189,24 @@ setMethod("show", "frab", function(object){frab_print(object)})
     return(invisible(x))
 }
 
-setMethod("[",
-          signature("frab", i="character",j="missing"),
-          function(x,i,j,drop){stop("slartibarfast")}
-          )
+setMethod("[", signature("frab", i="character",j="missing"),
+          function(x,i,j){
+              s <- elements(symbols(x))
+              p <- elements(powers(x))
+              wanted <- s %in% i
+              frab(list(
+                  symbols = s[wanted],
+                  powers  = p[wanted]
+              ))
+          } )
 
-setMethod("[",
-          signature("frab", i="disindex",j="missing"),
-          function(x,i,j,drop){stop("streetmentioner")}
-          )
+setMethod("[", signature("frab", i="disord",j="missing"),
+          function(x,i,j){x[elements(i)]})
+
+
+setMethod("[",  # x[]
+          signature("frab", i="missing",j="missing"),
+          function(x,i,j){x})
 
 setMethod("[",
           signature("frab", i="ANY",j="missing"),
