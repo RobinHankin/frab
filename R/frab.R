@@ -7,6 +7,9 @@ setClass("frab",slots=c(x="numeric"))  # x is a named vector
 `is.namedvector`   <- function(v){is.vector(v) && is.numeric(v) && !is.null(names(v))}
 `is.unnamedvector` <- function(v){is.vector(v) && is.numeric(v) &&  is.null(names(v))}
 
+`is.namedlogical`   <- function(v){is.vector(v) && is.logical(v) && !is.null(names(v))}
+`is.unnamedlogical` <- function(v){is.vector(v) && is.logical(v) &&  is.null(names(v))}
+
 `ch4nv` <- function(v){  # check for named vector
   if(is.namedvector(v)){
     stop("named vector not admissible here")
@@ -32,7 +35,7 @@ setClass("frab",slots=c(x="numeric"))  # x is a named vector
 }
 
 `nv_to_frab` <- function(x){ # nv == named vector
-  stopifnot(all(!is.null(names(x))))
+  stopifnot(is.namedvector(x))
   jj <- c_frab_identity(names(x),x)
   new("frab", x=setNames(jj$powers,jj$symbols))  # this is the only place new() is called
 }
@@ -50,6 +53,21 @@ setClass("frab",slots=c(x="numeric"))  # x is a named vector
     return(x)
   } else {
     stop("argument not recognised; did you mean to pass a _named_ numeric vector?")
+  }
+}
+
+`nv_to_yesno` <- function(x){stop("not yet implemented.  Makes sense but i have not got round to it")}
+`list_to_yesno` <- function(x){stop("not yet implemented.  Makes sense but i have not got round to it")}
+
+`yesno` <- function(x){
+  if(is.namedlogical(x)){
+    return(nv_to_yesno(x))
+  } else if(is.list(x)){
+    return(list_to_yesno(x))
+  } else if(is.yesno(x)){
+    return(x)
+  } else {
+    stop("argument not recognised; did you mean to pass a _named_ logical vector?")
   }
 }
 
@@ -102,19 +120,16 @@ setClass("frab",slots=c(x="numeric"))  # x is a named vector
             elements(symbols(e2)), elements(powers(e2)))
 }
 
-`frab_ge` <- function(e1,e2){ all(powers(e1-e2) >= 0) }
-`frab_le` <- function(e1,e2){ all(powers(e1-e2) <= 0) }
 
 `frab_compare_frab` <- function(e1,e2){
   switch(.Generic,
          "==" = frab_eq(e1, e2),
-         ">=" = frab_ge(e1, e2),
-         "<=" = frab_le(e1, e2),
-         ">"  = stop(gettextf("strict comparison '%s' not implemented on frabs, try '>='", dQuote(.Generic))),
-         "<"  = stop(gettextf("strict comparison '%s' not implemented on frabs, try '<='", dQuote(.Generic))),
-                stop(gettextf("binary operator %s' not implemented on frabs", dQuote(.Generic)))
+         stop(gettextf("comparison '%s' not for frabs", dQuote(.Generic)))
          )
 }
+
+`frab_compare_numeric` <- function(e1,e2){stop("not yet implemented.  It makes sense, but not yet implemented.")}
+`numeric_compare_frab` <- function(e1,e2){stop("not yet implemented.  It makes sense, but not yet implemented.")}
 
 `frab_compare_error` <- function(e1,e2){
   stop(gettextf("binary operator %s not implemented in this case", dQuote(.Generic)))
@@ -127,9 +142,9 @@ setMethod("Arith"  , signature(e1="numeric", e2="frab"   ), numeric_arith_frab)
 setMethod("Arith"  , signature(e1="ANY"    , e2="frab"   ), frab_arith_frab   )
 setMethod("Arith"  , signature(e1="frab"   , e2="ANY"   ), frab_arith_frab    )
 
-setMethod("Compare", signature(e1="frab", e2="frab"   ), frab_compare_frab )
-setMethod("Compare", signature(e1="frab", e2="ANY"    ), frab_compare_error)
-setMethod("Compare", signature(e1="ANY" , e2="frab"   ), frab_compare_error)
+setMethod("Compare", signature(e1="frab"    , e2="frab"   ),    frab_compare_frab   )
+setMethod("Compare", signature(e1="frab"    , e2="numeric"),    frab_compare_numeric)
+setMethod("Compare", signature(e1="numeric" , e2="frab"   ), numeric_compare_frab   )
 
 `rfrab` <- function(n=5,v=seq_len(5),symb=letters[seq_len(9)]){
   frab(setNames(sample(v,n,replace=TRUE),sample(symb,n,replace=TRUE)))
@@ -142,4 +157,25 @@ setMethod("show", "frab", function(object){frab_print(object)})
   print(as.namedvector(x))
   return(invisible(x))
 }
+
+
+#setMethod("which",signature("yesno"))
+
+
+
+
+setMethod("[",
+          signature("frab", i="character",j="missing"),
+          function(x,i,j,drop){stop("slartibarfast")}
+          )
+
+setMethod("[",
+          signature("frab", i="disindex",j="missing"),
+          function(x,i,j,drop){stop("streetmentioner")}
+          )
+
+setMethod("[",
+          signature("frab", i="ANY",j="missing"),
+          function(x,i,j,drop){stop("hotblack")}
+          )
 
