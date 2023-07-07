@@ -146,7 +146,7 @@ setMethod("Compare", signature(e1="frab"    , e2="frab"   ),    frab_compare_fra
 setMethod("Compare", signature(e1="frab"    , e2="numeric"),    frab_compare_numeric)
 setMethod("Compare", signature(e1="numeric" , e2="frab"   ), numeric_compare_frab   )
 
-`rfrab` <- function(n=5,v=seq_len(5),symb=letters[seq_len(9)]){
+`rfrab` <- function(n=9,v=seq_len(5),symb=letters[seq_len(9)]){
   frab(setNames(sample(v,n,replace=TRUE),sample(symb,n,replace=TRUE)))
 }
 
