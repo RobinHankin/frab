@@ -153,16 +153,11 @@ setMethod("Compare", signature(e1="numeric" , e2="frab"   ), numeric_compare_fra
 setMethod("show", "frab", function(object){frab_print(object)})
 
 "frab_print" <- function(x){
-  cat("A frab object with hash", hash(symbols(x)), "and entries\n")
-  print(as.namedvector(x))
-  return(invisible(x))
+    x <- as.namedvector(x)
+    cat("A frab object with hash", hashcal(x), "and entries\n")
+    print(x)
+    return(invisible(x))
 }
-
-
-#setMethod("which",signature("yesno"))
-
-
-
 
 setMethod("[",
           signature("frab", i="character",j="missing"),
