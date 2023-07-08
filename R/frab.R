@@ -224,3 +224,7 @@ setReplaceMethod("[",signature(x="frab",i="character",j="missing",value="numeric
                          setNames(rep(value,length(new_symbols)),new_symbols)
                      )
                  })
+
+setReplaceMethod("[",signature(x="frab",i="ANY",j="ANY",value="ANY"),
+                 function(x,i,j,value){stop("replacement operation not defined in this case")}
+                 )
