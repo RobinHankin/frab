@@ -8,10 +8,10 @@ Description: Functionality so that c(a=1,b=2,c=3) + c(b=3,a=-1) will return c(b=
      Uses 'disordR' discipline.
 License: GPL (>= 2)
 LazyData: yes
-Depends: methods, magrittr, cubature, R (>= 3.5.0)
+Depends: methods, R (>= 3.5.0)
 Suggests: knitr, markdown, rmarkdown
 VignetteBuilder: knitr
-Imports: Rcpp (>= 1.0-7), mathjaxr, disordR (>= 0.0-9)
+Imports: Rcpp (>= 1.0-7), mathjaxr, disordR (>= 0.9-8)
 LinkingTo: Rcpp
 URL: https://github.com/RobinHankin/frabgroup
 BugReports: https://github.com/RobinHankin/frabgroup
