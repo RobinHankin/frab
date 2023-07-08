@@ -12,5 +12,6 @@ importFrom("disordR","elements")
 importFrom("disordR","is.disord")
 importFrom("disordR","lapply")
 importFrom("disordR","which")
+importFrom("disordR","%in%")
 
 importClassesFrom(disordR,disindex)
