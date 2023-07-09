@@ -57,6 +57,7 @@ setClass("frab",slots=c(x="numeric"))  # x is a named vector
 }
 
 `frab_negative` <- function(x){frab(setNames(elements(-powers(x)),elements(symbols(x)))) }
+`frab_reciprocal` <- function(x){frab(setNames(elements(1/powers(x)),elements(symbols(x)))) }
 `frab_plus_frab` <- function(F1,F2){
   frab(c_frab_add(elements(symbols(F1)), elements(powers(F1)),
                   elements(symbols(F2)), elements(powers(F2))))
@@ -87,6 +88,7 @@ setClass("frab",slots=c(x="numeric"))  # x is a named vector
          "+" = frab_plus_frab(e1, frab(e2)),
          "-" = frab_plus_frab(e1, frab_negative(frab(e2))),
          "*" = frab_multiply_numeric(e1,e2),
+         "/" = frab_multiply_numeric(e1,1/e2),
          "^" = frab_power_numeric(e1,e2),
          stop(gettextf("binary operator %s not implemented on frabs", dQuote(.Generic)))
          ) }
@@ -96,6 +98,7 @@ setClass("frab",slots=c(x="numeric"))  # x is a named vector
          "+" = frab_plus_frab(frab(e1),  e2),
          "-" = frab_plus_frab(frab(e1), -e2),
          "*" = numeric_multiply_frab(e2,e1),  # note swap
+         "/" = numeric_multiply_frab(e1,frab_reciprocal(e2)), 
          "^" = numeric_power_frab(e1,e2),
          stop(gettextf("binary operator %s not implemented on frabs", dQuote(.Generic)))
          ) }
@@ -208,6 +211,7 @@ setReplaceMethod("[",signature(x="frab",i="character",j="missing",value="numeric
                          setNames(rep(value,length(new_symbols)),new_symbols)
                      )
                  })
+
 
 setReplaceMethod("[",signature(x="frab",i="ANY",j="ANY",value="ANY"),
                  function(x,i,j,value){stop("replacement operation not defined in this case")}

@@ -11,6 +11,7 @@
 \alias{numeric_multiply_frab}
 \alias{numeric_power_frab}
 \alias{frab_negative}
+\alias{frab_reciprocal}
 \alias{frab_plus_frab}
 \alias{frab_unary}
 \alias{frab_arith_frab}
@@ -27,6 +28,7 @@
 }
 \usage{
 frab_negative(x)
+frab_reciprocal(x)
 frab_plus_frab(F1,F2)
 frab_multiply_numeric(e1,e2)
 frab_power_numeric(e1,e2)
@@ -50,7 +52,6 @@ numeric_arith_frab(e1,e2)
     \item{Arith}{\code{signature(e1="ANY"    , e2="frab"   )}: ... }
     \item{Arith}{\code{signature(e1="frab"   , e2="ANY"    )}: ... }
   }
-
 }
 \author{Robin K. S. Hankin}
 \examples{
