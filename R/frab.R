@@ -56,21 +56,6 @@ setClass("frab",slots=c(x="numeric"))  # x is a named vector
   }
 }
 
-`nv_to_yesno` <- function(x){stop("not yet implemented.  Makes sense but i have not got round to it")}
-`list_to_yesno` <- function(x){stop("not yet implemented.  Makes sense but i have not got round to it")}
-
-`yesno` <- function(x){
-  if(is.namedlogical(x)){
-    return(nv_to_yesno(x))
-  } else if(is.list(x)){
-    return(list_to_yesno(x))
-  } else if(is.yesno(x)){
-    return(x)
-  } else {
-    stop("argument not recognised; did you mean to pass a _named_ logical vector?")
-  }
-}
-
 `frab_negative` <- function(x){frab(setNames(elements(-powers(x)),elements(symbols(x)))) }
 `frab_plus_frab` <- function(F1,F2){
   frab(c_frab_add(elements(symbols(F1)), elements(powers(F1)),
@@ -119,7 +104,6 @@ setClass("frab",slots=c(x="numeric"))  # x is a named vector
   c_frab_eq(elements(symbols(e1)), elements(powers(e1)),
             elements(symbols(e2)), elements(powers(e2)))
 }
-
 
 `frab_compare_frab` <- function(e1,e2){
   switch(.Generic,

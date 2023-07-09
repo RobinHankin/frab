@@ -7,12 +7,11 @@ Maintainer: Robin K. S. Hankin <hankin.robin@gmail.com>
 Description: Functionality so that c(a=1,b=2,c=3) + c(b=3,a=-1) will return c(b=5,c=3).
      Uses 'disordR' discipline.
 License: GPL (>= 2)
-Depends: methods, R (>= 3.5.0)
+Depends: R (>= 3.5.0)
 Suggests: knitr, markdown, rmarkdown
 VignetteBuilder: knitr
-Imports: Rcpp (>= 1.0-7), mathjaxr, disordR (>= 0.9-8)
+Imports: Rcpp (>= 1.0-7), mathjaxr, disordR (>= 0.9-8), methods
 LinkingTo: Rcpp
-URL: https://github.com/RobinHankin/frabgroup
-BugReports: https://github.com/RobinHankin/frabgroup
-RoxygenNote: 7.1.1
-RdMacros: mathjaxr,Rdpack
+URL: https://github.com/RobinHankin/frab
+BugReports: https://github.com/RobinHankin/frab
+RdMacros: mathjaxr
