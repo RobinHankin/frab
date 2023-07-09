@@ -1,0 +1,30 @@
+---
+title: "The free Abelian group in R: the `frab` package, an alternative implementation of named vectors"
+author: "Robin K. S. Hankin"
+output: html_vignette
+bibliography: frab.bib
+vignette: >
+  %\VignetteIndexEntry{The free Abelian group}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(rmarkdown.html_vignette.check_title = FALSE)
+library("frab")
+set.seed(1)
+```
+
+# Named vectors
+
+A \dfn{named vector} is a vector with a \code{names} attribute.  Each
+element of a named vector is associated with a name or label.  The
+names are not necessarily unique.  It allows you to assign a name to
+each element, making it easier to refer to specific values within the
+vector using their respective names.
+  
+
+
+## References
