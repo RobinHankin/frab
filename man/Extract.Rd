@@ -3,16 +3,14 @@
 \alias{[}
 \alias{[.frab}
 \alias{[,frab-method}
-\alias{[,frab,index,ANY-method}
-\alias{[,frab,index,missing-method}
 \alias{[,frab,ANY,ANY-method}
-\alias{[,frab,index,index-method}
 \alias{[,frab,missing,index-method}
 \alias{[,frab,frab,missing-method}
 \alias{[,frab,frab,missing,ANY-method}
 \alias{[,frab,missing,missing-method}
-\alias{[,frab,index,ANY,ANY-method}
-\alias{[,frab,index,missing,ANY-method}
+\alias{[,frab,ANY,missing,ANY-method}
+\alias{[,frab,character,missing,ANY-method}
+\alias{[,frab,disord,missing,ANY-method}
 \alias{[,ANY,frab,ANY-method}
 \alias{[,frab,missing,missing,ANY-method}
 \alias{[<-}
@@ -24,12 +22,6 @@
 \alias{[,frab,missing,missing,ANY-method}
 \alias{[<-,frab,character,missing-method}
 \alias{[<-,frab,ANY,ANY,ANY-method}
-\alias{Arith,frab,missing-method}
-\alias{Arith,frab,frab-method}
-\alias{Arith,frab,frab-method}
-\alias{Arith,frab,numeric-method}
-\alias{Arith,ANY,frab-method}
-\alias{Arith,frab,ANY-method}
 \title{Extraction and replacement methods for class \code{"frab"}}
 \description{
   The \code{frab} class provides basic arithmetic and extract/replace
