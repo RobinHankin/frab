@@ -17,3 +17,4 @@ importFrom("disordR","which")
 importFrom("disordR","%in%")
 
 importClassesFrom(disordR,disindex)
+importClassesFrom(disordR,disord)
