@@ -226,6 +226,13 @@ setReplaceMethod("[",signature(x="frab",i="disord",j="missing",value="numeric"),
                  })
 
 
+setReplaceMethod("[",signature(x="frab",i="missing",j="missing",value="ANY"),
+                 function(x,i,j,value){
+                   x <- as.namedvector(x)
+                   x[] <- value
+                   return(frab(setNames(x,names(x))))
+                   } )
+
 setReplaceMethod("[",signature(x="frab",i="ANY",j="ANY",value="ANY"),
                  function(x,i,j,value){stop("replacement operation not defined in this case")}
                  )

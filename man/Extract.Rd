@@ -23,6 +23,9 @@
 \alias{[<-,frab,character,missing-method}
 \alias{[<-,frab,disord,missing-method}
 \alias{[<-,frab,ANY,ANY,ANY-method}
+\alias{[<-,frab,character,missing,numeric-method}
+\alias{[<-,frab,disord,missing,numeric-method}
+\alias{[<-,frab,missing,missing,ANY-method}
 \title{Extraction and replacement methods for class \code{"frab"}}
 \description{
   The \code{frab} class provides basic arithmetic and extract/replace
