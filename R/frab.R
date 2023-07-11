@@ -224,12 +224,18 @@ setReplaceMethod("[",signature(x="frab",i="character",j="missing",value="numeric
 
 setReplaceMethod("[",signature(x="frab",i="disord",j="missing",value="numeric"),
                  function(x,i,j,value){
-                     print("arthur")
+                     print("zaphod")
                      s <- symbols(x)
                      p <- powers(x)
-                     i <- elements(i)
-                     p[s %in% i] <- value
-                     new_symbols <- i[!(i %in% s)]
+                     if(is.logical(i)){
+                         browser()
+                         p[i] <- value
+                         new_symbols <- powers(x)[!i]
+                     } else {
+                         i <- elements(i)
+                         p[s %in% i] <- value
+                         new_symbols <- i[!(i %in% s)]
+                     }
                      return(
                          frab(list(powers=elements(p),symbols=elements(s))) + 
                          setNames(rep(value,length(new_symbols)),new_symbols)
