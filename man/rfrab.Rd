@@ -1,7 +1,6 @@
 \name{rfrab}
 \alias{rfrab}
 \alias{rfreealg}
-\alias{rfree}
 \title{Random frabs}
 \description{Random \code{frab} objects, intended as quick
   \dQuote{get you going} examples}

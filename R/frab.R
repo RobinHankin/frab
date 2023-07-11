@@ -196,17 +196,22 @@ setMethod("[", signature("frab", i="disord",j="missing"),
 
 setMethod("[",  # x[]
           signature("frab", i="missing",j="missing"),
-          function(x,i,j){
-              print("agrajag")
-              x})
+          function(x,i,j){x})
 
 setMethod("[",
           signature("frab", i="ANY",j="missing"),
-          function(x,i,j,drop){stop("hotblack")}
+          function(x,i,j,drop){stop("not implemented")}
           )
+
+setMethod("[",
+          signature("frab", i="disindex",j="missing"),
+          function(x,i,j,drop){
+              frab(setNames(elements(powers(x)[i]),elements(symbols(x)[i])))
+          } )
 
 setReplaceMethod("[",signature(x="frab",i="character",j="missing",value="numeric"),
                  function(x,i,j,value){
+                     print("slartibartfast")
                      s <- symbols(x)
                      p <- powers(x)
                      p[s %in% i] <- value
@@ -219,6 +224,7 @@ setReplaceMethod("[",signature(x="frab",i="character",j="missing",value="numeric
 
 setReplaceMethod("[",signature(x="frab",i="disord",j="missing",value="numeric"),
                  function(x,i,j,value){
+                     print("arthur")
                      s <- symbols(x)
                      p <- powers(x)
                      i <- elements(i)
@@ -230,14 +236,35 @@ setReplaceMethod("[",signature(x="frab",i="disord",j="missing",value="numeric"),
                      )
                  })
 
+setReplaceMethod("[",signature(x="frab",i="disindex",j="missing",value="numeric"),
+                 function(x,i,j,value){
+                     print("trillian")
+                     s <- symbols(x)
+                     p <- powers(x)
+                     i <- elements(i)
+                     p[s %in% i] <- value
+                     new_symbols <- i[!(i %in% s)]
+                     return(
+                         frab(list(powers=elements(p),symbols=elements(s))) + 
+                         setNames(rep(value,length(new_symbols)),new_symbols)
+                     )
+                 })
 
 setReplaceMethod("[",signature(x="frab",i="missing",j="missing",value="ANY"),
                  function(x,i,j,value){
+                     print("ford")
                    x <- as.namedvector(x)
                    x[] <- value
                    return(frab(setNames(x,names(x))))
                    } )
 
 setReplaceMethod("[",signature(x="frab",i="ANY",j="ANY",value="ANY"),
-                 function(x,i,j,value){stop("replacement operation not defined in this case")}
+                 function(x,i,j,value){
+                                          print("vogon")
+stop("replacement operation not defined in this case")}
                  )
+
+setGeneric("which")
+setMethod("which","frab",function(x){
+    stop("which() not defined for frabs; did you mean something like which(x>0)?")
+    } )
