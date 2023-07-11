@@ -188,12 +188,17 @@ setMethod("[", signature("frab", i="character",j="missing"),
           } )
 
 setMethod("[", signature("frab", i="disord",j="missing"),
-          function(x,i,j){x[elements(i)]})
-
+          function(x,i,j){
+              frab(list(
+                  symbols  = elements(symbols(x)[i]),
+                  powers   = elements(powers(x)[i])))
+          } )
 
 setMethod("[",  # x[]
           signature("frab", i="missing",j="missing"),
-          function(x,i,j){x})
+          function(x,i,j){
+              print("agrajag")
+              x})
 
 setMethod("[",
           signature("frab", i="ANY",j="missing"),
