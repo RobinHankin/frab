@@ -21,6 +21,7 @@
 \alias{[,frab,missing,missing-method}
 \alias{[,frab,missing,missing,ANY-method}
 \alias{[<-,frab,character,missing-method}
+\alias{[<-,frab,disord,missing-method}
 \alias{[<-,frab,ANY,ANY,ANY-method}
 \title{Extraction and replacement methods for class \code{"frab"}}
 \description{
@@ -48,10 +49,11 @@
 \author{Robin K. S. Hankin}
 \examples{
 
-x <- frab(c(a=1,b=2,c=3))
-y <- frab(c(b=-2,d=8))
+frab(setNames(seq_len(0),letters[seq_len(0)]))
 
-x+y
-
-
+a <- rfrab(26,sym=letters)
+a<4
+a[a<4]
+a[a<4] <- 100
+a
 }
