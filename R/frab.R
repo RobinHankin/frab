@@ -115,11 +115,11 @@ setClass("frab",slots=c(x="numeric"))  # x is a named vector
          )
 }
 
-`frab_eq_num` <- function(e1,e2){disord(symbols(e1)[powers(e1) == e2],h=hashcal(as.namedvector(e1)),drop=FALSE)}
-`frab_gt_num` <- function(e1,e2){disord(symbols(e1)[powers(e1) >  e2],h=hashcal(as.namedvector(e1)),drop=FALSE)}
-`frab_ge_num` <- function(e1,e2){disord(symbols(e1)[powers(e1) >= e2],h=hashcal(as.namedvector(e1)),drop=FALSE)}
-`frab_lt_num` <- function(e1,e2){disord(symbols(e1)[powers(e1) <  e2],h=hashcal(as.namedvector(e1)),drop=FALSE)}
-`frab_le_num` <- function(e1,e2){disord(symbols(e1)[powers(e1) <= e2],h=hashcal(as.namedvector(e1)),drop=FALSE)}
+`frab_eq_num` <- function(e1,e2){powers(e1) == e2}
+`frab_gt_num` <- function(e1,e2){powers(e1) >  e2}
+`frab_ge_num` <- function(e1,e2){powers(e1) >= e2}
+`frab_lt_num` <- function(e1,e2){powers(e1) <  e2}
+`frab_le_num` <- function(e1,e2){powers(e1) <= e2}
 
 `frab_compare_numeric` <- function(e1,e2){  # rfrab() > 3
   switch(.Generic,
@@ -132,11 +132,11 @@ setClass("frab",slots=c(x="numeric"))  # x is a named vector
          ) }
     
 
-`num_eq_frab` <- function(e1,e2){disord(symbols(e2)[powers(e2) == e1],h=hashcal(as.namedvector(e2)),drop=FALSE)}
-`num_gt_frab` <- function(e1,e2){disord(symbols(e2)[powers(e2) >  e1],h=hashcal(as.namedvector(e2)),drop=FALSE)}
-`num_ge_frab` <- function(e1,e2){disord(symbols(e2)[powers(e2) >= e1],h=hashcal(as.namedvector(e2)),drop=FALSE)}
-`num_lt_frab` <- function(e1,e2){disord(symbols(e2)[powers(e2) <  e1],h=hashcal(as.namedvector(e2)),drop=FALSE)}
-`num_le_frab` <- function(e1,e2){disord(symbols(e2)[powers(e2) <= e1],h=hashcal(as.namedvector(e2)),drop=FALSE)}
+`num_eq_frab` <- function(e1,e2){powers(e2) == e1}
+`num_gt_frab` <- function(e1,e2){powers(e2) >  e1}
+`num_ge_frab` <- function(e1,e2){powers(e2) >= e1}
+`num_lt_frab` <- function(e1,e2){powers(e2) <  e1}
+`num_le_frab` <- function(e1,e2){powers(e2) <= e1}
 
 `numeric_compare_frab` <- function(e1,e2){  # 4 <= rfrab()
   switch(.Generic,
