@@ -130,19 +130,19 @@ setMethod("values","frab",
          ) }
     
 
-`num_eq_frab` <- function(e1,e2){values(e2) == e1}
-`num_gt_frab` <- function(e1,e2){values(e2) >  e1}
-`num_ge_frab` <- function(e1,e2){values(e2) >= e1}
-`num_lt_frab` <- function(e1,e2){values(e2) <  e1}
-`num_le_frab` <- function(e1,e2){values(e2) <= e1}
+`num_eq_frab` <- function(e1,e2){e1 == values(e2)}
+`num_gt_frab` <- function(e1,e2){e1 >  values(e2)}
+`num_ge_frab` <- function(e1,e2){e1 >= values(e2)}
+`num_lt_frab` <- function(e1,e2){e1 <  values(e2)}
+`num_le_frab` <- function(e1,e2){e1 <= values(e2)}
 
 `numeric_compare_frab` <- function(e1,e2){  # 4 <= rfrab()
   switch(.Generic,
-         "==" = frab_eq_num(e1, e2),
-         ">"  = frab_gt_num(e1, e2),
-         ">=" = frab_ge_num(e1, e2),
-         "<"  = frab_lt_num(e1, e2),
-         "<=" = frab_le_num(e1, e2),
+         "==" = num_eq_frab(e1, e2),
+         ">"  = num_gt_frab(e1, e2),
+         ">=" = num_ge_frab(e1, e2),
+         "<"  = num_lt_frab(e1, e2),
+         "<=" = num_le_frab(e1, e2),
          stop(gettextf("Comparison operator %s not implemented in this case", dQuote(.Generic)))
          ) }
 
