@@ -22,7 +22,7 @@
 \alias{c_frab_eq}
 \title{Comparision methods}
 \description{
-  Methods for comparision (greater than, etc) in the frab package.
+  Methods for comparison (greater than, etc) in the \pkg{frab} package.
 
   Functions \code{frab_gt_num()} etc follow a consistent naming
   convention; the mnemonic is the old Fortran \code{.GT.} scheme [for
