@@ -13,11 +13,7 @@ setClass("frab",slots=c(x="numeric"))  # x is a named vector
 setGeneric("names")
 setMethod("names","frab",
           function(x){
-            if(is.frab(x)){
               return(disord(names(x@x),h=hashcal(x@x)))
-            } else {
-              stop()
-            }
           } )
 
 `values` <- function(object){
