@@ -10,14 +10,6 @@ setClass("frab",slots=c(x="numeric"))  # x is a named vector
 `is.namedlogical`   <- function(v){is.vector(v) && is.logical(v) && !is.null(names(v))}
 `is.unnamedlogical` <- function(v){is.vector(v) && is.logical(v) &&  is.null(names(v))}
 
-`ch4nv` <- function(v){  # check for named vector
-  if(is.namedvector(v)){
-    stop("named vector not admissible here")
-  } else {
-    return(v)
-  }
-}
-
 setGeneric("names")
 setMethod("names","frab",
           function(x){
