@@ -16,13 +16,12 @@ setMethod("names","frab",
               return(disord(names(x@x),h=hashcal(x@x)))
           } )
 
-`values` <- function(object){
-  if(is.frab(object)){
-    return(disord(as.numeric(object@x),h=hashcal(object@x))) # no occurrences of "@" below this line; accessor methods end
-  } else {
-    stop()
-  }
-}
+setGeneric("values",function(object){standardGeneric("values")})
+setMethod("values","frab",
+          function(object){
+            return(disord(as.numeric(object@x),h=hashcal(object@x)))
+            ## no occurrences of "@" below this line; accessor methods end
+          } )
 
 `nv_to_frab` <- function(x){ # nv == named vector
   stopifnot(is.namedvector(x))
