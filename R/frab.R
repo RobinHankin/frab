@@ -229,7 +229,7 @@ setReplaceMethod("[",signature(x="frab",i="disord",j="missing",value="numeric"),
                      p <- values(x)
                      if(is.logical(i)){
                          p[i] <- value
-                         new_names <- values(x)[!i]
+                         return(frab(list(values=elements(p),names=s)))
                      } else {
                          i <- elements(i)
                          p[s %in% i] <- value
