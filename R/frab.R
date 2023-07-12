@@ -120,7 +120,8 @@ setMethod("names","frab",
 
 `frab_compare_frab` <- function(e1,e2){
   switch(.Generic,
-         "==" = frab_eq(e1, e2),
+         "==" =  frab_eq(e1, e2),
+         "!=" = !frab_eq(e1, e2),
          stop(gettextf("comparison '%s' not for frabs", dQuote(.Generic)))
          )
 }
