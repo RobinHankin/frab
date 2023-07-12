@@ -269,6 +269,10 @@ setReplaceMethod("[",signature(x="frab",i="ANY",j="ANY",value="ANY"),
                  } )
 
 setGeneric("which")
-setMethod("which","frab",function(x){
-  stop("which() not defined for frabs; did you mean something like which(x>0)?")
-} )
+setMethod("which","frab",
+          function(x){
+              stop("which() not defined for frabs; did you mean something like which(x>0)?")
+          } )
+
+setGeneric("length")
+setMethod("length","frab", function(x){length(values(x))})
