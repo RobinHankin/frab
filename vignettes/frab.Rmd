@@ -1,5 +1,5 @@
 ---
-title: "The free Abelian group in R: the `frab` package, an alternative implementation of named vectors"
+title: "An alternative implementation of named vectors"
 author: "Robin K. S. Hankin"
 output: html_vignette
 bibliography: frab.bib
@@ -17,14 +17,70 @@ library("frab")
 set.seed(1)
 ```
 
+<p style="text-align: right;">
+![](`r system.file("help/figures/frab.png", package = "frab")`){width=10%}
+</p>
+
 # Named vectors
 
-A \dfn{named vector} is a vector with a \code{names} attribute.  Each
+A _named vector_ is a vector with a `names` attribute.  Each
 element of a named vector is associated with a name or label.  The
 names are not necessarily unique.  It allows you to assign a name to
 each element, making it easier to refer to specific values within the
 vector using their respective names.
-  
+
+Named vectors are a convenient and useful feature of the R programming
+language.  However, given the following two named vectors:
+
+```{r}
+x <- c(a=1,b=2,c=3)
+y <- c(c=4,b=1,a=1)
+```
+
+Given that `x+y` returns a named vector, there are at least two
+plausible values that it might give, viz:
+
+`c(a=5,b=3,c=4)`
+
+or
+
+`c(a=2,b=3,c=7)`.
+
+In the first case the elements of `x` and `y` are added pairwise, and
+the `names` attribute is taken from the _first_ of the addends.  In
+the second, the names are considered to be primary and the value of
+each name in the sum is the sum of the values of that name of the
+addends.  Note further that there is no good reason why the first
+answer could not be `c(c=5,b=3,a=4)`, obtained by using the names
+attribute of `y` instead of `x`.
+
+The `frab` package furnishes consistent and efficient methods to give
+the second answer: uses the names of a named vector as the indexing
+mechanism.  Package idiom is straightforward:
+
+```{r}
+(x <- frab(c(a=1,b=2,c=3)))
+(y <- frab(c(c=4,b=1,a=1)))
+x+y
+```
+
+
+
+```{x}
+x <- frab(c(x=5,d=1,e=2,f=4,a=3,c=3,g=9))
+x
+x>3
+x<3
+x[x>3]
+x[x<3]
+x[x<3] <- 100
+x
+```
+
+
+Carefully regulated ambiguity
+
+
 
 
 ## References
