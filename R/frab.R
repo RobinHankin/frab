@@ -211,7 +211,6 @@ setMethod("[",
 
 setReplaceMethod("[",signature(x="frab",i="character",j="missing",value="numeric"),
                  function(x,i,j,value){
-                     print("slartibartfast")
                      s <- symbols(x)
                      p <- powers(x)
                      p[s %in% i] <- value
@@ -224,11 +223,9 @@ setReplaceMethod("[",signature(x="frab",i="character",j="missing",value="numeric
 
 setReplaceMethod("[",signature(x="frab",i="disord",j="missing",value="numeric"),
                  function(x,i,j,value){
-                     print("zaphod")
                      s <- symbols(x)
                      p <- powers(x)
                      if(is.logical(i)){
-                         browser()
                          p[i] <- value
                          new_symbols <- powers(x)[!i]
                      } else {
@@ -244,33 +241,24 @@ setReplaceMethod("[",signature(x="frab",i="disord",j="missing",value="numeric"),
 
 setReplaceMethod("[",signature(x="frab",i="disindex",j="missing",value="numeric"),
                  function(x,i,j,value){
-                     print("trillian")
-                     s <- symbols(x)
                      p <- powers(x)
-                     i <- elements(i)
-                     p[s %in% i] <- value
-                     new_symbols <- i[!(i %in% s)]
-                     return(
-                         frab(list(powers=elements(p),symbols=elements(s))) + 
-                         setNames(rep(value,length(new_symbols)),new_symbols)
-                     )
-                 })
+                     p[i] <- value
+                     return(frab(list(powers=elements(p),symbols=symbols(x))))
+                 } )
 
 setReplaceMethod("[",signature(x="frab",i="missing",j="missing",value="ANY"),
                  function(x,i,j,value){
-                     print("ford")
                    x <- as.namedvector(x)
                    x[] <- value
                    return(frab(setNames(x,names(x))))
-                   } )
+                 } )
 
 setReplaceMethod("[",signature(x="frab",i="ANY",j="ANY",value="ANY"),
                  function(x,i,j,value){
-                                          print("vogon")
-stop("replacement operation not defined in this case")}
-                 )
+                   stop("replacement operation not defined in this case")
+                 } )
 
 setGeneric("which")
 setMethod("which","frab",function(x){
-    stop("which() not defined for frabs; did you mean something like which(x>0)?")
-    } )
+  stop("which() not defined for frabs; did you mean something like which(x>0)?")
+} )
