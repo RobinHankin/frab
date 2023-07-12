@@ -18,12 +18,14 @@
 \alias{frab_arith_numeric}
 \alias{numeric_arith_frab}
 \alias{c_frab_add}
+\alias{c_frab_eq}
 \alias{c_frab_identity}
 \title{Extraction and replacement methods for class \code{"frab"}}
 \description{
 
   The \code{frab} class provides basic arithmetic methods for frab
-  objects.
+  objects.  Function \code{f_frab_eq()} is documented here for
+  consistency, but is technically a Comparison operator.
   
 }
 \usage{
@@ -54,6 +56,8 @@ numeric_arith_frab(e1,e2)
   }
 }
 \author{Robin K. S. Hankin}
+\value{Return \code{frab} objects}
+\seealso{\code{\link{Compare}}}
 \examples{
 
 x <- frab(c(a=1,b=2,c=3))

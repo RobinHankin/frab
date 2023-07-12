@@ -20,12 +20,15 @@
 \alias{[,frab,disord,missing-method}
 \alias{[,frab,missing,missing-method}
 \alias{[,frab,missing,missing,ANY-method}
+\alias{[,frab,disindex,missing,ANY-method}
 \alias{[<-,frab,character,missing-method}
 \alias{[<-,frab,disord,missing-method}
 \alias{[<-,frab,ANY,ANY,ANY-method}
 \alias{[<-,frab,character,missing,numeric-method}
 \alias{[<-,frab,disord,missing,numeric-method}
 \alias{[<-,frab,missing,missing,ANY-method}
+\alias{[<-,frab,disindex,missing,numeric,ANY-method}
+\alias{[<-,frab,disindex,missing,numeric-method}
 \title{Extraction and replacement methods for class \code{"frab"}}
 \description{
   The \code{frab} class provides basic arithmetic and extract/replace
@@ -43,9 +46,10 @@
     \item{[}{\code{signature(x = "frab", i = "missing", j = "missing")}: ... }
     \item{[<-}{\code{signature(x = "frab", i = "character",j = "missing", value = "ANY")}: ... }
     \item{[<-}{\code{signature(x = "frab", i = "ANY",j = "ANY", value = "ANY")}: ... }
+    \item{[<-}{\code{signature(x = "frab", i = "disindex",j = "missing", value = "ANY")}: ... }
 }
 
-   Double square extraction, as in \code{x[[i]]} and \code{x[[i]] <-
+ Double square extraction, as in \code{x[[i]]} and \code{x[[i]] <-
   value}, is not currently defined.
   
 }
