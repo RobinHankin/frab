@@ -3,32 +3,28 @@
 \alias{[}
 \alias{[.frab}
 \alias{[,frab-method}
+\alias{[,ANY,frab,ANY-method}
 \alias{[,frab,ANY,ANY-method}
-\alias{[,frab,missing,index-method}
+\alias{[,frab,ANY,missing,ANY-method}
+\alias{[,frab,character,missing,ANY-method}
+\alias{[,frab,character,missing-method}
+\alias{[,frab,disindex,missing,ANY-method}
+\alias{[,frab,disord,missing,ANY-method}
+\alias{[,frab,disord,missing-method}
 \alias{[,frab,frab,missing-method}
 \alias{[,frab,frab,missing,ANY-method}
 \alias{[,frab,missing,missing-method}
-\alias{[,frab,ANY,missing,ANY-method}
-\alias{[,frab,character,missing,ANY-method}
-\alias{[,frab,disord,missing,ANY-method}
-\alias{[,ANY,frab,ANY-method}
 \alias{[,frab,missing,missing,ANY-method}
+\alias{[,frab,missing,index-method}
 \alias{[<-}
-\alias{[.frab}
-\alias{[,frab-method}
-\alias{[,frab,character,missing-method}
-\alias{[,frab,disord,missing-method}
-\alias{[,frab,missing,missing-method}
-\alias{[,frab,missing,missing,ANY-method}
-\alias{[,frab,disindex,missing,ANY-method}
-\alias{[<-,frab,character,missing-method}
-\alias{[<-,frab,disord,missing-method}
 \alias{[<-,frab,ANY,ANY,ANY-method}
+\alias{[<-,frab,character,missing-method}
 \alias{[<-,frab,character,missing,numeric-method}
+\alias{[<-,frab,disord,missing-method}
 \alias{[<-,frab,disord,missing,numeric-method}
-\alias{[<-,frab,missing,missing,ANY-method}
 \alias{[<-,frab,disindex,missing,numeric,ANY-method}
 \alias{[<-,frab,disindex,missing,numeric-method}
+\alias{[<-,frab,missing,missing,ANY-method}
 \title{Extraction and replacement methods for class \code{"frab"}}
 \description{
   The \code{frab} class provides basic arithmetic and extract/replace
@@ -54,6 +50,7 @@
   
 }
 \author{Robin K. S. Hankin}
+\value{Generally, return a \code{frab} object.}
 \examples{
 
 frab(setNames(seq_len(0),letters[seq_len(0)]))
