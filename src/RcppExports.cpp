@@ -11,42 +11,42 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // c_frab_identity
-List c_frab_identity(const CharacterVector symbols, const NumericVector powers);
-RcppExport SEXP _frab_c_frab_identity(SEXP symbolsSEXP, SEXP powersSEXP) {
+List c_frab_identity(const CharacterVector names, const NumericVector values);
+RcppExport SEXP _frab_c_frab_identity(SEXP namesSEXP, SEXP valuesSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const CharacterVector >::type symbols(symbolsSEXP);
-    Rcpp::traits::input_parameter< const NumericVector >::type powers(powersSEXP);
-    rcpp_result_gen = Rcpp::wrap(c_frab_identity(symbols, powers));
+    Rcpp::traits::input_parameter< const CharacterVector >::type names(namesSEXP);
+    Rcpp::traits::input_parameter< const NumericVector >::type values(valuesSEXP);
+    rcpp_result_gen = Rcpp::wrap(c_frab_identity(names, values));
     return rcpp_result_gen;
 END_RCPP
 }
 // c_frab_add
-List c_frab_add(const CharacterVector symbols1, const NumericVector powers1, const CharacterVector symbols2, const NumericVector powers2);
-RcppExport SEXP _frab_c_frab_add(SEXP symbols1SEXP, SEXP powers1SEXP, SEXP symbols2SEXP, SEXP powers2SEXP) {
+List c_frab_add(const CharacterVector names1, const NumericVector values1, const CharacterVector names2, const NumericVector values2);
+RcppExport SEXP _frab_c_frab_add(SEXP names1SEXP, SEXP values1SEXP, SEXP names2SEXP, SEXP values2SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const CharacterVector >::type symbols1(symbols1SEXP);
-    Rcpp::traits::input_parameter< const NumericVector >::type powers1(powers1SEXP);
-    Rcpp::traits::input_parameter< const CharacterVector >::type symbols2(symbols2SEXP);
-    Rcpp::traits::input_parameter< const NumericVector >::type powers2(powers2SEXP);
-    rcpp_result_gen = Rcpp::wrap(c_frab_add(symbols1, powers1, symbols2, powers2));
+    Rcpp::traits::input_parameter< const CharacterVector >::type names1(names1SEXP);
+    Rcpp::traits::input_parameter< const NumericVector >::type values1(values1SEXP);
+    Rcpp::traits::input_parameter< const CharacterVector >::type names2(names2SEXP);
+    Rcpp::traits::input_parameter< const NumericVector >::type values2(values2SEXP);
+    rcpp_result_gen = Rcpp::wrap(c_frab_add(names1, values1, names2, values2));
     return rcpp_result_gen;
 END_RCPP
 }
 // c_frab_eq
-bool c_frab_eq(const CharacterVector symbols1, const NumericVector powers1, const CharacterVector symbols2, const NumericVector powers2);
-RcppExport SEXP _frab_c_frab_eq(SEXP symbols1SEXP, SEXP powers1SEXP, SEXP symbols2SEXP, SEXP powers2SEXP) {
+bool c_frab_eq(const CharacterVector names1, const NumericVector values1, const CharacterVector names2, const NumericVector values2);
+RcppExport SEXP _frab_c_frab_eq(SEXP names1SEXP, SEXP values1SEXP, SEXP names2SEXP, SEXP values2SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const CharacterVector >::type symbols1(symbols1SEXP);
-    Rcpp::traits::input_parameter< const NumericVector >::type powers1(powers1SEXP);
-    Rcpp::traits::input_parameter< const CharacterVector >::type symbols2(symbols2SEXP);
-    Rcpp::traits::input_parameter< const NumericVector >::type powers2(powers2SEXP);
-    rcpp_result_gen = Rcpp::wrap(c_frab_eq(symbols1, powers1, symbols2, powers2));
+    Rcpp::traits::input_parameter< const CharacterVector >::type names1(names1SEXP);
+    Rcpp::traits::input_parameter< const NumericVector >::type values1(values1SEXP);
+    Rcpp::traits::input_parameter< const CharacterVector >::type names2(names2SEXP);
+    Rcpp::traits::input_parameter< const NumericVector >::type values2(values2SEXP);
+    rcpp_result_gen = Rcpp::wrap(c_frab_eq(names1, values1, names2, values2));
     return rcpp_result_gen;
 END_RCPP
 }

@@ -18,15 +18,17 @@ setClass("frab",slots=c(x="numeric"))  # x is a named vector
   }
 }
 
-`symbols` <- function(object){
-  if(is.frab(object)){
-    return(disord(names(object@x),h=hashcal(object@x)))
-  } else {
-    stop()
-  }
-}
+setGeneric("names")
+setMethod("names","frab",
+          function(x){
+            if(is.frab(x)){
+              return(disord(names(x@x),h=hashcal(x@x)))
+            } else {
+              stop()
+            }
+          } )
 
-`powers` <- function(object){
+`values` <- function(object){
   if(is.frab(object)){
     return(disord(as.numeric(object@x),h=hashcal(object@x))) # no occurrences of "@" below this line; accessor methods end
   } else {
@@ -37,11 +39,11 @@ setClass("frab",slots=c(x="numeric"))  # x is a named vector
 `nv_to_frab` <- function(x){ # nv == named vector
   stopifnot(is.namedvector(x))
   jj <- c_frab_identity(names(x),x)
-  new("frab", x=setNames(jj$powers,jj$symbols))  # this is the only place new() is called
+  new("frab", x=setNames(jj$values,jj$names))  # this is the only place new() is called
 }
 
 `list_to_frab` <- function(L){
-  nv_to_frab(setNames(L$powers,L$symbols))
+  nv_to_frab(setNames(L$values,L$names))
 }
 
 `frab` <- function(x){
@@ -56,17 +58,17 @@ setClass("frab",slots=c(x="numeric"))  # x is a named vector
   }
 }
 
-`frab_negative` <- function(x){frab(setNames(elements(-powers(x)),elements(symbols(x)))) }
-`frab_reciprocal` <- function(x){frab(setNames(elements(1/powers(x)),elements(symbols(x)))) }
+`frab_negative` <- function(x){frab(setNames(elements(-values(x)),elements(names(x)))) }
+`frab_reciprocal` <- function(x){frab(setNames(elements(1/values(x)),elements(names(x)))) }
 `frab_plus_frab` <- function(F1,F2){
-  frab(c_frab_add(elements(symbols(F1)), elements(powers(F1)),
-                  elements(symbols(F2)), elements(powers(F2))))
+  frab(c_frab_add(elements(names(F1)), elements(values(F1)),
+                  elements(names(F2)), elements(values(F2))))
 }
  
-`frab_multiply_numeric` <- function(e1,e2){frab(setNames(elements(powers(e1)*ch4nv(e2)),elements(symbols(e1))))}
-`frab_power_numeric`    <- function(e1,e2){frab(setNames(elements(powers(e1)^ch4nv(e2)),elements(symbols(e1))))}
-`numeric_multiply_frab` <- function(e1,e2){frab(setNames(elements(ch4nv(e1)*powers(e2)),elements(symbols(e2))))}
-`numeric_power_frab`    <- function(e1,e2){frab(setNames(elements(ch4nv(e1)^powers(e2)),elements(symbols(e2))))}
+`frab_multiply_numeric` <- function(e1,e2){frab(setNames(elements(values(e1)*ch4nv(e2)),elements(names(e1))))}
+`frab_power_numeric`    <- function(e1,e2){frab(setNames(elements(values(e1)^ch4nv(e2)),elements(names(e1))))}
+`numeric_multiply_frab` <- function(e1,e2){frab(setNames(elements(ch4nv(e1)*values(e2)),elements(names(e2))))}
+`numeric_power_frab`    <- function(e1,e2){frab(setNames(elements(ch4nv(e1)^values(e2)),elements(names(e2))))}
 
 `frab_unary` <- function(e1,e2){
   switch(.Generic,
@@ -104,8 +106,8 @@ setClass("frab",slots=c(x="numeric"))  # x is a named vector
          ) }
 
 `frab_eq` <- function(e1,e2){
-  c_frab_eq(elements(symbols(e1)), elements(powers(e1)),
-            elements(symbols(e2)), elements(powers(e2)))
+  c_frab_eq(elements(names(e1)), elements(values(e1)),
+            elements(names(e2)), elements(values(e2)))
 }
 
 `frab_compare_frab` <- function(e1,e2){
@@ -115,11 +117,11 @@ setClass("frab",slots=c(x="numeric"))  # x is a named vector
          )
 }
 
-`frab_eq_num` <- function(e1,e2){powers(e1) == e2}
-`frab_gt_num` <- function(e1,e2){powers(e1) >  e2}
-`frab_ge_num` <- function(e1,e2){powers(e1) >= e2}
-`frab_lt_num` <- function(e1,e2){powers(e1) <  e2}
-`frab_le_num` <- function(e1,e2){powers(e1) <= e2}
+`frab_eq_num` <- function(e1,e2){values(e1) == e2}
+`frab_gt_num` <- function(e1,e2){values(e1) >  e2}
+`frab_ge_num` <- function(e1,e2){values(e1) >= e2}
+`frab_lt_num` <- function(e1,e2){values(e1) <  e2}
+`frab_le_num` <- function(e1,e2){values(e1) <= e2}
 
 `frab_compare_numeric` <- function(e1,e2){  # rfrab() > 3
   switch(.Generic,
@@ -132,11 +134,11 @@ setClass("frab",slots=c(x="numeric"))  # x is a named vector
          ) }
     
 
-`num_eq_frab` <- function(e1,e2){powers(e2) == e1}
-`num_gt_frab` <- function(e1,e2){powers(e2) >  e1}
-`num_ge_frab` <- function(e1,e2){powers(e2) >= e1}
-`num_lt_frab` <- function(e1,e2){powers(e2) <  e1}
-`num_le_frab` <- function(e1,e2){powers(e2) <= e1}
+`num_eq_frab` <- function(e1,e2){values(e2) == e1}
+`num_gt_frab` <- function(e1,e2){values(e2) >  e1}
+`num_ge_frab` <- function(e1,e2){values(e2) >= e1}
+`num_lt_frab` <- function(e1,e2){values(e2) <  e1}
+`num_le_frab` <- function(e1,e2){values(e2) <= e1}
 
 `numeric_compare_frab` <- function(e1,e2){  # 4 <= rfrab()
   switch(.Generic,
@@ -178,20 +180,20 @@ setMethod("show", "frab", function(object){frab_print(object)})
 
 setMethod("[", signature("frab", i="character",j="missing"),
           function(x,i,j){
-              s <- elements(symbols(x))
-              p <- elements(powers(x))
+              s <- elements(names(x))
+              p <- elements(values(x))
               wanted <- s %in% i
               frab(list(
-                  symbols = s[wanted],
-                  powers  = p[wanted]
+                  names = s[wanted],
+                  values  = p[wanted]
               ))
           } )
 
 setMethod("[", signature("frab", i="disord",j="missing"),
           function(x,i,j){
               frab(list(
-                  symbols  = elements(symbols(x)[i]),
-                  powers   = elements(powers(x)[i])))
+                  names  = elements(names(x)[i]),
+                  values   = elements(values(x)[i])))
           } )
 
 setMethod("[",  # x[]
@@ -206,44 +208,44 @@ setMethod("[",
 setMethod("[",
           signature("frab", i="disindex",j="missing"),
           function(x,i,j,drop){
-              frab(setNames(elements(powers(x)[i]),elements(symbols(x)[i])))
+              frab(setNames(elements(values(x)[i]),elements(names(x)[i])))
           } )
 
 setReplaceMethod("[",signature(x="frab",i="character",j="missing",value="numeric"),
                  function(x,i,j,value){
-                     s <- symbols(x)
-                     p <- powers(x)
+                     s <- names(x)
+                     p <- values(x)
                      p[s %in% i] <- value
-                     new_symbols <- i[!(i %in% s)]
+                     new_names <- i[!(i %in% s)]
                      return(
-                         frab(list(powers=elements(p),symbols=elements(s))) + 
-                         setNames(rep(value,length(new_symbols)),new_symbols)
+                         frab(list(values=elements(p),names=elements(s))) + 
+                         setNames(rep(value,length(new_names)),new_names)
                      )
                  })
 
 setReplaceMethod("[",signature(x="frab",i="disord",j="missing",value="numeric"),
                  function(x,i,j,value){
-                     s <- symbols(x)
-                     p <- powers(x)
+                     s <- names(x)
+                     p <- values(x)
                      if(is.logical(i)){
                          p[i] <- value
-                         new_symbols <- powers(x)[!i]
+                         new_names <- values(x)[!i]
                      } else {
                          i <- elements(i)
                          p[s %in% i] <- value
-                         new_symbols <- i[!(i %in% s)]
+                         new_names <- i[!(i %in% s)]
                      }
                      return(
-                         frab(list(powers=elements(p),symbols=elements(s))) + 
-                         setNames(rep(value,length(new_symbols)),new_symbols)
+                         frab(list(values=elements(p),names=elements(s))) + 
+                         setNames(rep(value,length(new_names)),new_names)
                      )
                  })
 
 setReplaceMethod("[",signature(x="frab",i="disindex",j="missing",value="numeric"),
                  function(x,i,j,value){
-                     p <- powers(x)
+                     p <- values(x)
                      p[i] <- value
-                     return(frab(list(powers=elements(p),symbols=symbols(x))))
+                     return(frab(list(values=elements(p),names=names(x))))
                  } )
 
 setReplaceMethod("[",signature(x="frab",i="missing",j="missing",value="ANY"),

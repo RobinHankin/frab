@@ -1,15 +1,15 @@
 #include "frab.h"
 
-Rcpp::NumericVector powers(const frab &F){
+Rcpp::NumericVector values(const frab &F){
   NumericVector out(F.size());
   size_t i=0;
   for(auto it=F.begin(); it != F.end(); ++it){
-        out(i++) = it->second; // cf symbols() below
+        out(i++) = it->second; // cf names() below
   }
   return out;
 }
 
-Rcpp::CharacterVector symbols(const frab &F){
+Rcpp::CharacterVector names(const frab &F){
   CharacterVector out(F.size());
   size_t i=0;
   for(auto it=F.begin(); it != F.end(); ++it){
@@ -46,22 +46,22 @@ frab sum2(frab F1, frab F2){
   }
 }
 
-frab frabmaker(const CharacterVector symbols, const NumericVector powers){
-  if(symbols.size() != powers.size()) {
-    throw std::invalid_argument("symbols and powers are not same length");
+frab frabmaker(const CharacterVector names, const NumericVector values){
+  if(names.size() != values.size()) {
+    throw std::invalid_argument("names and values are not same length");
   }
   frab out;
-  for(size_t i=0 ; i < (size_t) symbols.size() ; i++){
-    if(powers[i] != 0){
-      out[(string) symbols[i]] += powers[i];  // the meat
+  for(size_t i=0 ; i < (size_t) names.size() ; i++){
+    if(values[i] != 0){
+      out[(string) names[i]] += values[i];  // the meat
     }
   }
   return remove_zeros(out);  // remove_zeros() needed here if, eg, c(a=1,b=3,a=-1)
 }
 
 List retval(const frab &F){  // used to return a frab to R
-  return List::create(Named("symbols") =  symbols(F),
-		      Named("powers")  =  powers (F)
+  return List::create(Named("names")  =   names(F),
+		      Named("values") =  values(F)
 		      );
 }
 
@@ -87,28 +87,28 @@ bool equal(const frab &F1, const frab &F2){
 
 
 // [[Rcpp::export]]
-List c_frab_identity(const CharacterVector symbols, const NumericVector powers){
-  return retval(frabmaker(symbols, powers));
+List c_frab_identity(const CharacterVector names, const NumericVector values){
+  return retval(frabmaker(names, values));
 }
 
 //[[Rcpp::export]]
 List c_frab_add(
-	 const CharacterVector symbols1, const NumericVector powers1,
-	 const CharacterVector symbols2, const NumericVector powers2
+	 const CharacterVector names1, const NumericVector values1,
+	 const CharacterVector names2, const NumericVector values2
           ){
   return retval(remove_zeros(sum2(
-			     frabmaker(symbols1,powers1),
-			     frabmaker(symbols2,powers2)
+			     frabmaker(names1,values1),
+			     frabmaker(names2,values2)
 				  ) ) );
 }
 
 //[[Rcpp::export]]
 bool c_frab_eq(
-	      const CharacterVector symbols1, const NumericVector powers1,
-	      const CharacterVector symbols2, const NumericVector powers2
+	      const CharacterVector names1, const NumericVector values1,
+	      const CharacterVector names2, const NumericVector values2
 	      ){
   return equal(
-	       frabmaker(symbols1,powers1),
-	       frabmaker(symbols2,powers2)
+	       frabmaker(names1,values1),
+	       frabmaker(names2,values2)
 	       );
 }
