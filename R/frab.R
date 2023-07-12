@@ -46,11 +46,17 @@ setMethod("names","frab",
   nv_to_frab(setNames(L$values,L$names))
 }
 
+`is.1dtable` <- function(x){is.table(x) && length(dim(x)==1)}
+  
+`table_to_frab` <- function(x){frab(setNames(as.vector(x),names(x)))}
+
 `frab` <- function(x){
   if(is.namedvector(x)){ 
     return(nv_to_frab(x))
   } else if(is.list(x)){
     return(list_to_frab(x))
+  } else if(is.1dtable(x)){
+    return(table_to_frab(x))
   } else if(is.frab(x)){
     return(x)
   } else {
@@ -79,6 +85,8 @@ setMethod("names","frab",
 }
 
 `frab_arith_frab` <- function(e1,e2){
+  e1 <- frab(e1)
+  e2 <- frab(e2)
   switch(.Generic,
          "+" = frab_plus_frab(e1, e2),
          "-" = frab_plus_frab(e1, frab_negative(e2)),

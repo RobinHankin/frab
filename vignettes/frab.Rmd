@@ -66,7 +66,7 @@ x+y
 
 
 
-```{x}
+```{r}
 x <- frab(c(x=5,d=1,e=2,f=4,a=3,c=3,g=9))
 x
 x>3
@@ -76,6 +76,17 @@ x[x<3]
 x[x<3] <- 100
 x
 ```
+
+Tables work nicely too:
+
+```{r}
+a <- rfrab()
+b <- table(sample(letters[1:8],12,replace=T))
+a
+b
+a+b
+```
+
 
 
 Carefully regulated ambiguity
