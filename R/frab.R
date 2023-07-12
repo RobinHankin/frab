@@ -268,3 +268,6 @@ setMethod("which","frab",
 
 setGeneric("length")
 setMethod("length","frab", function(x){length(values(x))})
+
+setGeneric("sort")  # from the disordR package
+
