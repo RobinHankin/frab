@@ -19,7 +19,6 @@
 \alias{num_le_frab}
 \alias{numeric_compare_frab}
 \alias{frab_compare_error}
-\alias{c_frab_eq}
 \title{Comparision methods}
 \description{
   Methods for comparison (greater than, etc) in the \pkg{frab} package.
