@@ -2,11 +2,8 @@ setClass("frab",slots=c(x="numeric"))  # x is a named vector
 
 `is.frab` <- function(x){inherits(x,"frab")}
 
-`as.namedvector` <- function(object){object@x}  # should be a disord (?)
-
 `is.namedvector`   <- function(v){is.vector(v) && is.numeric(v) && !is.null(names(v))}
 `is.unnamedvector` <- function(v){is.vector(v) && is.numeric(v) &&  is.null(names(v))}
-
 `is.namedlogical`   <- function(v){is.vector(v) && is.logical(v) && !is.null(names(v))}
 `is.unnamedlogical` <- function(v){is.vector(v) && is.logical(v) &&  is.null(names(v))}
 
@@ -22,6 +19,9 @@ setMethod("values","frab",
             return(disord(as.numeric(object@x),h=hashcal(object@x)))
             ## no occurrences of "@" below this line; accessor methods end
           } )
+
+setGeneric("as.namedvector",function(x){standardGeneric("as.namedvector")})
+setMethod("as.namedvector","frab",function(x){x@x})
 
 `frab` <- function(x){ # nv == named vector
   stopifnot(is.namedvector(x))

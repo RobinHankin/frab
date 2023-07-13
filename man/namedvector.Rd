@@ -1,6 +1,5 @@
 \name{namedvector}
 \alias{is.namedvector}
-\alias{ch4nv}
 \alias{as.namedvector}
 \alias{is.namedlogical}
 \alias{is.unnamedlogical}
@@ -12,14 +11,13 @@ the same.  However, there is a natural coercion from one to the other.
 }
 \usage{
 is.namedvector(v)
-as.namedvector(v)
+as.namedvector(x)
 is.namedlogical(v)
 is.unnamedlogical(v)
 is.unnamedvector(v)
-ch4nv(v)
 }
 \arguments{
-  \item{v}{Argument to be tested or coerced}
+  \item{x,v}{Argument to be tested or coerced}
 }
 \details{
   Coercion and testing for named vectors.  Convenience function
