@@ -126,7 +126,7 @@ test_that("Test suite aaa.R",{
   expect_silent(ignore <- x[])
   expect_true(length(x) == 4)
 
-  expect_true(frab(as.table(x)) == x)
+  expect_true(as.frab(as.table(x)) == x)
 
   rm(x)
 
