@@ -8,7 +8,7 @@ Description: Functionality so that c(a=1,b=2,c=3) + c(b=3,a=-1) will return c(b=
      Uses 'disordR' discipline.
 License: GPL (>= 2)
 Depends: R (>= 3.5.0)
-Suggests: knitr, markdown, rmarkdown
+Suggests: knitr, markdown, rmarkdown, testthat
 VignetteBuilder: knitr
 Imports: Rcpp (>= 1.0-7), mathjaxr, disordR (>= 0.9-8-1), methods
 LinkingTo: Rcpp
