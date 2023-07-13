@@ -3,6 +3,7 @@
 \alias{frab-class}
 \alias{names}
 \alias{values}
+\alias{namedvector}
 \alias{names,frab-method}
 \alias{values,frab-method}
 \alias{namedvector,frab-method}
@@ -10,8 +11,10 @@
 \description{The formal \proglang{S4} class for frab objects}
 \section{Objects from the Class}{
   Formal class \dfn{frab} has a single slot \code{x} which is a named
-  numeric vector.  The class has arithmetic, comparison, summary, and
-  mathematical methods defined for it.
+  numeric vector.
+
+  The class has three accessor methods: \code{names()}, \code{values()},
+  and \code{namedvector()}. 
 }
 \usage{
 \S4method{names}{frab}(x)

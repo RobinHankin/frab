@@ -18,22 +18,17 @@ setMethod("values","frab",
 setGeneric("namedvector",function(x){standardGeneric("namedvector")})
 setMethod("namedvector","frab",function(x){x@x})
 
-
 `as.namedvector`   <- function(v){namedvector(v)}
 `is.namedvector`   <- function(v){is.vector(v) && is.numeric(v) && !is.null(names(v))}
 `is.unnamedvector` <- function(v){is.vector(v) && is.numeric(v) &&  is.null(names(v))}
 `is.namedlogical`   <- function(v){is.vector(v) && is.logical(v) && !is.null(names(v))}
 `is.unnamedlogical` <- function(v){is.vector(v) && is.logical(v) &&  is.null(names(v))}
 
-
-
 `frab` <- function(x){ # nv == named vector
   stopifnot(is.namedvector(x))
   jj <- c_frab_identity(names(x),x)
   new("frab", x=setNames(jj$values,jj$names))  # this is the only place new() is called
 }
-
-`nv_to_frab` <- frab
 
 `list_to_frab` <- function(L){
   frab(setNames(L$values,L$names))
