@@ -250,9 +250,9 @@ setReplaceMethod("[",signature(x="frab",i="disindex",j="missing",value="numeric"
 
 setReplaceMethod("[",signature(x="frab",i="missing",j="missing",value="ANY"),
                  function(x,i,j,value){
-                   x <- as.namedvector(x)
-                   x[] <- value
-                   return(frab(setNames(x,names(x))))
+                   v <- values(x)
+                   v[] <- value
+                   return(frab(setNames(v,names(x))))
                  } )
 
 setReplaceMethod("[",signature(x="frab",i="ANY",j="ANY",value="ANY"),
