@@ -26,6 +26,10 @@ ch4nv(v)
   \code{ch4nv()} means \dQuote{check for a named vector}, returning the
   vector if its argument is indeed a named vector, and stopping with an
   error otherwise.
+
+  Function \code{nv_to_frab()}, documented at \code{frab.Rd}, coerces a
+  named vector to a \code{frab}.
+
 }
 \value{
 Function \code{is.namedvector()} returns a boolean, function
