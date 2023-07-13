@@ -36,6 +36,8 @@ setMethod("values","frab",
 `is.1dtable` <- function(x){is.table(x) && length(dim(x)==1)}
   
 `table_to_frab` <- function(x){frab(setNames(as.vector(x),names(x)))}
+setGeneric("as.table")
+setMethod("as.table","frab",function(x,...){structure(as.namedvector(x),dim=length(x),dimnames=structure(list(names(x)),names=""),class="table")})
 
 `frab` <- function(x){
   if(is.namedvector(x)){ 
@@ -146,10 +148,6 @@ setMethod("values","frab",
          stop(gettextf("Comparison operator %s not implemented in this case", dQuote(.Generic)))
          ) }
 
-`frab_compare_error` <- function(e1,e2){
-  stop(gettextf("binary operator %s not implemented in this case", dQuote(.Generic)))
-}
- 
 setMethod("Arith"  , signature(e1="frab"   , e2="missing"), frab_unary        )
 setMethod("Arith"  , signature(e1="frab"   , e2="frab"   ), frab_arith_frab   )
 setMethod("Arith"  , signature(e1="frab"   , e2="numeric"), frab_arith_numeric)
