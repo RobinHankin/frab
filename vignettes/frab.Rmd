@@ -1,5 +1,5 @@
 ---
-title: "An alternative implementation of named vectors"
+title: "frab: An alternative implementation of named vectors"
 author: "Robin K. S. Hankin"
 output: html_vignette
 bibliography: frab.bib
@@ -20,6 +20,50 @@ set.seed(1)
 <p style="text-align: right;">
 ![](`r system.file("help/figures/frab.png", package = "frab")`){width=10%}
 </p>
+
+
+# Prologue: `table()`
+
+Suppose we have three tables:
+
+```{r,label=badtables}
+xl <- c("a","a","b","c","d","d","a")
+yl <- c("a","a","b","d","d","d","e")
+zl <- c("a","a","b","d","d","e","f")
+x <- table(xl)
+y <- table(yl)
+z <- table(zl)
+```
+
+Can we ascribe any meaning to `x+y` without reference to `xl` and
+`xy`?  Well yes, we should simply sum the counts of the various
+letters.  However:
+
+```{r label=addtableswrong}
+x
+y
+x+y
+```
+
+The sum is defined in this case.  However, close inspection shows that
+the result is clearly incorrect.  Although entries for `a` and `b` are
+correct, the third and fourth entries are not as expected: in this
+case R idiom simply adds the entries elementwise with no regard to
+labels.  We would expect `x+y` to respect the fact that we have 5 `d`
+entries, even though element `d` is the fourth entry of `x` and the
+third of `y`.  Further:
+
+```{r label=addtablesgiveserror,error=TRUE}
+x
+z
+x+z
+```
+
+
+
+
+
+
 
 # Named vectors
 
@@ -53,6 +97,13 @@ each name in the sum is the sum of the values of that name of the
 addends.  Note further that there is no good reason why the first
 answer could not be `c(c=5,b=3,a=4)`, obtained by using the names
 attribute of `y` instead of `x`.
+
+
+
+
+# The `frab` package
+
+
 
 The `frab` package furnishes consistent and efficient methods to give
 the second answer: uses the names of a named vector as the indexing
