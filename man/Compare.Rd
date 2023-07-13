@@ -18,7 +18,6 @@
 \alias{num_lt_frab}
 \alias{num_le_frab}
 \alias{numeric_compare_frab}
-\alias{frab_compare_error}
 \title{Comparision methods}
 \description{
   Methods for comparison (greater than, etc) in the \pkg{frab} package.
@@ -50,7 +49,6 @@ num_ge_frab(e1,e2)
 num_lt_frab(e1,e2)
 num_le_frab(e1,e2)
 numeric_compare_frab(e1,e2)
-frab_compare_error(e1,e2)
 }
 
 \arguments{
