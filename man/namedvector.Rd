@@ -1,6 +1,5 @@
 \name{namedvector}
 \alias{is.namedvector}
-\alias{as.namedvector}
 \alias{is.namedlogical}
 \alias{is.unnamedlogical}
 \alias{is.unnamedvector}
@@ -11,7 +10,6 @@ the same.  However, there is a natural coercion from one to the other.
 }
 \usage{
 is.namedvector(v)
-as.namedvector(x)
 is.namedlogical(v)
 is.unnamedlogical(v)
 is.unnamedvector(v)

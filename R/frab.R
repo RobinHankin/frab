@@ -13,10 +13,10 @@ setMethod("names","frab",
               return(disord(names(x@x),h=hashcal(x@x)))
           } )
 
-setGeneric("values",function(object){standardGeneric("values")})
+setGeneric("values",function(x){standardGeneric("values")})
 setMethod("values","frab",
-          function(object){
-            return(disord(as.numeric(object@x),h=hashcal(object@x)))
+          function(x){
+            return(disord(as.numeric(x@x),h=hashcal(x@x)))
             ## no occurrences of "@" below this line; accessor methods end
           } )
 
