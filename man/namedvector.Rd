@@ -1,5 +1,6 @@
 \name{namedvector}
 \alias{is.namedvector}
+\alias{as.namedvector}
 \alias{is.namedlogical}
 \alias{is.unnamedlogical}
 \alias{is.unnamedvector}
@@ -15,14 +16,10 @@ is.unnamedlogical(v)
 is.unnamedvector(v)
 }
 \arguments{
-  \item{x,v}{Argument to be tested or coerced}
+  \item{v}{Argument to be tested or coerced}
 }
 \details{
-  Coercion and testing for named vectors.  Convenience function
-  \code{ch4nv()} means \dQuote{check for a named vector}, returning the
-  vector if its argument is indeed a named vector, and stopping with an
-  error otherwise.
-
+  Coercion and testing for named vectors.
   Function \code{nv_to_frab()}, documented at \code{frab.Rd}, coerces a
   named vector to a \code{frab}.
 

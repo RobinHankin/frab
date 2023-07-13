@@ -3,10 +3,9 @@
 \alias{frab-class}
 \alias{names}
 \alias{values}
-\alias{as.namedvector}
 \alias{names,frab-method}
 \alias{values,frab-method}
-\alias{as.namedvector,frab-method}
+\alias{namedvector,frab-method}
 \title{Class \dQuote{frab}}
 \description{The formal \proglang{S4} class for frab objects}
 \section{Objects from the Class}{
@@ -17,7 +16,7 @@
 \usage{
 \S4method{names}{frab}(x)
 \S4method{values}{frab}(x)
-\S4method{as.namedvector}{frab}(x)
+\S4method{namedvector}{frab}(x)
 }
 \arguments{\item{x}{Object of class \code{frab}}}
 \author{Robin K. S. Hankin}

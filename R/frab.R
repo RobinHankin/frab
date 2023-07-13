@@ -2,11 +2,6 @@ setClass("frab",slots=c(x="numeric"))  # x is a named vector
 
 `is.frab` <- function(x){inherits(x,"frab")}
 
-`is.namedvector`   <- function(v){is.vector(v) && is.numeric(v) && !is.null(names(v))}
-`is.unnamedvector` <- function(v){is.vector(v) && is.numeric(v) &&  is.null(names(v))}
-`is.namedlogical`   <- function(v){is.vector(v) && is.logical(v) && !is.null(names(v))}
-`is.unnamedlogical` <- function(v){is.vector(v) && is.logical(v) &&  is.null(names(v))}
-
 setGeneric("names")
 setMethod("names","frab",
           function(x){
@@ -20,8 +15,17 @@ setMethod("values","frab",
             ## no occurrences of "@" below this line; accessor methods end
           } )
 
-setGeneric("as.namedvector",function(x){standardGeneric("as.namedvector")})
-setMethod("as.namedvector","frab",function(x){x@x})
+setGeneric("namedvector",function(x){standardGeneric("namedvector")})
+setMethod("namedvector","frab",function(x){x@x})
+
+
+`as.namedvector`   <- function(v){namedvector(v)}
+`is.namedvector`   <- function(v){is.vector(v) && is.numeric(v) && !is.null(names(v))}
+`is.unnamedvector` <- function(v){is.vector(v) && is.numeric(v) &&  is.null(names(v))}
+`is.namedlogical`   <- function(v){is.vector(v) && is.logical(v) && !is.null(names(v))}
+`is.unnamedlogical` <- function(v){is.vector(v) && is.logical(v) &&  is.null(names(v))}
+
+
 
 `frab` <- function(x){ # nv == named vector
   stopifnot(is.namedvector(x))
