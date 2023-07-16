@@ -131,6 +131,10 @@ test_that("Test suite aaa.R",{
   rm(x)
 
 
+  expect_true(is.zero(zero()))
+  expect_true(zero()  ==  -zero())
+  expect_true(is.zero(zero() + zero()))
+  expect_true(is.zero(zero() - zero()))
   
   expect_true(frab(c(a=1,b=0,c=3)) == frab(c(a=1,c=3)))
   expect_false(frab(c(a=1,b=2,c=3)) == frab(c(a=1,b=3,c=3)))

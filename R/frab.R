@@ -265,3 +265,5 @@ setMethod("length","frab", function(x){length(values(x))})
 
 setGeneric("sort")  # from the disordR package
 
+`zero` <- function(...){as.frab(list(values=numeric(0),names=character(0)))}
+`is.zero` <- function(x){x==zero()}
