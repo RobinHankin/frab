@@ -1,5 +1,5 @@
 ---
-title: "frab: An alternative implementation of named vectors"
+title: "An alternative implementation of named vectors: addition of `table`s with the `frab` package"
 author: "Robin K. S. Hankin"
 output: html_vignette
 bibliography: frab.bib
@@ -21,6 +21,11 @@ set.seed(1)
 ![](`r system.file("help/figures/frab.png", package = "frab")`){width=10%}
 </p>
 
+**TLDR**: Adding two objects of class `table` has a natural
+interpretation.  However, in base R, adding two tables can give
+plausible but incorrect results.  The `frab` package provides a
+consistent and efficient way to add `table` objects.  The underlying
+mathematical structure is the Free Abelian group, hence "`frab`".
 
 # Prologue: `table()`
 
@@ -36,7 +41,7 @@ z <- table(zl)
 ```
 
 Can we ascribe any meaning to `x+y` without reference to `xl` and
-`xy`?  Well yes, we should simply sum the counts of the various
+`yl`?  Well yes, we should simply sum the counts of the various
 letters.  However:
 
 ```{r label=addtableswrong}
@@ -59,12 +64,6 @@ z
 x+z
 ```
 
-
-
-
-
-
-
 # Named vectors
 
 A _named vector_ is a vector with a `names` attribute.  Each
@@ -74,7 +73,8 @@ each element, making it easier to refer to specific values within the
 vector using their respective names.
 
 Named vectors are a convenient and useful feature of the R programming
-language.  However, given the following two named vectors:
+language [@rcore2022].  However, given the following two named
+vectors:
 
 ```{r}
 x <- c(a=1,b=2,c=3)
@@ -99,23 +99,28 @@ answer could not be `c(c=5,b=3,a=4)`, obtained by using the names
 attribute of `y` instead of `x`.
 
 
-
-
 # The `frab` package
 
-
-
-The `frab` package furnishes consistent and efficient methods to give
-the second answer: uses the names of a named vector as the indexing
+The `frab` package furnishes efficient methods to give a consistent
+and meaningful way of adding two tables together, using standard R
+syntax.  It uses the names of a named vector as the indexing
 mechanism.  Package idiom is straightforward:
 
 ```{r}
-(x <- frab(c(a=1,b=2,c=3)))
-(y <- frab(c(c=4,b=1,a=1)))
+(x <- frab(c(a=1,b=2,d=7)))
+(y <- frab(c(c=4,b=1,a=-1)))
 x+y
 ```
 
+Above, note how `y` is defined with its entries in non-standard order,
+but the resulting `frab` object has its entries ordered
+alphabetically.  In `x+y`, the entry for `a` has vanished, as it
+cancels in the summation.  The numeric entries for each letter are
+summed, accounting for the different names [viz `a,b,d` and `a,b,c`
+respectively].  The result is presented using the `frab` print method.
 
+Package idiom includes extraction and replacement methods, all of
+which should work as expected:
 
 ```{r}
 x <- frab(c(x=5,d=1,e=2,f=4,a=3,c=3,g=9))
@@ -128,7 +133,10 @@ x[x<3] <- 100
 x
 ```
 
-Tables work nicely too:
+Above we see that extraction and replacement methods follow `disordR`
+discipline [@hankin2022_disordR].  Results are coerced to `disord`
+objects if needed.  Tables may be added to `frab` objects:
+
 
 ```{r}
 a <- rfrab()
@@ -138,6 +146,8 @@ b
 a+b
 ```
 
+Above we see the `+` operator is defined between a `frab` and a
+`table`, coercing tables to `frab` objects to give consistent results.
 
 
 Carefully regulated ambiguity
