@@ -173,12 +173,20 @@ setMethod("show", "frab", function(object){frab_print(object)})
 
 "frab_print" <- function(object){
     x <- as.namedvector(object)
-    if(isTRUE(getOption("frab_print_hash"))){
-      cat("A frab object with hash", hashcal(x), "and entries\n")
+    if(is.empty(object)){
+      if(isTRUE(getOption("frab_print_hash"))){
+        cat("The empty frab object with hash", hashcal(x), "\n")
+      } else {
+        cat("The empty frab object\n")
+      }
     } else {
-      cat("A frab object with entries\n")
+      if(isTRUE(getOption("frab_print_hash"))){
+        cat("A frab object with hash", hashcal(x), "and entries\n")
+      } else {
+        cat("A frab object with entries\n")
+      }
+      print(x)
     }
-    print(x)
     return(invisible(object))
 }
 

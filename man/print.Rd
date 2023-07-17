@@ -17,6 +17,9 @@ frab_print(object)
   \code{TRUE}, the hash code is printed; otherwise it is not.
 
   Function \code{frab_print()} returns its argument, invisibly.
+
+  There is special dispensation for the empty \code{frab} object.
+  
 }
 \author{Robin K. S. Hankin}
 \examples{

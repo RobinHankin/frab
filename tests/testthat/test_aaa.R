@@ -144,6 +144,7 @@ test_that("Test suite aaa.R",{
 
   expect_error(c_frab_identity(letters[1:6],1:5))
 
+  expect_output(print(zero()))
   
   jj <- c(a=3,b=1,d=3)
   expect_false(is.namedlogical(jj))
