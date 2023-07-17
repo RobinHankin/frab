@@ -1,0 +1,61 @@
+---
+title: "The frab package: an alternative interpretation of named vectors"
+output:
+  github_document:
+    pandoc_args: --webtex
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+set.seed(0)
+```
+
+# <img src="man/figures/frab.png" width = "150" align="right" />
+
+# Overview
+
+The `frab` package furnishes an alternative interpretation of named
+vectors wherein addition is defined using the names as the primary
+key.  The underlying mathematical object is the Free Abelian group.
+
+# The package in use
+
+The package has a single S4 class of objects, `frab`.  Primary
+construction function `frab()` takes a named vector and returns a
+`frab` object:
+
+
+```{r use1}
+suppressMessages(library("frab"))
+frab(c(x=1,b=2,a=2,b=3,c=7,x=-1))
+```
+
+Above, we see from the return value that function `frab()` has
+reordered the labels of its argument, calculated the value for entry
+`b` [as $2+3=5$], determined that the entry for `x` has vanished [the
+values cancelling out], and printed the result using a bespoke show
+method.  However, the package's most useful feature is the overloaded
+definition of addition:
+
+
+```{r label=additionoverload}
+(x <- rfrab())
+(y <- rfrab())
+x+y
+```
+
+
+
+
+# Further information
+
+For more detail, see the package vignette
+
+`vignette("frab")`
