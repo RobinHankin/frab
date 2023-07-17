@@ -8,8 +8,10 @@ The frab package: an alternative interpretation of named vectors
 # Overview
 
 The `frab` package furnishes an alternative interpretation of named
-vectors wherein addition is defined using the names as the primary key.
-The underlying mathematical object is the Free Abelian group.
+vectors wherein addition is defined using the (unique) names as the
+primary key. This allows one to “add” tables in a consistent and
+meaningful way. The underlying mathematical object is the Free Abelian
+group.
 
 # The package in use
 
