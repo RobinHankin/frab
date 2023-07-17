@@ -70,7 +70,7 @@ for(i in seq_len(10)){
   checker3(A,B,zero())
 }
 
-checker3(frab(c(a=1)),frab(a=-1,b=4),frab(b=-4,c=3))
+checker3(frab(c(a=1)),frab(c(a=-1,b=4)),frab(c(b=-4,c=3)))
 
 
 } )
