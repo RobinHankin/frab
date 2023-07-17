@@ -272,6 +272,7 @@ setGeneric("sort")  # from the disordR package
 
 `zero` <- function(...){as.frab(list(values=numeric(0),names=character(0)))}
 `is.zero` <- function(x){x==zero()}
+`is.empty` <- is.zero
 
 setGeneric("pmax",function(...){standardGeneric("pmax")})
 setGeneric("pmin",function(...){standardGeneric("pmin")})
