@@ -267,3 +267,40 @@ setGeneric("sort")  # from the disordR package
 
 `zero` <- function(...){as.frab(list(values=numeric(0),names=character(0)))}
 `is.zero` <- function(x){x==zero()}
+
+setGeneric("pmax",function(...){standardGeneric("pmax")})
+setGeneric("pmin",function(...){standardGeneric("pmin")})
+
+`pmax_pair` <- function(F1,F2){
+  as.frab(c_frab_pmax(elements(names(F1)), elements(values(F1)),
+                      elements(names(F2)), elements(values(F2))))
+}
+
+`pmin_pair` <- function(F1,F2){ -pmax_pair(-F1,-F2)}
+
+`pmax_dots` <- function(x,...){
+  if(nargs()==1){
+    return(x)
+    } else if(nargs()<3){
+    return(pmax_pair(x, ...))
+  } else {
+    return(pmax_pair(x, pmax_pair(...)))
+  }
+}
+
+`pmin_dots` <- function(x,...){
+  if(nargs()==1){
+    return(x)
+  } else if(nargs()<3){
+    return(pmin_pair(x, ...))
+  } else {
+    return(pmin_pair(x, pmin_pair(...)))
+  }
+}
+
+setMethod("pmax",signature("..."="frab"), function(...){pmax_dots(...)} )
+setMethod("pmin",signature("..."="frab"), function(...){pmin_dots(...)} )
+
+setMethod("pmax",signature("..."="ANY"),function(...,na.rm=FALSE){base::pmax(..., na.rm=na.rm)})
+setMethod("pmin",signature("..."="ANY"),function(...,na.rm=FALSE){base::pmax(..., na.rm=na.rm)})
+

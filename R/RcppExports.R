@@ -9,6 +9,10 @@ c_frab_add <- function(names1, values1, names2, values2) {
     .Call(`_frab_c_frab_add`, names1, values1, names2, values2)
 }
 
+c_frab_pmax <- function(names1, values1, names2, values2) {
+    .Call(`_frab_c_frab_pmax`, names1, values1, names2, values2)
+}
+
 c_frab_eq <- function(names1, values1, names2, values2) {
     .Call(`_frab_c_frab_eq`, names1, values1, names2, values2)
 }

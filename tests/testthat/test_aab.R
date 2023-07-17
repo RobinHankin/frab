@@ -6,10 +6,11 @@
 test_that("Test suite aab.R",{
 
 checker1 <- function(A){
-  expect_true(A + zero() == A)
-  expect_true(A - zero() == A)
-  expect_true(zero() + A == A)
-  expect_true(zero() - A == A)
+  expect_true(A == +A)    
+  expect_true(A + zero() ==  A)
+  expect_true(A - zero() ==  A)
+  expect_true(zero() + A ==  A)
+  expect_true(zero() - A == -A)
   expect_true(is.zero(A-A))
   expect_true(A == -(-A))
   expect_true(A+A == 2*A)
@@ -23,6 +24,9 @@ checker1 <- function(A){
 
   expect_error(A&A)
 
+  expect_true(pmax(A)==A)
+  expect_true(pmin(A)==A)
+
 }   # checker1() closes
   
 checker2 <- function(A,B){
@@ -30,10 +34,26 @@ checker2 <- function(A,B){
   expect_true(2*A+B == A+A+B)
   expect_true(A+2*B == B+B+A)
 
+  expect_true(pmax(A,B) == pmax(B,A))
+  expect_true(pmin(A,B) == pmin(B,A))
+
+  expect_true(all(pmax(A,B)-A >= 0))
+  expect_true(all(pmax(A,B)-B >= 0))
+
+  expect_true(all(pmin(A,B)-A <= 0))
+  expect_true(all(pmin(A,B)-B <= 0))
+
 }   # checker2() closes
 
 checker3 <- function(A,B,C){
   expect_true(A+(B+C) == (A+B)+C)  # addition is associative; 1.2
+
+  expect_true(pmax(A,pmax(B,C)) == pmax(pmax(A,pmax(B,C))))
+  expect_true(pmin(A,pmin(B,C)) == pmin(pmin(A,pmin(B,C))))
+
+  expect_true(pmax(A,B,C) == pmax(pmax(A,pmax(B,C))))
+  expect_true(pmin(A,B,C) == pmin(pmin(A,pmin(B,C))))
+
 }  # checker3() closes
   
 
@@ -47,5 +67,10 @@ for(i in seq_len(10)){
   checker2(A,B)
   checker2(A,zero())
   checker3(A,B,C)
+  checker3(A,B,zero())
 }
+
+checker3(frab(c(a=1)),frab(a=-1,b=4),frab(b=-4,c=3))
+
+
 } )

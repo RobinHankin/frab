@@ -19,13 +19,17 @@
 \alias{numeric_arith_frab}
 \alias{c_frab_add}
 \alias{c_frab_eq}
+\alias{c_frab_pmax}
 \alias{c_frab_identity}
 \title{Extraction and replacement methods for class \code{"frab"}}
 \description{
 
   The \code{frab} class provides basic arithmetic methods for frab
-  objects.  Function \code{f_frab_eq()} is documented here for
-  consistency, but is technically a Comparison operator.
+  objects.  Low-level helper functions \code{c_frab_eq()} amd
+  \code{c_frab_pmax()} are documented here for consistency; but
+  technically \code{c_frab_eq()} is a Comparison operator, and
+  \code{c_frab_pmax()} is an \dQuote{Extremes} function.  They are
+  documented at \code{Compare.Rd} and \code{pmax.Rd} respectively.
   
 }
 \usage{
