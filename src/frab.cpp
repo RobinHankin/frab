@@ -111,10 +111,10 @@ List c_frab_add(
 	 const CharacterVector names1, const NumericVector values1,
 	 const CharacterVector names2, const NumericVector values2
           ){
-  return retval(remove_zeros(sum2(
-			     frabmaker(names1,values1),
-			     frabmaker(names2,values2)
-				  ) ) );
+  return retval(sum2(
+		     frabmaker(names1,values1),
+		     frabmaker(names2,values2)
+		     ) );
 }
 
 //[[Rcpp::export]]
@@ -122,10 +122,10 @@ List c_frab_pmax(
 	 const CharacterVector names1, const NumericVector values1,
 	 const CharacterVector names2, const NumericVector values2
           ){
-  return retval(remove_zeros(pmax(
-			     frabmaker(names1,values1),
-			     frabmaker(names2,values2)
-				  ) ) );
+  return retval(pmax(
+		     frabmaker(names1,values1),
+		     frabmaker(names2,values2)
+		     ) );
 }
 
 //[[Rcpp::export]]
