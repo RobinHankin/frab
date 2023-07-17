@@ -31,7 +31,12 @@ setMethod("namedvector","frab",function(x){x@x})
 }
 
 `list_to_frab` <- function(L){
-  frab(setNames(L$values,L$names))
+  v <- L$values
+  n <- L$names
+  if(inherits(n,"disord") || inherits(v,"disord")){
+    stop("not currently implemented")
+  }
+  frab(setNames(v,n))
 }
 
 `is.1dtable` <- function(x){is.table(x) && length(dim(x)==1)}
