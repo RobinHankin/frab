@@ -2,6 +2,7 @@
 \alias{extract}
 \alias{values,frab-method}
 \alias{values}
+\alias{values<-}
 \alias{values<-,frab,numeric-method}
 \alias{values<-,frab,disord-method}
 \alias{[}
@@ -74,6 +75,11 @@ a
 
 x <- rfrab()
 values(x) <- values(x) + 66
+
+x <- rfrabb()
+v <-  values(x)
+v[v<0] <- abs(v[v<0]) + 50
+values(x) <- v
 
 }
 
