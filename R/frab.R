@@ -248,6 +248,11 @@ setReplaceMethod("[",signature(x="frab",i="disord",j="missing",value="numeric"),
                      )
                  })
 
+setReplaceMethod("[",signature(x="frab",i="disord",j="missing",value="frab"),
+                 function(x,i,j,value){
+                   stop("not currently implemented.  Idiom such as x[x<0] <- -x[x<0] is disord-compliant [and meaningful] but not yet implemented")
+                 } )
+
 setReplaceMethod("[",signature(x="frab",i="disindex",j="missing",value="numeric"),
                  function(x,i,j,value){
                      p <- values(x)
