@@ -1,4 +1,4 @@
-\name{extract}
+\name{Extract}
 \alias{extract}
 \alias{[}
 \alias{[.frab}
