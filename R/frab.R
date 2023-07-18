@@ -183,7 +183,12 @@ setMethod("Compare", signature(e1="numeric" , e2="frab"   ), numeric_compare_fra
 `rfrab` <- function(n=9,v=seq_len(5),symb=letters[seq_len(9)]){
   frab(setNames(sample(v,n,replace=TRUE),sample(symb,n,replace=TRUE)))
 }
+`rfrabb` <- function(n=100,v=-5:5,symb=letters){rfrab(n=n,v=v,symb=symb)}
 
+`rfrabbb` <- function(n=5000,v=-10:10,symb=letters,i=3){
+  rfrab(n=n,v=v,symb=apply(expand.grid(rep(list(symb),i)),1,paste,collapse=""))
+}
+  
 setMethod("show", "frab", function(object){frab_print(object)})
 
 "frab_print" <- function(object){
