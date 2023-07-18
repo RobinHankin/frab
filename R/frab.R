@@ -15,6 +15,21 @@ setMethod("values","frab",
             ## no occurrences of "@" below this line; accessor methods end
           } )
 
+setGeneric("values<-",function(x,value){standardGeneric("values<-")})
+setReplaceMethod("values",signature(x="frab",value="numeric"),
+                 function(x,value){
+                     v <- values(x)
+                     v[] <- value
+                     frab(setNames(elements(v),elements(names(x))))
+                 } )
+
+setReplaceMethod("values",signature(x="frab",value="disord"),
+                 function(x,value){
+                     n <- names(x)
+                     stopifnot(consistent(n,value))
+                     frab(setNames(elements(value),elements(n)))
+                 } )
+
 setGeneric("namedvector",function(x){standardGeneric("namedvector")})
 setMethod("namedvector","frab",function(x){x@x})
 

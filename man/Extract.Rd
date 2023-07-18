@@ -1,5 +1,9 @@
 \name{Extract}
 \alias{extract}
+\alias{values,frab-method}
+\alias{values}
+\alias{values<-,frab,numeric-method}
+\alias{values<-,frab,disord-method}
 \alias{[}
 \alias{[.frab}
 \alias{[,frab-method}
@@ -67,4 +71,9 @@ a<4
 a[a<4]
 a[a<4] <- 100
 a
+
+x <- rfrab()
+values(x) <- values(x) + 66
+
 }
+
