@@ -21,6 +21,7 @@ frab_print(object)
   There is special dispensation for the empty \code{frab} object.
   
 }
+\value{Returns its argument, invisibly}
 \author{Robin K. S. Hankin}
 \examples{
 

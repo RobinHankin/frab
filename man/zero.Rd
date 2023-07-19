@@ -29,6 +29,8 @@ is.empty(x)
   \code{is.zero()} makes more sense, and sometimes one is thinking about
   maps and tables, in which case \code{is.empty()} is more appropriate.
 }
+\value{Function \code{zero()} returns the zero frab object, function
+  \code{is.zero()} a Boolean}
 \author{Robin K. S. Hankin}
 \examples{
 

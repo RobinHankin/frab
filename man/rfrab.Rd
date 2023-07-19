@@ -25,6 +25,7 @@ rfrabbb(n = 5000, v = -10:10, symb = letters,i=3)
   \code{rfrabb()} and \code{rfrabbb()} give successively larger objects.
 
 }
+\value{Returns a frab object}
 \author{Robin K. S. Hankin}
 \examples{
 rfrab()
