@@ -10,19 +10,10 @@
 \alias{is.na.frab}
 \alias{is.na<-}
 \alias{is.na<-.frab}
+\alias{is.na<-.frab}
 \alias{is.na,frab-method}
-\alias{match}
-\alias{match,frab-method}
-\alias{match,frab,ANY-method}
-\alias{match,ANY,frab-method}
-\alias{match,ANY,frab-method}
-\alias{match,frab,frab-method}
-\alias{\%in\%}
-\alias{\%in\%,frab-method}
-\alias{\%in\%,frab,ANY-method}
-\alias{\%in\%,ANY,frab-method}
-\alias{\%in\%,ANY,frab-method}
-\alias{\%in\%,frab,frab-method}
+\alias{is.na<-.frab}
+\alias{is.na<-,frab,disord-method}
 \alias{!,frab-method}
 \alias{which,frab-method}
 \alias{which,disindex-method}
@@ -46,7 +37,7 @@ However, there are a few functions that are a little more involved:
   \item\code{sapply(X,f)} returns a frab object which is the result of
   applying \code{f()} to each element of \code{X}.
   \item\code{which()} returns a \code{disind} object when given a
-  Boolean  \code{frab}
+  Boolean \code{frab}
 }
 }
 \value{Generally return frabs}
@@ -56,5 +47,19 @@ note here
 }
 \seealso{\code{\link{extract}}}
 \examples{
-2+2
+
+
+(a <- frab(c(a=1,b=NA,c=44,x=NA,h=4)))
+is.na(a)
+
+(x <- frab(c(x=5,y=2,z=3,a=7,b=6)))
+which(x>3)
+x[which(x>3)]
+x[which(x>3)] <- 4
+x
+
+is.na(x) <- x<3
+x
+x[is.na(x)] <- 100
+x
 }
