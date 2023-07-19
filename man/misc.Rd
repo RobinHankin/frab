@@ -26,18 +26,17 @@
 
 This page documents various functions that work for frabs, and I will
 add to these from time to time as I add new functions that make sense
-for frab objects.  Functions like \code{sin()} and \code{abs()} should
-work as expected: they take and return \code{frab} objects with the same
-hash (which means that idiom like \code{x + sin(x)} is accepted).
-However, there are a few functions that are a little more involved:
+for frab objects.  To use functions like \code{sin()} and \code{abs()}
+on \code{frab} object \code{x}, work with \code{values(x)} (which is a
+\code{disord} object).  However, there are a few functions that are a
+little more involved:
 
 \itemize{
   \item{length()} returns the length of the data component of the
   object.
-  \item\code{sapply(X,f)} returns a frab object which is the result of
-  applying \code{f()} to each element of \code{X}.
   \item\code{which()} returns a \code{disind} object when given a
   Boolean \code{frab}
+  \item{\code{is.na()} returns a logical \code{disord} object}
 }
 }
 \value{Generally return frabs}
