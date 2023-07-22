@@ -64,10 +64,15 @@ numeric_arith_frab(e1,e2)
 \seealso{\code{\link{Compare}}}
 \examples{
 
-x <- frab(c(a=1,b=2,c=3))
-y <- frab(c(b=-2,d=8))
+(x <- frab(c(a=1,b=2,c=3)))
+(y <- frab(c(b=-2,d=8,x=1,y=7)))
+(z <- frab(c(c=2,x=5,b=1,a=6)))
+
 
 x+y
+x+y+z
+
+x*y
 
 
 }
