@@ -43,6 +43,10 @@ checker2 <- function(A,B){
   expect_true(all(pmin(A,B)-A <= 0))
   expect_true(all(pmin(A,B)-B <= 0))
 
+  expect_true(length(A+B) <= length(A) + length(B))
+  expect_true(length(A-B) <= length(A) + length(B))
+
+
 }   # checker2() closes
 
 checker3 <- function(A,B,C){
