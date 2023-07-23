@@ -36,6 +36,20 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// c_frab_multiply
+List c_frab_multiply(const CharacterVector names1, const NumericVector values1, const CharacterVector names2, const NumericVector values2);
+RcppExport SEXP _frab_c_frab_multiply(SEXP names1SEXP, SEXP values1SEXP, SEXP names2SEXP, SEXP values2SEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const CharacterVector >::type names1(names1SEXP);
+    Rcpp::traits::input_parameter< const NumericVector >::type values1(values1SEXP);
+    Rcpp::traits::input_parameter< const CharacterVector >::type names2(names2SEXP);
+    Rcpp::traits::input_parameter< const NumericVector >::type values2(values2SEXP);
+    rcpp_result_gen = Rcpp::wrap(c_frab_multiply(names1, values1, names2, values2));
+    return rcpp_result_gen;
+END_RCPP
+}
 // c_frab_pmax
 List c_frab_pmax(const CharacterVector names1, const NumericVector values1, const CharacterVector names2, const NumericVector values2);
 RcppExport SEXP _frab_c_frab_pmax(SEXP names1SEXP, SEXP values1SEXP, SEXP names2SEXP, SEXP values2SEXP) {
@@ -68,6 +82,7 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_frab_c_frab_identity", (DL_FUNC) &_frab_c_frab_identity, 2},
     {"_frab_c_frab_add", (DL_FUNC) &_frab_c_frab_add, 4},
+    {"_frab_c_frab_multiply", (DL_FUNC) &_frab_c_frab_multiply, 4},
     {"_frab_c_frab_pmax", (DL_FUNC) &_frab_c_frab_pmax, 4},
     {"_frab_c_frab_eq", (DL_FUNC) &_frab_c_frab_eq, 4},
     {NULL, NULL, 0}

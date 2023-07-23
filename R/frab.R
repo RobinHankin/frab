@@ -80,7 +80,12 @@ setMethod("as.table","frab",function(x,...){structure(as.namedvector(x),dim=leng
   as.frab(c_frab_add(elements(names(F1)), elements(values(F1)),
                      elements(names(F2)), elements(values(F2))))
 }
- 
+
+`frab_multiply_frab` <- function(F1,F2){
+  as.frab(c_frab_multiply(elements(names(F1)), elements(values(F1)),
+                     elements(names(F2)), elements(values(F2))))
+}
+
 `frab_multiply_numeric` <- function(e1,e2){frab(setNames(elements(values(e1)*e2),elements(names(e1))))}
 `frab_power_numeric`    <- function(e1,e2){frab(setNames(elements(values(e1)^e2),elements(names(e1))))}
 `numeric_multiply_frab` <- function(e1,e2){frab(setNames(elements(e1*values(e2)),elements(names(e2))))}
@@ -100,6 +105,7 @@ setMethod("as.table","frab",function(x,...){structure(as.namedvector(x),dim=leng
   switch(.Generic,
          "+" = frab_plus_frab(e1, e2),
          "-" = frab_plus_frab(e1, frab_negative(e2)),
+         "*" = frab_multiply_frab(e1, e2),
          stop(gettextf("binary operator %s not implemented on frabs", dQuote(.Generic)))
          ) }
 

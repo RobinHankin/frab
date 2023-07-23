@@ -46,6 +46,23 @@ frab sum2(frab F1, frab F2){
   }
 }
 
+frab prod2(frab F1, frab F2){
+  frab out;
+  if(F1.size() > F2.size()){
+    for(auto it = F2.begin() ; it != F2.end() ; ++it){ // iterate through the smaller one
+      const string symbol = it->first;
+      out[symbol] = F1[symbol] * F2[symbol];
+    }
+    return remove_zeros(out);
+  } else { 
+    for(auto it = F1.begin() ; it != F1.end() ; ++it){
+      const string symbol = it->first;
+      out[symbol] = F2[symbol] * F1[symbol];
+    }
+    return remove_zeros(out);
+  }
+}
+
 frab frabmaker(const CharacterVector names, const NumericVector values){
   if(names.size() != values.size()) {
     throw std::invalid_argument("names and values are not same length");
@@ -112,6 +129,17 @@ List c_frab_add(
 	 const CharacterVector names2, const NumericVector values2
           ){
   return retval(sum2(
+		     frabmaker(names1,values1),
+		     frabmaker(names2,values2)
+		     ) );
+}
+
+//[[Rcpp::export]]
+List c_frab_multiply(
+	 const CharacterVector names1, const NumericVector values1,
+	 const CharacterVector names2, const NumericVector values2
+          ){
+  return retval(prod2(
 		     frabmaker(names1,values1),
 		     frabmaker(names2,values2)
 		     ) );
