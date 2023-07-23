@@ -112,6 +112,18 @@ language \citep{rcore2023}.  I also show how a slight natural
 generalization (which is convenient in the context of numerical
 techniques), may be incorporated.
 
+\section{Package internals}
+
+The package uses the {\tt STL map} class for efficiency.  This class
+maps strings (symbols) to doubles; the declaration
+
+\begin{verbatim}
+typedef std::map <std::string, double> frab; 
+\end{verbatim}
+
+appears in the {\tt src/} package directory.  Such maps are limited
+only by memory availability.
+
 \section{The {\tt frab} package in use}
 
 The {\tt frab} package associates a numerical value with each of a set
@@ -142,7 +154,7 @@ library("frab")
 \color{black}
 \end{minipage}
 
-The package uses a single S4 class, {\tt frab} for which a variety of
+The package uses a single S4 class, {\tt frab}, for which a variety of
 methods is defined.  There are several ways to create {\tt frab}
 objects, but the most straightforward is to coerce a named vector
 using the {\tt frab()} function:
@@ -250,10 +262,144 @@ position.
 
 \section{Named vectors in R}
 
-Objects of the {\tt frab} class bears some resemblance to named
-vectors.  However, there are some profound differences.  Consider the
-following:
+A {\em named vector} is a vector with a names attribute; they are a
+convenient and useful feature of the R programming language (R Core
+Team 2022).  Each element of a named vector is associated with a name
+or label.  Objects of the {\tt frab} class bears some resemblance to
+named vectors.  However, there are some profound differences:
 
+\subsection{Uniqueness of names}
+
+The names of a named vector are not necessarily unique, unlike those
+of a {\tt frab} object.  This has consequences for extraction and
+replacement operations.  Consider the following:
+
+\begin{minipage}[t]{0.49\textwidth}
+<<label=namedvectorwithrepeatsextract>>=
+(x <- c(a=7,b=4,a=3))
+x["a"]
+@
+\end{minipage}
+\hfill
+\vrule
+\hfill
+\begin{minipage}[t]{0.49\textwidth}
+\vspace{-\baselineskip}
+\color{violet}
+\begin{itemize}
+\item Object {\tt x} is a named vector with three elements.  Both the
+first and the third element are named {\tt "a"}.
+\item This is perfectly OK.
+\item Extracting element {\tt "a"} returns the {\em first} element
+with this name (Technically, it returns a named numeric vector of
+length 1).
+\end{itemize}
+\color{black}
+\end{minipage}
+
+(we note in passing that double square bracket extraction, as in {\tt
+x[["a"]]}, returns the value of the first element with name {\tt a}.
+
+\subsubsection{Replacement methods for named vectors}
+
+Replacement methods for named vectors is also somewhat problematic:
+
+\begin{minipage}[t]{0.49\textwidth}
+<<label=namedvectorwithrepeatsreplace>>=
+(x <- c(b=7,a=4,b=3,c=5))
+x["a"] <- 100
+x
+@
+\end{minipage}
+\hfill
+\vrule
+\hfill
+\begin{minipage}[t]{0.49\textwidth}
+\vspace{-\baselineskip}
+\color{violet}
+\begin{itemize}
+\item Object {\tt x} is a named vector with four elements.  Both the
+first and the third element are named {\tt "a"}.
+\item Replacing the element {\tt "a"} with 100 behaves as expected:
+the element with name {\tt "a"} is returned.
+\end{itemize}
+\color{black}
+\end{minipage}
+
+
+This might lead one to believe that replacement of multiple elements
+would behave as expected.  But:
+
+\begin{minipage}[t]{0.49\textwidth}
+<<label=namedvectorwithrepeatsreplace2>>=
+x <- c(b=7,a=4,b=3,c=5)
+x["b"] <- c(100,101)
+x
+@
+\end{minipage}
+\hfill
+\vrule
+\hfill
+\begin{minipage}[t]{0.49\textwidth}
+\vspace{-\baselineskip}
+\color{violet}
+\begin{itemize}
+\item Object {\tt x} is as before.
+\item Replacing the elements (putatively) indexed with {\tt "b"} [of
+which there are two] with {\tt c(100,101)} results in only one element
+being replaced.
+\end{itemize}
+\color{black}
+\end{minipage}
+
+
+We may also replace elements with multiple names:
+
+\begin{minipage}[t]{0.49\textwidth}
+<<label=namedvectorwithrepeatsreplace2>>=
+x <- c(a=7, b=4, a=3, c=5)
+x[c("a","c")] <- c(100,101)
+x
+@
+\end{minipage}
+\hfill
+\vrule
+\hfill
+\begin{minipage}[t]{0.49\textwidth}
+\vspace{-\baselineskip}
+\color{violet}
+\begin{itemize}
+\item Object {\tt x} is as before.
+\item Replacing the elements (putatively) indexed with {\tt
+c("a","c")} with {\tt c(100,101)} replaces the first of the {\tt "a"}
+elements, and the {\tt "c"} element, with the replacement value.
+\end{itemize}
+\color{black}
+\end{minipage}
+
+
+It allows
+you to assign a name to each element, making it easier to refer to
+specific values within the vector using their respective names.
+
+
+
+
+
+
+Named vectors are a convenient and useful feature of the R programming language (R Core Team 2022). However, given the following two named vectors:
+
+x <- c(a=1,b=2,c=3)
+y <- c(c=4,b=1,a=1)
+Given that x+y returns a named vector, there are at least two plausible values that it might give, viz:
+
+c(a=5,b=3,c=4)
+
+or
+
+c(a=2,b=3,c=7).
+
+In the first case the elements of x and y are added pairwise, and the names attribute is taken from the first of the addends. In the second, the names are considered to be primary and the value of each name in the sum is the sum of the values of that name of the addends. Note further that there is no good reason why the first answer could not be c(c=5,b=3,a=4), obtained by using the names attribute of y instead of x.
 <<label=namedvector>>=
 (a <- c(x=6,t=6,a=3))
 @
