@@ -1,0 +1,24 @@
+To create frab_arxiv.pdf, first  use Sweave:
+
+R CMD Sweave frab_arxiv.Rnw
+
+this will create frab_arxiv.tex
+
+To process this with latex, you will need various auxiliary files such
+as arxiv.sty and orcid.pdf.  These are not under version control, you
+will have to find these on the web.  File frab.png (the hex sticker)
+is in the man/figures directory.  Copy these files to this directory,
+inst/
+
+There are two distinct versions of frab.bib, which use slightly
+different markup.
+
+
+Then to create frab_arxiv.pdf:
+
+pdflatex frab_arxiv
+bibtex   frab_arxiv
+pdflatex frab_arxiv
+pdflatex frab_arxiv
+
+should work.
