@@ -158,6 +158,38 @@ test_that("Test suite aaa.R",{
   expect_false(is.namedlogical(jj>2))
   expect_true(is.unnamedlogical(jj>2))
 
+  x <- frab(c(b=6,a=3,y=8))
+  expect_error(values(x) <- 1:3)
+  values(x) <- 3
+  expect_true(x == frab(c(a=3,b=3,y=3)))
 
+  x <- frab(c(b=6,a=3,y=8))
+  values(x) <- values(x)^2
+  expect_true(x == frab(c(a=9,b=36,y=64)))
   
+  x <- frab(c(b=6,a=3,y=8))
+  expect_error(values(x) <- disord(letters[1:3]))
+
+
+  x <- frab(c(b=6,a=3,y=8))
+  names(x) <- toupper(names(x))
+  expect_true(x == frab(c(Y=8 , B=6 , A=3)))
+
+  expect_error(names(x) <- "o")
+  expect_error(names(x) <- letters)
+
+  x <- frab(c(u=9))
+  names(x) <- "foo"
+  expect_true(x == frab(c(foo=9)))
+
+  x <- frab(c(a=6,b=3,c=2))
+  y <- frab(c(b=1,c=5,x=3,yy=8))
+  expect_true(y*x == frab(c(b=3,c=10)))
+  x <- frab(c(a=6,b=3,c=2))
+  y <- frab(c(b=1,c=5,x=3,yy=8))
+  expect_true(x*y == frab(c(b=3,c=10)))
+  expect_true(x*y == y*x)
+
+
+
 })

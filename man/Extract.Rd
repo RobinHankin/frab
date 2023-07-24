@@ -5,6 +5,10 @@
 \alias{values<-}
 \alias{values<-,frab,numeric-method}
 \alias{values<-,frab,disord-method}
+\alias{names}
+\alias{names,frab-method}
+\alias{names<-,frab,disord-method}
+\alias{names<-,frab,character-method}
 \alias{[}
 \alias{[.frab}
 \alias{[,frab-method}
@@ -80,6 +84,9 @@ x <- rfrabb()
 v <-  values(x)
 v[v<0] <- abs(v[v<0]) + 50
 values(x) <- v
+
+names(x) <- toupper(names(x))
+x
 
 }
 

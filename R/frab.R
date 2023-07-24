@@ -8,6 +8,19 @@ setMethod("names","frab",
               return(disord(names(x@x),h=hashcal(x@x)))
           } )
 
+setReplaceMethod("names",signature(x="frab",value="disord"),
+                 function(x,value){
+                     v <- values(x)
+                     stopifnot(consistent(v,value))
+                     frab(setNames(elements(v),elements(value)))
+                 } )
+
+setReplaceMethod("names",signature(x="frab",value="character"),
+                 function(x,value){
+                     stopifnot(length(x)==1)
+                     frab(setNames(values(x),value))
+                 } )
+
 setGeneric("values",function(x){standardGeneric("values")})
 setMethod("values","frab",
           function(x){

@@ -13,11 +13,13 @@
 \alias{frab_negative}
 \alias{frab_reciprocal}
 \alias{frab_plus_frab}
+\alias{frab_multiply_frab}
 \alias{frab_unary}
 \alias{frab_arith_frab}
 \alias{frab_arith_numeric}
 \alias{numeric_arith_frab}
 \alias{c_frab_add}
+\alias{c_frab_multiply}
 \alias{c_frab_eq}
 \alias{c_frab_pmax}
 \alias{c_frab_identity}

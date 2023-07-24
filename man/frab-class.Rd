@@ -1,9 +1,7 @@
 \name{frab-class}
 \docType{class}
 \alias{frab-class}
-\alias{names}
 \alias{namedvector}
-\alias{names,frab-method}
 \alias{namedvector,frab-method}
 \title{Class \dQuote{frab}}
 \description{The formal \proglang{S4} class for frab objects}
@@ -15,7 +13,6 @@
   and \code{namedvector()}. 
 }
 \usage{
-\S4method{names}{frab}(x)
 \S4method{namedvector}{frab}(x)
 }
 \arguments{\item{x}{Object of class \code{frab}}}
