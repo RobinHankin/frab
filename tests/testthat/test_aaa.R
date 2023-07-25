@@ -190,6 +190,12 @@ test_that("Test suite aaa.R",{
   expect_true(x*y == frab(c(b=3,c=10)))
   expect_true(x*y == y*x)
 
-
+  x1 <- frab(c(b=6,a=3,y=8))
+  x2 <- frab(c(a=6,b=3,c=2))
+  x3 <- frab(c(b=1,c=5,x=3,yy=8))
+  x4 <- frab(c(yy=-3,a=5,c=3))
+  expect_true(pmax(x1,x2,x3,x4) == frab(c(a=6,b=6,c=5,x=3,y=8,yy=8)))
+  expect_true(pmin(x1,x2,x3,x4) == frab(c(yy=-3)))
+  
 
 })

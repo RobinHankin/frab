@@ -342,7 +342,7 @@ setGeneric("pmin",function(...){standardGeneric("pmin")})
     } else if(nargs()<3){
     return(pmax_pair(x, ...))
   } else {
-    return(pmax_pair(x, pmax_pair(...)))
+    return(pmax_pair(x, pmax_dots(...)))
   }
 }
 
@@ -352,7 +352,7 @@ setGeneric("pmin",function(...){standardGeneric("pmin")})
   } else if(nargs()<3){
     return(pmin_pair(x, ...))
   } else {
-    return(pmin_pair(x, pmin_pair(...)))
+    return(pmin_pair(x, pmin_dots(...)))
   }
 }
 
