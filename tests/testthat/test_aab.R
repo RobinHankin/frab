@@ -27,6 +27,9 @@ checker1 <- function(A){
   expect_true(pmax(A)==A)
   expect_true(pmin(A)==A)
 
+  expect_true(pmax(A,A) == A)
+  expect_true(pmin(A,A) == A)
+
 }   # checker1() closes
   
 checker2 <- function(A,B){
