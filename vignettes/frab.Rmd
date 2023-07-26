@@ -24,10 +24,10 @@ set.seed(1)
 **TLDR**: Adding two objects of class `table` has a natural
 interpretation.  However, in base R, adding two tables can give
 plausible but incorrect results.  The `frab` package provides a
-consistent and efficient way to add `table` objects.  The underlying
+consistent and efficient way to add `table` objects, subject to
+`disordR` discipline [@hankin2022_disordR].  The underlying
 mathematical structure is the Free Abelian group, hence "`frab`".  To
-cite in publications, please use [@hankin2023_frab] and
-[@hankin2022_disordR].
+cite in publications, please use [@hankin2023_frab].
 
 # Prologue: `table()`
 
