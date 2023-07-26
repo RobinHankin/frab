@@ -25,7 +25,9 @@ The `frab` package furnishes an alternative interpretation of named
 vectors wherein addition is defined using the (unique) names as the
 primary key.  This allows one to "add" tables in a consistent and
 meaningful way.  The underlying mathematical object is the Free
-Abelian group.
+Abelian group.  To cite in publications please use R. K. S. Hankin
+2023.  "The free Abelian group in R: the frab package", arXiv,
+https://arxiv.org/abs/2307.13184.
 
 # The package in use
 
