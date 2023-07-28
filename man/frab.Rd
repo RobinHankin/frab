@@ -31,9 +31,15 @@ dispatches to \code{list_to_frab()}.  If given a table it dispatches to
 \author{Robin K. S. Hankin}
 \seealso{\code{\link{frab-class}}}
 \examples{
+
+frab(c(x=6,y=6,z=-4,u=0,x=3))
+
 as.frab(c(a=2,b=1,c=77))
 
 as.frab(list(names=letters[5:2],values=1:4))
 
+x <- rfrab()
+y <- rfrab()
+x+y
 
 }
