@@ -23,7 +23,7 @@
 \alias{c_frab_eq}
 \alias{c_frab_pmax}
 \alias{c_frab_identity}
-\title{Extraction and replacement methods for class \code{"frab"}}
+\title{Arithmetic methods for class \code{"frab"}}
 \description{
 
   The \code{frab} class provides basic arithmetic methods for frab
