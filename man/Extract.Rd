@@ -29,8 +29,10 @@
 \alias{[<-,frab,ANY,ANY,ANY-method}
 \alias{[<-,frab,character,missing-method}
 \alias{[<-,frab,character,missing,numeric-method}
+\alias{[<-,frab,character,missing,logical-method}
 \alias{[<-,frab,disord,missing-method}
 \alias{[<-,frab,disord,missing,frab-method}
+\alias{[<-,frab,disord,missing,logical-method}
 \alias{[<-,frab,disord,missing,numeric-method}
 \alias{[<-,frab,disindex,missing,numeric,ANY-method}
 \alias{[<-,frab,disindex,missing,numeric-method}
@@ -55,14 +57,20 @@
 	"missing", value = "ANY")}: \code{x["a"] <- 3}}
     \item{[<-}{\code{signature(x = "frab", i = "disord", j = "missing",
 	value="frab")}: \code{x[x<0] <- -x[x<0]}; not implemented}
+    \item{[<-}{\code{signature(x = "frab", i = "disord", j = "missing",
+	value="logical")}: \code{x[x<0] <- NA}}
     \item{[<-}{\code{signature(x = "frab", i = "ANY",j = "ANY", value =
 	"ANY")}: not implemented}
     \item{[<-}{\code{signature(x = "frab", i = "disindex",j = "missing",
 	value = "numeric")}: \code{x[x>0] <- 3}}
+    \item{[<-}{\code{signature(x = "frab", i = "character", j =
+	"missing", value = "logical")}: \code{x["c"] <- NA}}
 }
 
  Double square extraction, as in \code{x[[i]]} and \code{x[[i]] <-
-  value}, is not currently defined.
+ value}, is not currently defined.  In replacement methods, if
+ \code{value} is logical it is coerced to numeric (this includes
+ \code{NA}).
   
 }
 \author{Robin K. S. Hankin}
