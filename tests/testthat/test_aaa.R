@@ -197,5 +197,19 @@ test_that("Test suite aaa.R",{
   expect_true(pmax(x1,x2,x3,x4) == frab(c(a=6,b=6,c=5,x=3,y=8,yy=8)))
   expect_true(pmin(x1,x2,x3,x4) == frab(c(yy=-3)))
   
+  x <- frab(c(a=1,b=-4,c=2,d=5,e=6,f=-9))
+  x["b"] <- NA
+  x[is.na(x)] <- 33
+  expect_true(x == frab(c(a=1,b=33,c=2,d=5,e=6,f=-9)))
+
+  x <- frab(c(a=1,b=-4,c=2,d=5,e=6,f=-9))
+  x[c("b","e")] <- NA
+  x[is.na(x)] <- 34
+  expect_true(x == frab(c(a=1,b=34,c=2,d=5,e=34,f=-9)))
+
+  x <- frab(c(a=1,b=-4,c=2,d=5,e=6,f=-9))
+  x[x<0] <- NA
+  x[is.na(x)] <- 35
+  expect_true(x == frab(c(a=1,b=35,c=2,d=5,e=6,f=35)))
 
 })

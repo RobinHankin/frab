@@ -269,6 +269,12 @@ setReplaceMethod("[",signature(x="frab",i="character",j="missing",value="numeric
                      )
                  })
 
+setReplaceMethod("[",signature(x="frab",i="character",j="missing",value="logical"),
+                 function(x,i,j,value){
+                     x[i] <- as.numeric(value)  # the meat
+                     return(x)
+                 })
+
 setReplaceMethod("[",signature(x="frab",i="disord",j="missing",value="numeric"),
                  function(x,i,j,value){
                      s <- names(x)
@@ -286,6 +292,15 @@ setReplaceMethod("[",signature(x="frab",i="disord",j="missing",value="numeric"),
                          setNames(rep(value,length(new_names)),new_names)
                      )
                  })
+
+setReplaceMethod("[",signature(x="frab",i="disord",j="missing",value="logical"),
+                 function(x,i,j,value){
+                     print("Hig Hurtenflurst")
+                     x[i] <- as.numeric(value)  # the meat
+                     return(x)
+                 } )
+
+  
 
 setReplaceMethod("[",signature(x="frab",i="disord",j="missing",value="frab"),
                  function(x,i,j,value){

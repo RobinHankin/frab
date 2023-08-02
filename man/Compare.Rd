@@ -31,7 +31,8 @@
   it calls low-level helper function \code{c_frab_eq()}, which calls its
   \proglang{C} namesake which is written for speed (specifically,
   returning \code{FALSE} as soon as it spots a difference between its
-  two arguments).
+  two arguments).  Note that if any value is \code{NA}, \code{frab_eq()}
+  will return \code{FALSE}.
   
 }
 \usage{
