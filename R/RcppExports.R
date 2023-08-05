@@ -21,3 +21,43 @@ c_frab_eq <- function(names1, values1, names2, values2) {
     .Call(`_frab_c_frab_eq`, names1, values1, names2, values2)
 }
 
+sparsetable_maker <- function(M, d) {
+    .Call(`_frab_sparsetable_maker`, M, d)
+}
+
+sparsetable_add <- function(M1, d1, M2, d2) {
+    .Call(`_frab_sparsetable_add`, M1, d1, M2, d2)
+}
+
+sparsetable_overwrite <- function(M1, d1, M2, d2) {
+    .Call(`_frab_sparsetable_overwrite`, M1, d1, M2, d2)
+}
+
+sparsetable_accessor <- function(M, d, Mindex) {
+    .Call(`_frab_sparsetable_accessor`, M, d, Mindex)
+}
+
+sparsetable_setter <- function(M1, d1, M2, d2) {
+    .Call(`_frab_sparsetable_setter`, M1, d1, M2, d2)
+}
+
+sparsetable_equality <- function(M1, d1, M2, d2) {
+    .Call(`_frab_sparsetable_equality`, M1, d1, M2, d2)
+}
+
+sparsetable_asum_include <- function(M, d, n) {
+    .Call(`_frab_sparsetable_asum_include`, M, d, n)
+}
+
+sparsetable_asum_exclude <- function(M, d, n) {
+    .Call(`_frab_sparsetable_asum_exclude`, M, d, n)
+}
+
+sparsetable_pmax <- function(M1, d1, M2, d2) {
+    .Call(`_frab_sparsetable_pmax`, M1, d1, M2, d2)
+}
+
+sparsetable_pmin <- function(M1, d1, M2, d2) {
+    .Call(`_frab_sparsetable_pmin`, M1, d1, M2, d2)
+}
+
