@@ -32,11 +32,15 @@ setValidity("sparsetable",function(object){
 
 setGeneric("is.empty",function(x){standardGeneric("is.empty")})
 setMethod("is.empty","sparsetable",function(x){nrow(index(x))==0})
+setGeneric("arity",function(x){standardGeneric("arity")})
+setMethod("arity","sparsetable",function(x){ncol(index(x))})
 
 setMethod("show", "sparsetable", function(object){print_sparsetable_matrixform(object)})
 `print_sparsetable_matrixform` <- function(S){
     if(is.empty(S)){
         cat(paste('empty sparsetable with ', arity(S), ' columns\n',sep=""))
+    } else if(arity(S)==2){
+        print(sparsetable_to_table(S))
     } else {
         jj <-
             data.frame(index(S),symbol= " = ", val=round(elements(values(S)),getOption("digits")))
@@ -51,11 +55,43 @@ setMethod("show", "sparsetable", function(object){print_sparsetable_matrixform(o
     return(invisible(S))
 }
 
-sparsetable <- function(i,v){
-    jj <- sparsetable_maker(i,v)
-    new("sparsetable",index=jj$index,values=jj$value)}
+`sparsetable_to_table` <- function(x){
+    stopifnot(arity(x)==2)
+    rows <- factor(index(x)[,1])
+    cols <- factor(index(x)[,2])
+    rowlabs <- levels(rows)
+    collabs <- levels(cols)
+    M <- matrix(0,length(rowlabs),length(collabs))
+    M[cbind(c(unclass(rows)),c(unclass(cols)))] <- values(x)
+    rownames(M) <- levels(rows)
+    colnames(M) <- levels(cols)
+    return(as.table(M))
+}
 
-sparsetable_negative <- function(S){
+`table_to_sparsetable` <- function(M){
+    rows <- rownames(M)
+    cols <- colnames(M)
+    wanted <- M != 0
+    ind <-which(wanted, arr.ind=TRUE)
+    sparsetable(cbind(rows[ind[,1]],cols[ind[,2]]),M[wanted])
+}
+
+`sparsetable` <- function(i,v){
+    jj <- sparsetable_maker(i,v)
+    new("sparsetable",index=jj$index,values=jj$value)} # This is the only time new("sparsetable",...) is called
+
+`is.sparsetable` <- function(x){inherits(x,"sparsetable")}
+`as.sparsetable` <- function(x){
+    if(is.sparsetable(x)){
+        return(x)
+    } else if(is.list(x)){
+        return(sparsetable(x$index,x$value))
+    } else if(is.table(x)){
+        return(table_to_sparsetable(x))
+    }
+}
+
+`sparsetable_negative` <- function(S){
     if(is.zero(S)){
         return(S)
     } else {
@@ -65,23 +101,8 @@ sparsetable_negative <- function(S){
 
 `sparsetable_times_scalar` <- function(S,x){
     stopifnot(length(x)==1)
-    return(sparsetable(sparsetable(index(S), x*coeffs(S)),arity=arity(S)))
+    return(sparsetable(index(S), x*values(S)),arity=arity(S))
 }
-
-sparsetable_plus_sparsetable <- function(S1,S2){
-  stopifnot(arity(S1)==arity(S2))
-  if(is.zero(S1)){
-        return(S2)
-    } else if(is.zero(S2)){
-        return(S1)
-      }
-
-    return(sparsetablemaker(sparsetable_add(
-    index(S1),coeffs(S1),
-    index(S2),coeffs(S2)
-        ),arity=arity(S1)))
-}
-
 
 `sparsetable_eq_sparsetable` <- function(S1,S2){
     if(arity(S1) != arity(S2)){
@@ -92,4 +113,136 @@ sparsetable_plus_sparsetable <- function(S1,S2){
         return(sparsetable_equality(index(S1),coeffs(S1),index(S2),coeffs(S2)))
     }
 }
+
+`rspar` <- function(n=15,p=3,d=3){sparsetable(matrix(letters[sample(seq_len(p),n*d,replace=TRUE)],n,d),seq_len(n))}
+
+`rspar2` <- function(n=15,p=6){
+    sparsetable(as.matrix(data.frame(
+        sample(letters  [sample(seq_len(p),n,replace=TRUE)]),
+        sample(LETTERS[sample(seq_len(p),n,replace=TRUE)]))),
+        seq_len(n))
+}
+
+`rsparrr` <- function(n=15,p=3){
+    sparsetable(as.matrix(data.frame(
+        sample(letters  [sample(seq_len(n),p,replace=TRUE)]),
+        sample(LETTERS  [sample(seq_len(n),p,replace=TRUE)]),
+        sample(letters[sample(seq_len(n),p,replace=TRUE)]))),
+        seq_len(n))
+}
+
+`sparsetable_negative` <- function(x){sparsetable(index(x), -values(x))}
+`sparsetable_reciprocal` <- function(x){stop("inverse not implemented")}
+`sparsetable_plus_sparsetable` <- function(F1,F2){
+    as.sparsetable(
+        sparsetable_add(
+            index(F1),values(F1),
+            index(F2),values(F2)
+        ))
+}
+
+`sparsetable_multiply_sparsetable` <- function(F1,F2){
+    stop("multiplication not implemented")
+}
+
+`sparsetable_multiply_numeric` <- function(e1,e2){sparsetable(index(e1),values(e1)*e2)}
+`sparsetable_power_numeric`    <- function(e1,e2){stop("sparsetable power not implemented")}
+`numeric_multiply_sparsetable` <- function(e1,e2){stop("sparstable multiply not implemented")}
+`numeric_power_sparsetable`    <- function(e1,e2){stop("sparsetable power not implemented")}
+
+`sparsetable_unary` <- function(e1,e2){
+  switch(.Generic,
+         "+" = e1,
+         "-" = sparsetable_negative(e1),
+         stop(gettextf("unary operator %s not implemented on sparsetables", dQuote(.Generic)))
+         )
+}
+
+`sparsetable_arith_sparsetable` <- function(e1,e2){
+  e1 <- as.sparsetable(e1)
+  e2 <- as.sparsetable(e2)
+  switch(.Generic,
+         "+" = sparsetable_plus_sparsetable(e1, e2),
+         "-" = sparsetable_plus_sparsetable(e1, sparsetable_negative(e2)),
+         "*" = sparsetable_multiply_sparsetable(e1, e2),
+         stop(gettextf("binary operator %s not implemented on sparsetables", dQuote(.Generic)))
+         ) }
+
+`sparsetable_arith_numeric` <- function(e1,e2){ # e1 sparsetable, e2 numeric; e2 might be a named vector.
+  switch(.Generic,
+         "+" = sparsetable_plus_sparsetable(e1, as.sparsetable(e2)),
+         "-" = sparsetable_plus_sparsetable(e1, sparsetable_negative(as.sparsetable(e2))),
+         "*" = sparsetable_multiply_numeric(e1,e2),
+         "/" = sparsetable_multiply_numeric(e1,1/e2),
+         "^" = sparsetable_power_numeric(e1,e2),
+         stop(gettextf("binary operator %s not implemented on sparsetables", dQuote(.Generic)))
+         ) }
+
+`numeric_arith_sparsetable` <- function(e1,e2){ # e1 numeric, e2 sparsetable; e2 _might_ be a named vector.
+  switch(.Generic,
+         "+" = sparsetable_plus_sparsetable(as.sparsetable(e1),  e2),
+         "-" = sparsetable_plus_sparsetable(as.sparsetable(e1), -e2),
+         "*" = numeric_multiply_sparsetable(e1,e2), 
+         "/" = numeric_multiply_sparsetable(e1,sparsetable_reciprocal(e2)), 
+         "^" = numeric_power_sparsetable(e1,e2),
+         stop(gettextf("binary operator %s not implemented on sparsetables", dQuote(.Generic)))
+         ) }
+
+
+`sparsetable_eq` <- function(e1,e2){
+  sparsetable_equality(elements(names(e1)), elements(values(e1)),
+            elements(names(e2)), elements(values(e2)))
+}
+
+
+`sparsetable_compare_sparsetable` <- function(e1,e2){
+  switch(.Generic,
+         "==" =  sparsetable_eq(e1, e2),
+         "!=" = !sparsetable_eq(e1, e2),
+         stop(gettextf("comparison '%s' not for sparsetables", dQuote(.Generic)))
+         )
+}
+
+`sparsetable_eq_num` <- function(e1,e2){values(e1) == e2}
+`sparsetable_gt_num` <- function(e1,e2){values(e1) >  e2}
+`sparsetable_ge_num` <- function(e1,e2){values(e1) >= e2}
+`sparsetable_lt_num` <- function(e1,e2){values(e1) <  e2}
+`sparsetable_le_num` <- function(e1,e2){values(e1) <= e2}
+
+`sparsetable_compare_numeric` <- function(e1,e2){  # rsparsetable() > 3
+  switch(.Generic,
+         "==" = sparsetable_eq_num(e1, e2),
+         ">"  = sparsetable_gt_num(e1, e2),
+         ">=" = sparsetable_ge_num(e1, e2),
+         "<"  = sparsetable_lt_num(e1, e2),
+         "<=" = sparsetable_le_num(e1, e2),
+         stop(gettextf("Comparison operator %s not implemented in this case", dQuote(.Generic)))
+         ) }
+
+`num_eq_sparsetable` <- function(e1,e2){e1 == values(e2)}
+`num_gt_sparsetable` <- function(e1,e2){e1 >  values(e2)}
+`num_ge_sparsetable` <- function(e1,e2){e1 >= values(e2)}
+`num_lt_sparsetable` <- function(e1,e2){e1 <  values(e2)}
+`num_le_sparsetable` <- function(e1,e2){e1 <= values(e2)}
+
+`numeric_compare_sparsetable` <- function(e1,e2){  # 4 <= rsparsetable()
+  switch(.Generic,
+         "==" = num_eq_sparsetable(e1, e2),
+         ">"  = num_gt_sparsetable(e1, e2),
+         ">=" = num_ge_sparsetable(e1, e2),
+         "<"  = num_lt_sparsetable(e1, e2),
+         "<=" = num_le_sparsetable(e1, e2),
+         stop(gettextf("Comparison operator %s not implemented in this case", dQuote(.Generic)))
+         ) }
+
+setMethod("Arith"  , signature(e1="sparsetable"   , e2="missing"), sparsetable_unary        )
+setMethod("Arith"  , signature(e1="sparsetable"   , e2="sparsetable"   ), sparsetable_arith_sparsetable   )
+setMethod("Arith"  , signature(e1="sparsetable"   , e2="numeric"), sparsetable_arith_numeric)
+setMethod("Arith"  , signature(e1="numeric", e2="sparsetable"   ), numeric_arith_sparsetable)
+setMethod("Arith"  , signature(e1="ANY"    , e2="sparsetable"   ), sparsetable_arith_sparsetable   )
+setMethod("Arith"  , signature(e1="sparsetable"   , e2="ANY"   ), sparsetable_arith_sparsetable    )
+
+setMethod("Compare", signature(e1="sparsetable"    , e2="sparsetable"   ),    sparsetable_compare_sparsetable   )
+setMethod("Compare", signature(e1="sparsetable"    , e2="numeric"),    sparsetable_compare_numeric)
+setMethod("Compare", signature(e1="numeric" , e2="sparsetable"   ), numeric_compare_sparsetable   )
 
