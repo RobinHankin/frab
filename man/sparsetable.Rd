@@ -60,6 +60,8 @@
 \alias{num_ge_sparsetable}
 \alias{num_lt_sparsetable}
 \alias{num_le_sparsetable}
+\alias{drop}
+\alias{drop,sparsetable-method}
 \alias{[,sparsetable-method}
 \alias{[,sparsetable,ANY,ANY,ANY-method}
 \alias{[<-,sparsetable-method}
@@ -71,7 +73,18 @@
 
 Most functions here mirror their equivalent in the \CRANpkg{spray}
 package [which the \proglang{C} code is largely copied from] or the
-\code{frab} functionality.
+\code{frab} functionality.  So, for example, \code{num_eq_sparsetable()}
+is the equivalent of \code{num_eq_spray()}.
+
+The print method coerces \code{sparsetable} objects to two-dimensional
+tables.
+
+Functions\code{rspar()}, \code{rspar2()}, and \code{rsparrr()} create
+random \code{sparsetable} objects of increasing complexity.
+}
+\note{
+  The pronunciation of \dQuote{sparsetable} has the emphasis on the
+  first syllable, so it rhymes with \dQuote{vegetable}.
 }
 \author{Robin K. S. Hankin}
 \seealso{\code{\link{frab-class}}}
