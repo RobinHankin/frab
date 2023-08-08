@@ -1,16 +1,17 @@
 Package: frab
 Type: Package
-Title: An Alternative Interpretation of Named Vectors
+Title: How to Add Two Tables
 Version: 0.0-1
 Authors@R: person(given=c("Robin", "K. S."), family="Hankin", role = c("aut","cre"), email="hankin.robin@gmail.com", comment = c(ORCID = "0000-0001-5982-0415"))
 Maintainer: Robin K. S. Hankin <hankin.robin@gmail.com>
-Description: An alternative interpretation of named vectors as
-     generalized tables, so that c(a=1,b=2,c=3) + c(b=3,a=-1) will
-     return c(b=5,c=3).  Uses 'disordR' discipline (Hankin, 2022,
-     <arxiv:2210.03856>).  Extraction and replacement
-     methods are provided.  The underlying mathematical structure is
-     the Free Abelian group, hence the name.  To cite in publications
-     please use Hankin (2023) <arxiv:2307:13184>. 
+Description: Methods to "add" two tables; also an alternative
+     interpretation of named vectors as generalized tables, so that
+     c(a=1,b=2,c=3) + c(b=3,a=-1) will return c(b=5,c=3).  Uses
+     'disordR' discipline (Hankin, 2022, <arxiv:2210.03856>).
+     Extraction and replacement methods are provided.  The underlying
+     mathematical structure is the Free Abelian group, hence the name.
+     To cite in publications please use Hankin (2023)
+     <arxiv:2307:13184>.
 License: GPL (>= 2)
 Depends: R (>= 3.5.0)
 Suggests: knitr, markdown, rmarkdown, testthat
