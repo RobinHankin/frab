@@ -9,3 +9,6 @@
 - new arxiv preprint
 - new draft vignette in inst/
 
+# frab 0.0-3
+
+- sparsetable functionality

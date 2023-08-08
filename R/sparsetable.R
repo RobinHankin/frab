@@ -17,6 +17,8 @@ setMethod("names","sparsetable",
           } )
 
 setMethod("dimnames","sparsetable",function(x){dimnames(index(x))})
+setGeneric("nterms",function(x){standardGeneric("nterms")})
+setMethod("nterms","sparsetable",function(x){nrow(index(x))})
 
 setValidity("sparsetable",function(object){
     i <- index(object)
@@ -110,7 +112,7 @@ setMethod("show", "sparsetable", function(object){print_sparsetable_matrixform(o
     } else if(nterms(S1) != nterms(S2)){
         return(FALSE)
     } else {
-        return(sparsetable_equality(index(S1),coeffs(S1),index(S2),coeffs(S2)))
+        return(sparsetable_equality(index(S1),values(S1),index(S2),values(S2)))
     }
 }
 
@@ -118,8 +120,8 @@ setMethod("show", "sparsetable", function(object){print_sparsetable_matrixform(o
 
 `rspar2` <- function(n=15,p=6){
     sparsetable(as.matrix(data.frame(
-        sample(letters  [sample(seq_len(p),n,replace=TRUE)]),
-        sample(LETTERS[sample(seq_len(p),n,replace=TRUE)]))),
+        letters[sample(seq_len(p),n,replace=TRUE)],
+        LETTERS[sample(seq_len(p),n,replace=TRUE)])),
         seq_len(n))
 }
 
@@ -246,3 +248,43 @@ setMethod("Compare", signature(e1="sparsetable"    , e2="sparsetable"   ),    sp
 setMethod("Compare", signature(e1="sparsetable"    , e2="numeric"),    sparsetable_compare_numeric)
 setMethod("Compare", signature(e1="numeric" , e2="sparsetable"   ), numeric_compare_sparsetable   )
 
+setMethod("[",
+          signature("sparsetable"),
+          function(x,i, ...){
+              if(is.matrix(i)){
+                  out <- sparsetable_accessor(index(x),values(x), i)
+              } else {
+                  out <- sparsetable_accessor(index(x),values(x), matrix(c(i,j,unlist(list(...))),nrow=1))
+              }
+              return(out)
+          } )
+
+setReplaceMethod("[",signature(x="sparsetable"),
+                 function(x,i,j,...,value){
+                     if(missing(i)){ # S[] <- something
+                         if(is.sparsetable(value)){
+                             return(
+                                 sparsetable(sparsetable_overwrite(
+                                     index(x    ),values(x    ),
+                                     index(value),values(value))))
+                         } else {
+                             return(sparsetable(index(x),value))
+                         }
+                     }
+                     
+                     if(is.matrix(i)){
+                         M <- i
+                     } else if(is.sparsetable(i)){
+                         M <- index(i)
+                     } else {
+                         M <- as.matrix(expand.grid(c(list(i), list(...))))
+                     }
+                     if(ncol(M) != arity(x)){
+                         stop("incorrect number of dimensions specified")
+                     }
+                     
+                     if(length(value)==1){value <- rep(value,nrow(M))}
+                     stopifnot(length(value)==nrow(M))
+                     return(as.sparsetable(sparsetable_setter(index(x),values(x),M,value)))
+                 }
+                 )

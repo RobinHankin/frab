@@ -11,6 +11,8 @@
 \alias{is.empty,sparsetable-method}
 \alias{arity}
 \alias{arity,sparsetable-method}
+\alias{nterms}
+\alias{nterms,sparsetable-method}
 \alias{show,sparsetable-method}
 \alias{print_sparsetable_matrixform}
 \alias{sparsetable_to_table}
@@ -58,6 +60,10 @@
 \alias{num_ge_sparsetable}
 \alias{num_lt_sparsetable}
 \alias{num_le_sparsetable}
+\alias{[,sparsetable-method}
+\alias{[,sparsetable,ANY,ANY,ANY-method}
+\alias{[<-,sparsetable-method}
+\alias{[<-,sparsetable,ANY,ANY,ANY-method}
 \title{Generalized sparse tables: \code{sparsetable} objects}
 \description{Package idiom for creating and manipulating
   \code{sparsetable} objects}
