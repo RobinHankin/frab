@@ -77,5 +77,8 @@ package [which the \proglang{C} code is largely copied from] or the
 \seealso{\code{\link{frab-class}}}
 \examples{
 
-2+5
+(x <- rspar2())
+(y <- rspar2())
+x + y
+
 }
