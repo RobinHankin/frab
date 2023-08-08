@@ -86,6 +86,8 @@ setMethod("show", "sparsetable", function(object){print_sparsetable_matrixform(o
 `as.sparsetable` <- function(x){
     if(is.sparsetable(x)){
         return(x)
+    } else if(is.frab(x)){
+        return(sparsetable(cbind(names(y)),values(y)))
     } else if(is.list(x)){
         return(sparsetable(x$index,x$value))
     } else if(is.table(x)){
@@ -277,7 +279,8 @@ setReplaceMethod("[",signature(x="sparsetable"),
                      } else if(is.sparsetable(i)){
                          M <- index(i)
                      } else {
-                         M <- as.matrix(expand.grid(c(list(i), list(...))))
+                         if(missing(j)){j <- NULL}
+                         M <- as.matrix(expand.grid(c(list(i), j, list(...))))
                      }
                      if(ncol(M) != arity(x)){
                          stop("incorrect number of dimensions specified")
@@ -288,3 +291,5 @@ setReplaceMethod("[",signature(x="sparsetable"),
                      return(as.sparsetable(sparsetable_setter(index(x),values(x),M,value)))
                  }
                  )
+
+setMethod("drop","sparsetable",function(x){frab(setNames(disordR::elements(values(x)),c(index(x))))})
