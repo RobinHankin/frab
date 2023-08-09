@@ -1,5 +1,5 @@
 ---
-title: "An alternative implementation of named vectors: addition of `table`s with the `frab` package"
+title: "Addition of `table` objects with the `frab` package"
 author: "Robin K. S. Hankin"
 output: html_vignette
 bibliography: frab.bib
@@ -9,11 +9,11 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 options(rmarkdown.html_vignette.check_title = FALSE)
 library("frab")
+library("mvtnorm")
 set.seed(1)
 ```
 
@@ -152,7 +152,48 @@ Above we see the `+` operator is defined between a `frab` and a
 `table`, coercing tables to `frab` objects to give consistent results.
 
 
-Carefully regulated ambiguity
 
+# Two dimensional tables
+
+The ideas above have a natural generalization to two-dimensional tables.
+
+```{r,label=twodeetables}
+(x <- rspar2(9))
+(y <- rspar2(9))
+x+y
+```
+
+Above, note that the resulting sum is automatically resized to
+accommodate both addends, and also that entries with nonzero values in
+both `x` and `y` are correctly summed.
+
+
+## Arbitrary-dimensioned tables
+
+The one- and two- dimensional tables above have somewhat specialized
+print methods and the general case with dimension $\geqslant 3$ uses
+methods similar to those of the `spray` package.  We can generate a
+`sparsetable` object quite easily:
+
+```{r label=threedeetables}
+A <- matrix(0.95,3,3)
+diag(A) <- 1
+x <- round(rmvnorm(300,mean=rep(10,3),sigma=A/7))
+x[] <- letters[x]
+head(x)
+(sx  <- sparsetable(x))
+```
+
+But we can add `sx` to other `sparsetable` objects:
+
+```{r label=showthreedeeadd}
+(sz <- sparsetable(matrix(sample(letters[9:11],12,replace=TRUE),ncol=3),1001:1004))
+```
+
+Then the usual semantics for addition operate:
+
+```{r label=usualsemantics}
+sx + sz
+```
 
 ## References
