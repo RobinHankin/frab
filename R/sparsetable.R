@@ -251,8 +251,9 @@ setMethod("Compare", signature(e1="sparsetable"    , e2="numeric"),    sparsetab
 setMethod("Compare", signature(e1="numeric" , e2="sparsetable"   ), numeric_compare_sparsetable   )
 
 setMethod("[",
-          signature("sparsetable"),
+          signature(x="sparsetable",i="ANY",j="ANY"),
           function(x,i, ...){
+              print("zaphod")
               if(is.matrix(i)){
                   out <- sparsetable_accessor(index(x),values(x), i)
               } else {
@@ -261,7 +262,37 @@ setMethod("[",
               return(out)
           } )
 
-setReplaceMethod("[",signature(x="sparsetable"),
+setMethod("[",signature(x="sparsetable",i="disord",j="missing"),
+          function(x,i){
+              print("colin")
+              sparsetable(index(x)[i,],values(x)[i])  # the meat
+                 } )
+
+setMethod("[",signature(x="sparsetable",i="disindex",j="missing"),
+          function(x,i,j){
+              vx <- frab::values(x)
+              vi <- disordR::values(i)
+              sparsetable(index(x)[vi,], vx[i]) # the meat
+          } )
+
+setReplaceMethod("[",signature(x="sparsetable",i="disord",j="missing",value="numeric"),
+                 function(x,i,j,value){
+                     v <- values(x)
+                     stopifnot(consistent(v,i))
+                     v[i] <- value # the meat
+                     sparsetable(index(x),v)
+                 } )
+
+setReplaceMethod("[",signature(x="sparsetable",i="disindex",j="missing",value="ANY"),
+                 function(x,i,j,...,value){
+                     stopifnot(identical(hash(values(x)),hash(i)))
+                     if(is.disord(value)){stop("replace methods for disindex do not take disords")}
+                     jj <- values(x)
+                     jj[disordR::values(i)] <- value # the meat
+                     return(sparsetable(index(x),jj))
+                 } )
+
+setReplaceMethod("[",signature(x="sparsetable",value="ANY"),
                  function(x,i,j,...,value){
                      if(missing(i)){ # S[] <- something
                          if(is.sparsetable(value)){
