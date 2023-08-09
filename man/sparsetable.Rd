@@ -112,10 +112,14 @@ codes to make it worth maintaining two sets of source code, IMO,
 \seealso{\code{\link{frab-class}}}
 \examples{
 
+sparsetable(matrix(sample(letters[1:4],36,replace=TRUE),ncol=2),1:18)
+sparsetable(matrix(sample(letters[1:4],39,replace=TRUE),ncol=3),1:13)
+
 (x <- rspar2(9))
 (y <- rspar2(9))
 x + y
 
-
+x["KT","FF"] <- 100
+x
 
 }
