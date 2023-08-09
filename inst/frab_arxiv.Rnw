@@ -23,7 +23,7 @@
 \usepackage{tikz-cd}
 \usepackage{xcolor}
 
-\title{The free Abelian group in R: the {\tt frab} package}
+\title{Adding tables with the free Abelian group in R: introducing the {\tt frab} package}
 
 %\date{September 9, 1985}	% Here you can change the date presented in the paper title
 %\date{} 					% Or removing it
@@ -140,6 +140,7 @@ To use the package, it must first be installed and loaded:
 install.packages("frab")
 <<label=loadfrab,eval=TRUE>>=
 library("frab")
+set.seed(0)
 @
 \end{minipage}
 \hfill
@@ -456,6 +457,189 @@ a
 \color{black}
 \end{minipage}
 \vphantom{f}\\[2\baselineskip]
+
+
+
+\section{Higher-dimensional tables}
+
+The ideas above have a natural generalization to multi-dimensional
+tables.  The {\tt frab} package {\tt S4} class is {\tt sparsetable},
+and this has arithmetic methods implemented.  We start with
+three-dimensional tables (two-dimensional {\tt sparstable} objects
+have a print method that coerces them to arrays before displaying, and
+the general case is easier to understand).
+
+\vphantom{f}\\[2\baselineskip]
+\begin{minipage}[t]{0.49\textwidth}
+<<label=threedeeexample>>=
+abcd <- letters[1:4]
+jj <- sample(abcd,99,repl=T,prob=1/(1:4)^2)
+I <- matrix(jj,33,3)
+head(I)
+nrow(I)
+(x <- sparsetable(I))
+@
+\end{minipage}
+\hfill
+\vrule
+\hfill
+\begin{minipage}[t]{0.49\textwidth}
+\vspace{-\baselineskip}
+\color{violet}
+\begin{itemize}
+\item Object {\tt abc} is just {\tt c("a","b","c")}, defined to save
+horizontal space
+\vspace{30mm}
+\item Random matrix {\tt I} has elements a-d
+\item It has 33 rows
+\item Coercing {\tt I} to {\tt sparsetable} object {\tt x} shows the counts
+of each type of row.
+\item Object {\tt x} has 13 rows; not all $4^3=64$ possible row types
+are represented.
+\end{itemize}
+\color{black}
+\end{minipage}
+\vphantom{f}\\[2\baselineskip]
+@
+
+Standard extraction and replacement operations work as expected on {\tt sparsetable} object {\tt x}:
+
+
+\vphantom{f}\\[2\baselineskip]
+\begin{minipage}[t]{0.49\textwidth}
+<<label=standardextraction>>=
+x["a","a","b"]
+x[rbind(c("a","b","b"),c("a","b","c"))]
+@
+\end{minipage}
+\hfill
+\vrule
+\hfill
+\begin{minipage}[t]{0.49\textwidth}
+\vspace{-\baselineskip}
+\color{violet}
+\begin{itemize}
+\item Extraction can operate with the arguments sent separately\ldots
+\vspace{3mm}
+\item Or as a matrix.
+\end{itemize}
+\color{black}
+\end{minipage}
+\vphantom{f}\\[2\baselineskip]
+@
+
+
+However, other more specialised extraction methods are also provided:
+
+\vphantom{f}\\[2\baselineskip]
+\begin{minipage}[t]{0.49\textwidth}
+<<label=disordextraction>>=
+x[x>3]
+@
+\end{minipage}
+\hfill
+\vrule
+\hfill
+\begin{minipage}[t]{0.49\textwidth}
+\vspace{-\baselineskip}
+\color{violet}
+\begin{itemize}
+\item Extraction can operate with a disord object
+\item Here we extract every element greater than 3
+\end{itemize}
+\color{black}
+\end{minipage}
+\vphantom{f}\\[2\baselineskip]
+@
+
+Replacement methods are also defined:
+
+\vphantom{f}\\[2\baselineskip]
+\begin{minipage}[t]{0.49\textwidth}
+<<label=disordreplacement>>=
+x[x==1] <- 0
+x
+@
+\end{minipage}
+\hfill
+\vrule
+\hfill
+\begin{minipage}[t]{0.49\textwidth}
+\vspace{-\baselineskip}
+\color{violet}
+\begin{itemize}
+\item Replacement can operate with a disord object
+\item Here we replace each element equal to 1 with zero
+\item Only elements $>1$ remain
+\end{itemize}
+\color{black}
+\end{minipage}
+\vphantom{f}\\[2\baselineskip]
+@
+
+Replacement methods can add new entries if needed:
+
+\vphantom{f}\\[2\baselineskip]
+\begin{minipage}[t]{0.49\textwidth}
+<<label=disordreplacementnew>>=
+x["a","x","y"] <- 1000
+x
+@
+\end{minipage}
+\hfill
+\vrule
+\hfill
+\begin{minipage}[t]{0.49\textwidth}
+\vspace{-\baselineskip}
+\color{violet}
+\begin{itemize}
+\item The replacement operator can create new entries
+\item Here we create a new entry corresponding to {\tt a x y} with value $1000$
+\item The new entry is placed in its own implementation-specific
+location, as per {\tt disordR} discipline
+\end{itemize}
+\color{black}
+\end{minipage}
+\vphantom{f}\\[2\baselineskip]
+@
+
+
+\section{Two dimensional tables}
+
+If a {\tt sparsetable} object has arity 2, it is coerced to matrix
+form before printing.  Otherwise, the semantics are the same as for
+any other {\tt sparsetable} object.
+
+\vphantom{f}\\[2\baselineskip]
+\begin{minipage}[t]{0.49\textwidth}
+<<label=twodeetables>>=
+(x <- rspar2(9))
+(y <- rspar2(9))
+x+y
+@
+\end{minipage}
+\hfill
+\vrule
+\hfill
+\begin{minipage}[t]{0.49\textwidth}
+\vspace{-\baselineskip}
+\color{violet}
+\begin{itemize}
+\item Function {\tt rspar()} gives a random 2D sparse table
+\vspace{25mm}
+\item {\tt x} and {\tt y} are random  {\tt sparsetable} objects
+\vspace{20mm}
+\item Package idiom allows sparse tables to be added even if the tables are different sizes
+\item The resulting sum is automatically resized to accommodate both
+addends
+\item Entries with nonzero values in both {\tt x} and {\tt y}
+are correctly summed
+\end{itemize}
+\color{black}
+\end{minipage}
+\vphantom{f}\\[2\baselineskip]
+@
+
 
 
 \appendix
