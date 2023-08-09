@@ -41,7 +41,7 @@ setMethod("show", "sparsetable", function(object){print_sparsetable_matrixform(o
 `print_sparsetable_matrixform` <- function(S){
     if(is.empty(S)){
         cat(paste('empty sparsetable with ', arity(S), ' columns\n',sep=""))
-    } else if(arity(S)==2){
+    } else if((arity(S)==2)  && !isFALSE(getOption("print_2dsparsetables_as_matrices"))){
         print(sparsetable_to_table(S))
     } else {
         jj <-

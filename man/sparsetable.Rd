@@ -81,8 +81,20 @@ package [which the \proglang{C} code is largely copied from] or the
 \code{frab} functionality.  So, for example, \code{num_eq_sparsetable()}
 is the equivalent of \code{num_eq_spray()}.
 
-The print method coerces arity-2 \code{sparsetable} objects to
-two-dimensional tables.
+The print method treats arity-2 \code{sparsetable} objects differently
+from other arities.  By default, arity-2 \code{sparsetable} objects are
+displayed as two-dimensional tables.  Control this behaviour with option
+\code{print_2dsparsetables_as_matrices}:
+
+\preformatted{
+  options("print_2dsparsetables_as_matrices" = FALSE)
+}
+
+The default value for this option, non-\code{FALSE} (including its
+out-of-the-box status of \dQuote{unset}), directs the print method to
+coerce arity-2 \code{sparsetable} objects to two-dimensional tables
+before printing.  If this option is \code{FALSE}, arity-2 sparsetables
+are printed using matrix index form, just the same as any other arity.
 
 Functions\code{rspar()}, \code{rspar2()}, and \code{rsparrr()} create
 random \code{sparsetable} objects of increasing complexity.
@@ -100,7 +112,10 @@ objects should also work [e.g. \code{x[x>7]}].
 
 The \CRANpkg{spray} source code and the \code{sparstable} functionality
 hve about 90\% overlap; there were enough small differences between the
-codes to make it worth maintaining two sets of source code, IMO,
+codes to make it worth maintaining two sets of source code, IMO.
+
+There is a discussion of package idiom in the vignette,
+\code{vignette("frab")}.
 
 }
 \note{
