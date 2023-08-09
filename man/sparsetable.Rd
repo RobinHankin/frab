@@ -63,9 +63,14 @@
 \alias{drop}
 \alias{drop,sparsetable-method}
 \alias{[,sparsetable-method}
+\alias{[,sparsetable,disord,missing-method}
+\alias{[,sparsetable,disindex,missing,ANY-method}
+\alias{[,sparsetable,disord,missing,ANY-method}
 \alias{[,sparsetable,ANY,ANY,ANY-method}
 \alias{[<-,sparsetable-method}
 \alias{[<-,sparsetable,ANY,ANY,ANY-method}
+\alias{[<-,sparsetable,disindex,missing,ANY-method}
+\alias{[<-,sparsetable,disord,missing,numeric-method}
 \title{Generalized sparse tables: \code{sparsetable} objects}
 \description{Package idiom for creating and manipulating
   \code{sparsetable} objects}
@@ -81,17 +86,36 @@ tables.
 
 Functions\code{rspar()}, \code{rspar2()}, and \code{rsparrr()} create
 random \code{sparsetable} objects of increasing complexity.
+
+Function \code{drop()} takes a sparsetable object of arity one and
+coerces to a \code{frab} object.
+
+Extraction and replacement methods are a subset of \CRANpkg{spray}
+methods, but most should work.  There is special dispensation so that
+standard idiom for arrays [e.g. \code{x['a','b','a']} and
+\code{x['a','b','a'] <- 55}] work as expected, although the general
+expectation is that access and replacement use (character) matrices and
+an index object.  However, indexing by \code{disord} and \code{disindex}
+objects should also work [e.g. \code{x[x>7]}].
+
+The \CRANpkg{spray} source code and the \code{sparstable} functionality
+hve about 90\% overlap; there were enough small differences between the
+codes to make it worth maintaining two sets of source code, IMO,
+
 }
 \note{
   The pronunciation of \dQuote{sparsetable} has the emphasis on the
-  first syllable, so it rhymes with \dQuote{vegetable}.
+  first syllable, so it rhymes with \dQuote{Barnable} or
+  \dQuote{Barnstaple}.
 }
 \author{Robin K. S. Hankin}
 \seealso{\code{\link{frab-class}}}
 \examples{
 
-(x <- rspar2())
-(y <- rspar2())
+(x <- rspar2(9))
+(y <- rspar2(9))
 x + y
+
+
 
 }
