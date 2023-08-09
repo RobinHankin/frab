@@ -79,6 +79,8 @@ setMethod("show", "sparsetable", function(object){print_sparsetable_matrixform(o
 }
 
 `sparsetable` <- function(i,v){
+    if(length(v)==1){v <- rep(v,nrow(i))}
+    stopifnot(nrow(i) == length(v))
     jj <- sparsetable_maker(i,v)
     new("sparsetable",index=jj$index,values=jj$value)} # This is the only time new("sparsetable",...) is called
 
