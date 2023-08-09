@@ -1,0 +1,42 @@
+---
+title: "That of which we cannot speak, we must remain silent"
+author: "Robin Hankin"
+date: "2023-07-25"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Absent symbols and the `frab` package
+
+I do not really understand what Wittgenstein was trying to say in
+proposition 7 of his _Tractatus_, but the interpretation of symbols
+not present in a `frab` object is certainly an interesting problem.
+Consider the canonical use-case for `frab` objects:
+
+```{r frabaplusb}
+suppressMessages(library("frab"))
+(a <- frab(c(u= -5,v=2,w=1)))
+(b <- frab(c(v=1,x=2)))
+a+b
+```
+
+Above we see that `a` has no `"x"` term, and `b` has `"x"=2`, the sum
+being `"x"=2`; we are justified in asserting that, in object `b`,
+`"x"=0`.  However, consider this:
+
+```{r frabminus2}
+(x <- frab(c(a=4, b=-3, c=1, d=-1, e=9)))
+x[x > -2]
+```
+
+Above we extract every element greater than $-2$.  We might say
+"extract every element from `x` that is _known_ to exceed $-2$".  It
+has not extracted any absent symbols such as `f`, and as such we
+cannot associate `f` with zero (because zero exceeds $-2$, and no `f`
+element was extracted).  But this is not consistent with the `a+b`
+example above, in which absent symbols have the very definite and very
+known value of zero.
+
