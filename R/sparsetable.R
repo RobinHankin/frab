@@ -255,7 +255,6 @@ setMethod("Compare", signature(e1="numeric" , e2="sparsetable"   ), numeric_comp
 setMethod("[",
           signature(x="sparsetable",i="ANY",j="ANY"),
           function(x,i, ...){
-              print("zaphod")
               if(is.matrix(i)){
                   out <- sparsetable_accessor(index(x),values(x), i)
               } else {
@@ -266,7 +265,6 @@ setMethod("[",
 
 setMethod("[",signature(x="sparsetable",i="disord",j="missing"),
           function(x,i){
-              print("colin")
               sparsetable(index(x)[i,],values(x)[i])  # the meat
                  } )
 
