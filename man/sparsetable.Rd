@@ -81,8 +81,8 @@ package [which the \proglang{C} code is largely copied from] or the
 \code{frab} functionality.  So, for example, \code{num_eq_sparsetable()}
 is the equivalent of \code{num_eq_spray()}.
 
-The print method coerces \code{sparsetable} objects to two-dimensional
-tables.
+The print method coerces arity-2 \code{sparsetable} objects to
+two-dimensional tables.
 
 Functions\code{rspar()}, \code{rspar2()}, and \code{rsparrr()} create
 random \code{sparsetable} objects of increasing complexity.
