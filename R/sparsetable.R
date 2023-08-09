@@ -78,7 +78,7 @@ setMethod("show", "sparsetable", function(object){print_sparsetable_matrixform(o
     sparsetable(cbind(rows[ind[,1]],cols[ind[,2]]),M[wanted])
 }
 
-`sparsetable` <- function(i,v){
+`sparsetable` <- function(i,v=1){
     if(length(v)==1){v <- rep(v,nrow(i))}
     stopifnot(nrow(i) == length(v))
     jj <- sparsetable_maker(i,v)
