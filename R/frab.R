@@ -385,3 +385,6 @@ setReplaceMethod("is.na",signature("frab",value="disord"),
                    values(x)[value] <- NA
                    return(x)
                  } )
+
+setGeneric("is.notna",function(x){standardGeneric("is.notna")})
+setMethod("is.notna","frab",function(x){which(!is.na(values(x)))})
