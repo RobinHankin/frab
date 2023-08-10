@@ -11,6 +11,7 @@
 \alias{is.empty,sparsetable-method}
 \alias{arity}
 \alias{arity,sparsetable-method}
+\alias{as.array,sparsetable-method}
 \alias{nterms}
 \alias{nterms,sparsetable-method}
 \alias{show,sparsetable-method}
@@ -20,6 +21,7 @@
 \alias{sparsetable_asum_exclude}
 \alias{table_to_sparsetable}
 \alias{sparsetable}
+\alias{sparsetable_to_array}
 \alias{sparsetable_pmax}
 \alias{sparsetable_pmin}
 \alias{sparsetable_negative}
@@ -79,6 +81,7 @@ sparsetable(i,v=1)
 rspar(n=15,l=3,d=3)
 rspar2(n=15,l=6)
 rsparr(n=20,d=6,l=5)
+sparsetable_to_array(x)
 \S4method{index}{sparsetable}(x)
 \S4method{values}{sparsetable}(x)
 \S4method{dimnames}{sparsetable}(x)

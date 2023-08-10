@@ -37,12 +37,27 @@ setMethod("is.empty","sparsetable",function(x){nrow(index(x))==0})
 setGeneric("arity",function(x){standardGeneric("arity")})
 setMethod("arity","sparsetable",function(x){ncol(index(x))})
 
+setGeneric("as.array")
+setMethod("as.array","sparsetable",function(x){sparsetable_to_array(x)})
+
+`sparsetable_to_array` <- function(x){
+  I <- apply(index(x),2,function(x){as.numeric(as.factor(x))})
+  dims <- apply(I,2,max)
+  out <- array(0,dims)
+  out[I] <- values(x)
+  L <- apply(index(x),2,function(x){levels(as.factor(x))},simplify=FALSE)
+  names(L) <- colnames(I)
+  dimnames(out) <- L
+  return(out)
+}
+
 setMethod("show", "sparsetable", function(object){print_sparsetable_matrixform(object)})
+
 `print_sparsetable_matrixform` <- function(S){
     if(is.empty(S)){
         cat(paste('empty sparsetable with ', arity(S), ' columns\n',sep=""))
     } else if((arity(S)==2)  && !isFALSE(getOption("print_2dsparsetables_as_matrices"))){
-        print(sparsetable_to_table(S))
+        print(sparsetable_to_array(S))
     } else {
         jj <-
             data.frame(index(S),symbol= " = ", val=round(elements(values(S)),getOption("digits")))
@@ -57,7 +72,7 @@ setMethod("show", "sparsetable", function(object){print_sparsetable_matrixform(o
     return(invisible(S))
 }
 
-`sparsetable_to_table` <- function(x){
+`sparsetable_to_table` <- function(x){stop("deprecated")
     stopifnot(arity(x)==2)
     rows <- factor(index(x)[,1])
     cols <- factor(index(x)[,2])
@@ -125,8 +140,8 @@ setMethod("show", "sparsetable", function(object){print_sparsetable_matrixform(o
 
 `rspar2` <- function(n=15,l=6){
     sparsetable(as.matrix(data.frame(
-        letters[sample(seq_len(l),n,replace=TRUE)],
-        LETTERS[sample(seq_len(l),n,replace=TRUE)])),
+        foo=letters[sample(seq_len(l),n,replace=TRUE)],
+        bar=LETTERS[sample(seq_len(l),n,replace=TRUE)])),
         seq_len(n))
 }
 
