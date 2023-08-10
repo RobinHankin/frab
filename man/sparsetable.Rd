@@ -75,11 +75,18 @@
 \description{Package idiom for creating and manipulating
   \code{sparsetable} objects}
 \usage{
+sparsetable(i,v=1)
 rspar(n=15,l=3,d=3)
 rspar2(n=15,l=6)
 rsparr(n=20,d=6,l=5)
+\S4method{index}{sparsetable}(x)
+\S4method{values}{sparsetable}(x)
+\S4method{dimnames}{sparsetable}(x)
 }
 \arguments{
+  \item{i,v}{In standard constructor function \code{sparsetable()},
+    argument \code{i} is the index matrix of strings, and \code{v} a
+    numeric vector of values}
   \item{n,l,d}{In functions \code{rspar()}, \code{rspar2()}, and
     \code{rsparr()}, integers specifying number of terms, number of
     letters, and dimensionality to be returned}
@@ -148,6 +155,6 @@ x + y
 x["KT","FF"] <- 100
 x
 
-rsparrr()
+rsparr()
 
 }
