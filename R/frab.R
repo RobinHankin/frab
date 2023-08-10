@@ -80,6 +80,8 @@ setMethod("as.table","frab",function(x,...){structure(as.namedvector(x),dim=leng
     return(list_to_frab(x))
   } else if(is.1dtable(x)){
     return(table_to_frab(x))
+  } else if(is.sparsetable(x)){
+    return(sparsetable_to_frab(x))
   } else if(is.frab(x)){
     return(x)
   } else {

@@ -51,6 +51,10 @@ setMethod("as.array","sparsetable",function(x){sparsetable_to_array(x)})
   return(out)
 }
 
+`sparsetable_to_frab` <- function(x){
+  frab(setNames(elements(values(x)),apply(index(x),1,paste,collapse="_")))
+}
+
 setMethod("show", "sparsetable", function(object){print_sparsetable_matrixform(object)})
 
 `print_sparsetable_matrixform` <- function(S){

@@ -17,6 +17,7 @@
 \alias{show,sparsetable-method}
 \alias{print_sparsetable_matrixform}
 \alias{sparsetable_to_table}
+\alias{sparsetable_to_frab}
 \alias{sparsetable_asum_include}
 \alias{sparsetable_asum_exclude}
 \alias{table_to_sparsetable}
@@ -82,6 +83,7 @@ rspar(n=15,l=3,d=3)
 rspar2(n=15,l=6)
 rsparr(n=20,d=6,l=5)
 sparsetable_to_array(x)
+sparsetable_to_frab(x)
 \S4method{index}{sparsetable}(x)
 \S4method{values}{sparsetable}(x)
 \S4method{dimnames}{sparsetable}(x)
