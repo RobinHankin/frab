@@ -84,6 +84,7 @@ rsparr(n=20,d=6,l=5)
 \S4method{dimnames}{sparsetable}(x)
 }
 \arguments{
+  \item{x}{In functions like \code{index()}, an object of class \code{sparsetable}}
   \item{i,v}{In standard constructor function \code{sparsetable()},
     argument \code{i} is the index matrix of strings, and \code{v} a
     numeric vector of values}
