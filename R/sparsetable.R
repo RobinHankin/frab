@@ -195,10 +195,10 @@ setMethod("show", "sparsetable", function(object){print_sparsetable_matrixform(o
 
 
 `sparsetable_eq` <- function(e1,e2){
-  sparsetable_equality(elements(names(e1)), elements(values(e1)),
-            elements(names(e2)), elements(values(e2)))
+  sparsetable_equality(
+      index(e1),values(e1),
+      index(e2),values(e2))
 }
-
 
 `sparsetable_compare_sparsetable` <- function(e1,e2){
   switch(.Generic,
