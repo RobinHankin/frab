@@ -29,7 +29,7 @@
 \alias{sparsetable_maker}
 \alias{rspar}
 \alias{rspar2}
-\alias{rsparrr}
+\alias{rsparr}
 \alias{sparsetable_add}
 \alias{sparsetable_negative}
 \alias{sparsetable_reciprocal}
@@ -74,6 +74,16 @@
 \title{Generalized sparse tables: \code{sparsetable} objects}
 \description{Package idiom for creating and manipulating
   \code{sparsetable} objects}
+\usage{
+rspar(n=15,l=3,d=3)
+rspar2(n=15,l=6)
+rsparr(n=20,d=6,l=5)
+}
+\arguments{
+  \item{n,l,d}{In functions \code{rspar()}, \code{rspar2()}, and
+    \code{rsparr()}, integers specifying number of terms, number of
+    letters, and dimensionality to be returned}
+}
 \details{
 
 Most functions here mirror their equivalent in the \CRANpkg{spray}
@@ -96,8 +106,9 @@ coerce arity-2 \code{sparsetable} objects to two-dimensional tables
 before printing.  If this option is \code{FALSE}, arity-2 sparsetables
 are printed using matrix index form, just the same as any other arity.
 
-Functions\code{rspar()}, \code{rspar2()}, and \code{rsparrr()} create
-random \code{sparsetable} objects of increasing complexity.
+Functions \code{rspar()}, \code{rspar2()}, and \code{rsparr()} create
+random \code{sparsetable} objects of increasing complexity.  The
+defaults are chosen to make the values of sensible sizes.
 
 Function \code{drop()} takes a sparsetable object of arity one and
 coerces to a \code{frab} object.
@@ -136,5 +147,7 @@ x + y
 
 x["KT","FF"] <- 100
 x
+
+rsparrr()
 
 }

@@ -120,21 +120,20 @@ setMethod("show", "sparsetable", function(object){print_sparsetable_matrixform(o
     }
 }
 
-`rspar` <- function(n=15,p=3,d=3){sparsetable(matrix(letters[sample(seq_len(p),n*d,replace=TRUE)],n,d),seq_len(n))}
+`rspar` <- function(n=15,l=3,d=3){sparsetable(matrix(letters[sample(seq_len(l),n*d,replace=TRUE)],n,d),seq_len(n))}
 
-`rspar2` <- function(n=15,p=6){
+`rspar2` <- function(n=15,l=6){
     sparsetable(as.matrix(data.frame(
-        letters[sample(seq_len(p),n,replace=TRUE)],
-        LETTERS[sample(seq_len(p),n,replace=TRUE)])),
+        letters[sample(seq_len(l),n,replace=TRUE)],
+        LETTERS[sample(seq_len(l),n,replace=TRUE)])),
         seq_len(n))
 }
 
-`rsparrr` <- function(n=15,p=3){
-    sparsetable(as.matrix(data.frame(
-        sample(letters  [sample(seq_len(n),p,replace=TRUE)]),
-        sample(LETTERS  [sample(seq_len(n),p,replace=TRUE)]),
-        sample(letters[sample(seq_len(n),p,replace=TRUE)]))),
-        seq_len(n))
+`rsparr` <- function(n=20,d=6,l=5){
+  sparsetable(sapply(seq_len(d),
+                     function(d){
+                       apply(matrix(sample(letters[seq_len(l)],d*n,replace=TRUE),ncol=d),1,paste,collapse="")
+                     } ), seq_len(n))
 }
 
 `sparsetable_negative` <- function(x){sparsetable(index(x), -values(x))}
