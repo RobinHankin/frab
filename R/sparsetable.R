@@ -140,7 +140,12 @@ setMethod("show", "sparsetable", function(object){print_sparsetable_matrixform(o
     }
 }
 
-`rspar` <- function(n=15,l=3,d=3){sparsetable(matrix(letters[sample(seq_len(l),n*d,replace=TRUE)],n,d),seq_len(n))}
+`rspar` <- function(n=15,l=3,d=3){
+  sparsetable(
+      matrix(
+          letters[sample(seq_len(l),n*d,replace=TRUE)],
+          n, d, dimnames=list(NULL,month.abb[seq_len(d)])),seq_len(n))
+}
 
 `rspar2` <- function(n=15,l=6){
     sparsetable(as.matrix(data.frame(
@@ -149,11 +154,10 @@ setMethod("show", "sparsetable", function(object){print_sparsetable_matrixform(o
         seq_len(n))
 }
 
-`rsparr` <- function(n=20,d=6,l=5){
-  sparsetable(sapply(seq_len(d),
-                     function(d){
-                       apply(matrix(sample(letters[seq_len(l)],d*n,replace=TRUE),ncol=d),1,paste,collapse="")
-                     } ), seq_len(n))
+`rsparr` <- function(n=20,d=6,l=5,s=4){
+  I <- sapply(seq_len(d),function(d){sample(replicate(s,paste(sample(letters[seq_len(l)],d,replace=TRUE),collapse="")),n,replace=TRUE)})
+  colnames(I) <- month.abb[seq_len(d)]
+  return(sparsetable(I,seq_len(n)))
 }
 
 `sparsetable_negative` <- function(x){sparsetable(index(x), -values(x))}

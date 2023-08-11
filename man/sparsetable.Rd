@@ -81,7 +81,7 @@
 sparsetable(i,v=1)
 rspar(n=15,l=3,d=3)
 rspar2(n=15,l=6)
-rsparr(n=20,d=6,l=5)
+rsparr(n=20,d=6,l=5,s=4)
 sparsetable_to_array(x)
 sparsetable_to_frab(x)
 \S4method{index}{sparsetable}(x)
@@ -93,9 +93,10 @@ sparsetable_to_frab(x)
   \item{i,v}{In standard constructor function \code{sparsetable()},
     argument \code{i} is the index matrix of strings, and \code{v} a
     numeric vector of values}
-  \item{n,l,d}{In functions \code{rspar()}, \code{rspar2()}, and
-    \code{rsparr()}, integers specifying number of terms, number of
-    letters, and dimensionality to be returned}
+  \item{n,l,d,s}{In functions \code{rspar()}, \code{rspar2()}, and
+    \code{rsparr()}, \code{n} is the number of terms, \code{l} the
+    number of letters, \code{d} the dimensionality and \code{s} the
+    number of distinct marginal values to return}
 }
 \details{
 
