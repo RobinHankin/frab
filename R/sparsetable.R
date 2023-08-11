@@ -16,7 +16,13 @@ setMethod("names","sparsetable",
               stop("sparsetable objects do not have a 'names' attribute; try dimnames()")
           } )
 
-setMethod("dimnames","sparsetable",function(x){dimnames(index(x))})
+setMethod("dimnames","sparsetable",function(x){colnames(index(x))})
+setReplaceMethod("dimnames","sparsetable",function(x,value){
+  I <- index(x)
+  colnames(I) <- value # the meat
+  return(sparsetable(I,values(x)))
+} )
+  
 setGeneric("nterms",function(x){standardGeneric("nterms")})
 setMethod("nterms","sparsetable",function(x){nrow(index(x))})
 

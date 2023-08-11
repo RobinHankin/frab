@@ -8,6 +8,8 @@
 \alias{values,sparsetable-method}
 \alias{names,sparsetable-method}
 \alias{dimnames,sparsetable-method}
+\alias{dimnames<-,sparsetable-method}
+\alias{dimnames<-,sparsetable,ANY-method}
 \alias{is.empty,sparsetable-method}
 \alias{arity}
 \alias{arity,sparsetable-method}
