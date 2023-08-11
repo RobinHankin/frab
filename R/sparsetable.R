@@ -169,11 +169,17 @@ setMethod("show", "sparsetable", function(object){print_sparsetable_matrixform(o
 `sparsetable_negative` <- function(x){sparsetable(index(x), -values(x))}
 `sparsetable_reciprocal` <- function(x){stop("inverse not implemented")}
 `sparsetable_plus_sparsetable` <- function(F1,F2){
-    as.sparsetable(
-        sparsetable_add(
-            index(F1),values(F1),
-            index(F2),values(F2)
-        ))
+  out <- as.sparsetable(
+      sparsetable_add(
+          index(F1),values(F1),
+          index(F2),values(F2)
+      ))
+  if(is.null(dimnames(F1))){
+    dimnames(out) <- dimnames(F2)
+    } else {
+      dimnames(out) <- dimnames(F1)
+    }
+  return(out)
 }
 
 `sparsetable_multiply_sparsetable` <- function(F1,F2){
