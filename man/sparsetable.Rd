@@ -26,6 +26,7 @@
 \alias{sparsetable_asum_exclude}
 \alias{table_to_sparsetable}
 \alias{sparsetable}
+\alias{array_to_sparsetable}
 \alias{sparsetable_to_array}
 \alias{sparsetable_pmax}
 \alias{sparsetable_pmin}
@@ -87,6 +88,7 @@ rspar(n=15,l=3,d=3)
 rspar2(n=15,l=6)
 rsparr(n=20,d=6,l=5,s=4)
 sparsetable_to_array(x)
+array_to_sparsetable(x)
 sparsetable_to_frab(x)
 \S4method{index}{sparsetable}(x)
 \S4method{values}{sparsetable}(x)

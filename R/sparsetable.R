@@ -59,12 +59,14 @@ setMethod("as.array","sparsetable",function(x){sparsetable_to_array(x)})
 }
 
 `array_to_sparsetable` <- function(x){
-  stop("not yet written")
-  I <- which(x != 0,arr.ind=TRUE)
-  colnames(I) <- dimnames(x)
-  I[] <- 4
-  out <- array(0,dim(x))
-  return(out)
+
+    I <- which(x != 0,arr.ind=TRUE)
+    J <- I
+    colnames(J) <- names(dimnames(x))
+    for(i in seq_len(ncol(I))){
+        J[,i] <- (dimnames(x)[[i]])[I[,i]]  # the meat
+    }
+    return(sparsetable(J,x[x!=0]))
 }
 
 `sparsetable_to_frab` <- function(x){
