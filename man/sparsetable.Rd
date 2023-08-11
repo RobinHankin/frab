@@ -13,6 +13,8 @@
 \alias{is.empty,sparsetable-method}
 \alias{arity}
 \alias{arity,sparsetable-method}
+\alias{dim}
+\alias{dim,sparsetable-method}
 \alias{as.array,sparsetable-method}
 \alias{nterms}
 \alias{nterms,sparsetable-method}
@@ -89,6 +91,7 @@ sparsetable_to_frab(x)
 \S4method{index}{sparsetable}(x)
 \S4method{values}{sparsetable}(x)
 \S4method{dimnames}{sparsetable}(x)
+\S4method{dim}{sparsetable}(x)
 }
 \arguments{
   \item{x}{In functions like \code{index()}, an object of class \code{sparsetable}}
@@ -128,6 +131,9 @@ defaults are chosen to make the values of sensible sizes.
 
 Function \code{drop()} takes a sparsetable object of arity one and
 coerces to a \code{frab} object.
+
+Function \code{dim()} returns a named vector, with names being the
+\code{dimnames} of its argument.
 
 Extraction and replacement methods are a subset of \CRANpkg{spray}
 methods, but most should work.  There is special dispensation so that

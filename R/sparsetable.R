@@ -42,6 +42,8 @@ setGeneric("is.empty",function(x){standardGeneric("is.empty")})
 setMethod("is.empty","sparsetable",function(x){nrow(index(x))==0})
 setGeneric("arity",function(x){standardGeneric("arity")})
 setMethod("arity","sparsetable",function(x){ncol(index(x))})
+setGeneric("dim",function(x){standardGeneric("dim")})
+setMethod("dim","sparsetable",function(x){apply(I,2,function(x){length(table(x))})})
 
 setGeneric("as.array")
 setMethod("as.array","sparsetable",function(x){sparsetable_to_array(x)})
@@ -54,6 +56,15 @@ setMethod("as.array","sparsetable",function(x){sparsetable_to_array(x)})
   L <- apply(index(x),2,function(x){levels(as.factor(x))},simplify=FALSE)
   names(L) <- colnames(I)
   dimnames(out) <- L
+  return(out)
+}
+
+`array_to_sparsetable` <- function(x){
+  stop("not yet written")
+  I <- which(x != 0,arr.ind=TRUE)
+  colnames(I) <- dimnames(x)
+  I[] <- 4
+  out <- array(0,dim(x))
   return(out)
 }
 
@@ -111,6 +122,7 @@ setMethod("show", "sparsetable", function(object){print_sparsetable_matrixform(o
     new("sparsetable",index=jj$index,values=jj$value)} # This is the only time new("sparsetable",...) is called
 
 `is.sparsetable` <- function(x){inherits(x,"sparsetable")}
+
 `as.sparsetable` <- function(x){
     if(is.sparsetable(x)){
         return(x)
@@ -120,6 +132,8 @@ setMethod("show", "sparsetable", function(object){print_sparsetable_matrixform(o
         return(sparsetable(x$index,x$value))
     } else if(is.table(x)){
         return(table_to_sparsetable(x))
+    } else if(is.array(x)){
+      return(array_to_sparsetable(x))
     }
 }
 
