@@ -42,7 +42,6 @@ setGeneric("is.empty",function(x){standardGeneric("is.empty")})
 setMethod("is.empty","sparsetable",function(x){nrow(index(x))==0})
 setGeneric("arity",function(x){standardGeneric("arity")})
 setMethod("arity","sparsetable",function(x){ncol(index(x))})
-setGeneric("dim",function(x){standardGeneric("dim")})
 setMethod("dim","sparsetable",function(x){apply(I,2,function(x){length(table(x))})})
 
 setGeneric("as.array")
