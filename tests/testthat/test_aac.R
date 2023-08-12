@@ -69,4 +69,16 @@ test_that("Test suite aac.R",{
     expect_output(print(sparsetable(matrix(letters[1:12],4,3),1)))
     expect_true(as.sparsetable(frab(c(a=1,b=2,c=3))) == sparsetable(cbind(letters[1:3]),1:3))
 
+    expect_true(as.sparsetable(table(data.frame(fish=letters[1:4],chips=LETTERS[4:1]))) == sparsetable(matrix(c("a","D","b","C","c","B","d","A"),byrow=TRUE,ncol=2)))
+
+    expect_error(x*(1:3))
+    expect_error((1:3)*x)
+
+    expect_false(x == x*2)
+
+    expect_false(x == rspar2())
+
+    x[c('x','y','a')] <- 99
+    expect_false(x == x_c)
+
 } )

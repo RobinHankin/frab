@@ -130,11 +130,6 @@ setMethod("show", "sparsetable", function(object){print_sparsetable_matrixform(o
     }
 }
 
-`sparsetable_times_scalar` <- function(S,x){
-    stopifnot(length(x)==1)
-    return(sparsetable(index(S), x*values(S)),arity=arity(S))
-}
-
 `sparsetable_eq_sparsetable` <- function(S1,S2){
     if(arity(S1) != arity(S2)){
         return(FALSE)
@@ -235,16 +230,10 @@ setMethod("show", "sparsetable", function(object){print_sparsetable_matrixform(o
          ) }
 
 
-`sparsetable_eq` <- function(e1,e2){
-  sparsetable_equality(
-      index(e1),values(e1),
-      index(e2),values(e2))
-}
-
 `sparsetable_compare_sparsetable` <- function(e1,e2){
   switch(.Generic,
-         "==" =  sparsetable_eq(e1, e2),
-         "!=" = !sparsetable_eq(e1, e2),
+         "==" =  sparsetable_eq_sparsetable(e1, e2),
+         "!=" = !sparsetable_eq_sparsetable(e1, e2),
          stop(gettextf("comparison '%s' not for sparsetables", dQuote(.Generic)))
          )
 }
