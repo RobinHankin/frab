@@ -193,7 +193,7 @@ setMethod("show", "sparsetable", function(object){print_sparsetable_matrixform(o
 
 `sparsetable_multiply_numeric` <- function(e1,e2){sparsetable(index(e1),values(e1)*e2)}
 `sparsetable_power_numeric`    <- function(e1,e2){stop("sparsetable power not implemented")}
-`numeric_multiply_sparsetable` <- function(e1,e2){stop("sparstable multiply not implemented")}
+`numeric_multiply_sparsetable` <- function(e1,e2){sparsetable_multiply_numeric(e2,e1)}
 `numeric_power_sparsetable`    <- function(e1,e2){stop("sparsetable power not implemented")}
 
 `sparsetable_unary` <- function(e1,e2){

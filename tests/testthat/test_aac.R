@@ -7,6 +7,8 @@ test_that("Test suite aac.R",{
     x <- x_c
     expect_true(is.sparsetable(x))
     expect_true(x == x)
+    expect_true(x+x == 2*x)
+    expect_true(x+x == x*2)
     expect_true(x+x == sparsetable(index(x),values(x)*2))
     expect_true(is.empty(x-x))
     expect_true(all(dim(as.array(x-x))==0))
