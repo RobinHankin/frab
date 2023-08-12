@@ -42,7 +42,7 @@ setGeneric("is.empty",function(x){standardGeneric("is.empty")})
 setMethod("is.empty","sparsetable",function(x){nrow(index(x))==0})
 setGeneric("arity",function(x){standardGeneric("arity")})
 setMethod("arity","sparsetable",function(x){ncol(index(x))})
-setMethod("dim","sparsetable",function(x){apply(I,2,function(x){length(table(x))})})
+setMethod("dim","sparsetable",function(x){apply(index(x),2,function(x){length(unique(x))})})
 
 setGeneric("as.array")
 setMethod("as.array","sparsetable",function(x){sparsetable_to_array(x)})
@@ -93,27 +93,6 @@ setMethod("show", "sparsetable", function(object){print_sparsetable_matrixform(o
         print(jj,row.names=FALSE)
     }
     return(invisible(S))
-}
-
-`sparsetable_to_table` <- function(x){stop("deprecated")
-    stopifnot(arity(x)==2)
-    rows <- factor(index(x)[,1])
-    cols <- factor(index(x)[,2])
-    rowlabs <- levels(rows)
-    collabs <- levels(cols)
-    M <- matrix(0,length(rowlabs),length(collabs))
-    M[cbind(c(unclass(rows)),c(unclass(cols)))] <- values(x)
-    rownames(M) <- levels(rows)
-    colnames(M) <- levels(cols)
-    return(as.table(M))
-}
-
-`table_to_sparsetable` <- function(M){
-    rows <- rownames(M)
-    cols <- colnames(M)
-    wanted <- M != 0
-    ind <-which(wanted, arr.ind=TRUE)
-    sparsetable(cbind(rows[ind[,1]],cols[ind[,2]]),M[wanted])
 }
 
 `sparsetable` <- function(i,v=1){

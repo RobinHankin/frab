@@ -1,4 +1,4 @@
-test_that("Test uiteaac.R",{
+test_that("Test suite aac.R",{
     x_c <-new("sparsetable",
               index=structure(letters[c(1,1,1,2,2,2,3,3,3,3,3,1,2,3,1,2,3,1,1,2,2,3,3,2,3,2,3,2,1,3,1,2,3)],
                               dim=c(11,3),dimnames=list(NULL,c("Jan","Feb","Mar"))),
@@ -12,4 +12,7 @@ test_that("Test uiteaac.R",{
     expect_true(all(dim(as.array(x-x))==0))
     expect_error(names(x))
     expect_true(nterms(x) == 11)
+    expect_true(all(dim(x) == 3))
+    expect_true(as.sparsetable(as.array(x)) == x)
+    
 })
