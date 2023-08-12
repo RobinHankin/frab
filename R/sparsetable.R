@@ -48,6 +48,7 @@ setGeneric("as.array")
 setMethod("as.array","sparsetable",function(x){sparsetable_to_array(x)})
 
 `sparsetable_to_array` <- function(x){
+  if(is.empty(x)){return(array(0,rep(0,arity(x))))}
   I <- apply(index(x),2,function(x){as.numeric(as.factor(x))})
   dims <- apply(I,2,max)
   out <- array(0,dims)
@@ -119,6 +120,10 @@ setMethod("show", "sparsetable", function(object){print_sparsetable_matrixform(o
     if(length(v)==1){v <- rep(v,nrow(i))}
     stopifnot(nrow(i) == length(v))
     jj <- sparsetable_maker(i,v)
+    if(is.null(jj$index)){
+        jj$index <-matrix(character(0),0,ncol(i))
+        jj$value <- numeric(0)
+    }
     colnames(jj$index) <- colnames(i)
     new("sparsetable",index=jj$index,values=jj$value)} # This is the only time new("sparsetable",...) is called
 
@@ -184,11 +189,17 @@ setMethod("show", "sparsetable", function(object){print_sparsetable_matrixform(o
 `sparsetable_negative` <- function(x){sparsetable(index(x), -values(x))}
 `sparsetable_reciprocal` <- function(x){stop("inverse not implemented")}
 `sparsetable_plus_sparsetable` <- function(F1,F2){
-  out <- as.sparsetable(
+  stopifnot(arity(F1) == arity(F2))
+  out <- (
       sparsetable_add(
           index(F1),values(F1),
           index(F2),values(F2)
       ))
+  if(is.null(out$index)){
+      out$index <- index(F1)[FALSE,]
+      out$value <- numeric(0)
+  }
+  out <- as.sparsetable(out)
   if(is.null(dimnames(F1))){
     dimnames(out) <- dimnames(F2)
     } else {
