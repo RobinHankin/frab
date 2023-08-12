@@ -116,7 +116,7 @@ setMethod("show", "sparsetable", function(object){print_sparsetable_matrixform(o
     } else if(is.list(x)){
         return(sparsetable(x$index,x$value))
     } else if(is.table(x)){
-        return(table_to_sparsetable(x))
+        return(array_to_sparsetable(as.array(x)))
     } else if(is.array(x)){
       return(array_to_sparsetable(x))
     }
@@ -364,3 +364,36 @@ setReplaceMethod("[",signature(x="sparsetable",value="ANY"),
                  )
 
 setMethod("drop","sparsetable",function(x){frab(setNames(disordR::elements(values(x)),c(index(x))))})
+
+`pmax_pair_sparsetable` <- function(F1,F2){
+    as.sparsetable(sparsetable_pmax(
+        index(F1),elements(values(F1)),
+        index(F2),elements(values(F2))
+        ))
+}
+
+`pmin_pair_sparsetable` <- function(F1,F2){
+ -pmax_pair_sparsetable(-F1,-F2)}
+
+`pmax_dots_sparsetable` <- function(x,...){
+  if(nargs()==1){
+    return(x)
+    } else if(nargs()<3){
+    return(pmax_pair_sparsetable(x, ...))
+  } else {
+    return(pmax_pair_sparsetable(x, pmax_dots_sparsetable(...)))
+  }
+}
+
+`pmin_dots_sparsetable` <- function(x,...){
+  if(nargs()==1){
+    return(x)
+  } else if(nargs()<3){
+    return(pmin_pair_sparsetable(x, ...))
+  } else {
+    return(pmin_pair_sparsetable(x, pmin_dots_sparsetable(...)))
+  }
+}
+
+setMethod("pmax",signature("..."="sparsetable"), function(...){pmax_dots_sparsetable(...)} )
+setMethod("pmin",signature("..."="sparsetable"), function(...){pmin_dots_sparsetable(...)} )

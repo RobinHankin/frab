@@ -14,5 +14,6 @@ test_that("Test suite aac.R",{
     expect_true(nterms(x) == 11)
     expect_true(all(dim(x) == 3))
     expect_true(as.sparsetable(as.array(x)) == x)
+    expect_output(print(x))
     
 })

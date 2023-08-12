@@ -79,6 +79,17 @@
 \alias{[<-,sparsetable,ANY,ANY,ANY-method}
 \alias{[<-,sparsetable,disindex,missing,ANY-method}
 \alias{[<-,sparsetable,disord,missing,numeric-method}
+\alias{pmax_sparsetable}
+\alias{pmin_sparsetable}
+\alias{pmax.sparsetable}
+\alias{pmin.sparsetable}
+\alias{pmax,sparsetable-method}
+\alias{pmin,sparsetable-method}
+\alias{pmax_pair_sparsetable}
+\alias{pmin_pair_sparsetable}
+\alias{pmax_dots_sparsetable}
+\alias{pmin_dots_sparsetable}
+
 \title{Generalized sparse tables: \code{sparsetable} objects}
 \description{Package idiom for creating and manipulating
   \code{sparsetable} objects}
