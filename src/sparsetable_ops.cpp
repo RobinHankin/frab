@@ -192,7 +192,11 @@ bool sparsetable_equality // S1 == S2
     sparsetable S2 = prepare(M2, d2);
 
     if(S1.size() != S2.size()){
-        return FALSE;  // this line is never executed in package idiom, because different-sized objects are trapped by R
+        return FALSE;  /* this line is never executed in normal
+                          package idiom, because different-sized
+                          objects are trapped by R.  But it might get
+                          executed if frab::sparsetable_equality() is
+                          called [for example, in test_aac.R]*/
     }
 
     for(sparsetable::const_iterator it=S1.begin(); it != S1.end(); ++it){
