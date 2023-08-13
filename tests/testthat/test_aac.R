@@ -78,7 +78,9 @@ test_that("Test suite aac.R",{
 
     expect_false(x == rspar2())
 
-    x[c('x','y','a')] <- 99
+    x <- x_c
+    x['x','y','a'] <- 99
     expect_false(x == x_c)
-
+    expect_true(x['x','y','a'] == 99)
+    
 } )
