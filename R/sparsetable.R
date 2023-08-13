@@ -326,7 +326,7 @@ setReplaceMethod("[",signature(x="sparsetable",value="ANY"),
                      if(missing(i)){ # S[] <- something
                          if(is.sparsetable(value)){
                              return(
-                                 sparsetable(sparsetable_overwrite(
+                                 as.sparsetable(sparsetable_overwrite(
                                      index(x    ),values(x    ),
                                      index(value),values(value))))
                          } else {
