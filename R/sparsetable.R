@@ -326,13 +326,15 @@ setReplaceMethod("[",signature(x="sparsetable",value="ANY"),
                                      index(x    ),values(x    ),
                                      index(value),values(value))))
                          } else {
-                             return(sparsetable(index(x),value))
+                             stop("replacement method  not defined (disord discipline violation?)")
+                             ## return(sparsetable(index(x),value))
                          }
                      }
                      
                      if(is.matrix(i)){
                          M <- i
                      } else if(is.sparsetable(i)){
+                         warning("possible disord discipline violation")
                          M <- index(i)
                      } else {
                          if(missing(j)){j <- NULL}
@@ -404,6 +406,8 @@ setMethod("asum",signature(S="sparsetable"), function(S,dims){asum_sparsetable(S
 `asum_exclude_sparsetable` <- function(S,dims){
   if(is.character(dims)){
     dims <- which(!(dimnames(S) %in% dims))
+  } else if(is.logical(dims)){
+    dims <- !dims
   } else {
     dims <- which(!(seq_len(arity(S)) %in% dims))
   }
