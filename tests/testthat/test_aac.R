@@ -175,6 +175,29 @@ test_that("Test suite aac.R",{
     expect_true(all(9 == x[x == 9]))
     expect_true(all(9 == x[9 == x]))
 
+    expect_true(all(x[which(x > 9)] > 9))
+    expect_true(all(x[which(x < 9)] < 9))
+    expect_true(all(x[which(9 > x)] < 9))
+    expect_true(all(x[which(9 < x)] > 9))
+    expect_true(all(9 < x[which(x > 9)]))
+    expect_true(all(9 > x[which(x < 9)]))
+    expect_true(all(9 > x[which(9 > x)]))
+    expect_true(all(9 < x[which(9 < x)]))
+
+    expect_true(all(x[which(x >= 9)] >= 9))
+    expect_true(all(x[which(x <= 9)] <= 9))
+    expect_true(all(x[which(9 >= x)] <= 9))
+    expect_true(all(x[which(9 <= x)] >= 9))
+    expect_true(all(9 <= x[which(x >= 9)]))
+    expect_true(all(9 >= x[which(x <= 9)]))
+    expect_true(all(9 >= x[which(9 >= x)]))
+    expect_true(all(9 <= x[which(9 <= x)]))
+
+    expect_true(all(x[which(x == 9)] == 9))
+    expect_true(all(x[which(9 == x)] == 9))
+    expect_true(all(9 == x[which(x == 9)]))
+    expect_true(all(9 == x[which(9 == x)]))
+
 })
 
 
