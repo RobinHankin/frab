@@ -6,9 +6,10 @@ test_that("Test suite aac.R",{
             3,2,3,2,3,2,1,3,1,2,3
                )], ncol=3,dimnames=list(NULL,c("Jan","Feb","Mar"))),
         v = c(8,6,16,21,15,9,11,3,15,3,13))
-    
+ 
     x <- x_c
     expect_true(is.sparsetable(x))
+    expect_true(is.sparsetable(x[x>20]))
     expect_true(x == x)
     expect_false(x != x)
     expect_true(x+x == 2*x)
@@ -31,6 +32,8 @@ test_that("Test suite aac.R",{
     expect_error(x^x)
     expect_error(x^6)
     expect_error(6^x)
+
+
 
     x['a','a','c'] <- 100
     expect_true(x == sparsetable(
@@ -223,9 +226,40 @@ test_that("Test suite aac.R",{
     expect_silent(x[values(x) >= 9] <- 8)
     expect_true(all(x <= 8))
 
+    x <-  x_c
+    expect_error(x[which(x<8)]  <- values(x)[x<8] + 333333)
+
+    x <-  x_c
+    expect_error(x[] <- seq_len(nterms(x)))
+
+    x <- x_c
+    I <- matrix("a",3,3)
+    diag(I) <- "b"
+    S <- sparsetable(I,777)
+    expect_warning(x[S] <- 1:3)
+    expect_true(x == sparsetable(matrix(c(
+                         "a","a","a","a","a","b","b","b","b","c","c","c","c","c",
+                         "a","a","b","b","c","a","a","b","c","a","a","b","b","c",
+                         "b","c","a","b","c","a","b","c","b","a","c","a","b","c"
+                     ),14,3),c(1,8,2,6,16,3,21,15,9,11,3,15,3, 13)))
 
 
+    x <- x_c
+    expect_error(x[list('a','a','x')] <- 3333)
 
+    expect_true(drop(sparsetable(matrix(letters[1:3],3),1:3)) == frab(c(a=1,b=2,c=3)))
+
+    x <- x_c
+    expect_true(asum(x,"Feb") == asum_exclude_sparsetable(x,c("Jan","Mar")))
+
+    x <- x_c
+    jj <- c(TRUE,FALSE,TRUE)
+    expect_true(asum(x, jj) == asum_exclude_sparsetable(x,!jj))
+    expect_true(asum(x,!jj) == asum_exclude_sparsetable(x, jj))
+
+    expect_true(asum(x,c(2  )) == asum_exclude_sparsetable(x,c(1,3)))
+    expect_true(asum(x,c(1,3)) == asum_exclude_sparsetable(x,c(2  )))
+    
 })
 
 
