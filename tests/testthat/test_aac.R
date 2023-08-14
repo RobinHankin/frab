@@ -10,6 +10,7 @@ test_that("Test suite aac.R",{
     x <- x_c
     expect_true(is.sparsetable(x))
     expect_true(x == x)
+    expect_false(x != x)
     expect_true(x+x == 2*x)
     expect_true(x+x == x*2)
     expect_true(x+x == sparsetable(index(x),values(x)*2))
@@ -17,6 +18,7 @@ test_that("Test suite aac.R",{
     expect_true(all(dim(as.array(x-x))==0))
     expect_false(x == x*0)
     expect_false(x == 0*x)
+    expect_true(x != 0*x)
     
     expect_error(names(x))
     expect_true(nterms(x) == 11)
@@ -149,6 +151,29 @@ test_that("Test suite aac.R",{
 
     expect_true(xas == xas_correct)
 
+    x <- x_c
+    expect_true(all(x[x > 9] > 9))
+    expect_true(all(x[x < 9] < 9))
+    expect_true(all(x[9 > x] < 9))
+    expect_true(all(x[9 < x] > 9))
+    expect_true(all(9 < x[x > 9]))
+    expect_true(all(9 > x[x < 9]))
+    expect_true(all(9 > x[9 > x]))
+    expect_true(all(9 < x[9 < x]))
+
+    expect_true(all(x[x >= 9] >= 9))
+    expect_true(all(x[x <= 9] <= 9))
+    expect_true(all(x[9 >= x] <= 9))
+    expect_true(all(x[9 <= x] >= 9))
+    expect_true(all(9 <= x[x >= 9]))
+    expect_true(all(9 >= x[x <= 9]))
+    expect_true(all(9 >= x[9 >= x]))
+    expect_true(all(9 <= x[9 <= x]))
+
+    expect_true(all(x[x == 9] == 9))
+    expect_true(all(x[9 == x] == 9))
+    expect_true(all(9 == x[x == 9]))
+    expect_true(all(9 == x[9 == x]))
 
 })
 
