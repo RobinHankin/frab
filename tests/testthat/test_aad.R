@@ -23,6 +23,11 @@ checker1 <- function(A){
   expect_true(pmax(A,A) == A)
   expect_true(pmin(A,A) == A)
 
+  expect_true(sum(values(asum(A,1))) == sum(values(A)))
+
+
+
+
 }   # checker1() closes
   
 checker2 <- function(A,B){
@@ -60,6 +65,9 @@ for(i in seq_len(10)){
   
   checker1(A)
   checker2(A,B)
+  checker3(A,B,C)
+
+  checker1(rsparr())
 }
 
 

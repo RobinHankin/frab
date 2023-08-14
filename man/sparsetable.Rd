@@ -15,6 +15,11 @@
 \alias{arity,sparsetable-method}
 \alias{dim}
 \alias{dim,sparsetable-method}
+\alias{asum}
+\alias{asum.sparsetable}
+\alias{asum,sparsetable-method}
+\alias{asum_sparsetable}
+\alias{asum_exclude_sparsetable}
 \alias{as.array,sparsetable-method}
 \alias{nterms}
 \alias{nterms,sparsetable-method}
@@ -184,5 +189,8 @@ x["KT","FF"] <- 100
 x
 
 rsparr()
+
+a <- rspar(d=4)
+asum(a,"Feb")
 
 }

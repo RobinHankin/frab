@@ -386,3 +386,30 @@ setMethod("drop","sparsetable",function(x){frab(setNames(disordR::elements(value
 
 setMethod("pmax",signature("..."="sparsetable"), function(...){pmax_dots_sparsetable(...)} )
 setMethod("pmin",signature("..."="sparsetable"), function(...){pmin_dots_sparsetable(...)} )
+
+setGeneric("asum",function(S,dims){standardGeneric("asum")})
+setMethod("asum",signature(S="sparsetable"), function(S,dims){asum_sparsetable(S,dims)})
+
+`asum_sparsetable` <- function(S, dims){
+  if(is.character(dims)){
+    dims <- which(dimnames(S) %in% dims)
+  } else {
+    if(is.logical(dims)){ dims <- which(dims)  }
+    stopifnot(all(dims <= arity(S)))
+    stopifnot(all(dims >0))
+    stopifnot(all(dims == round(dims)))
+  }
+  jj <- sparsetable_asum_include(index(S),elements(values(S)),dims)
+  I <- jj$index[,-dims,drop=FALSE]
+  colnames(I) <- dimnames(S)[-dims]
+  return(sparsetable(I,jj$value))
+}
+
+`asum_exclude_sparsetable` <- function(S,dims){
+  if(is.character(dims)){
+    dims <- which(!(dimnames(S) %in% dims))
+  } else {
+    dims <- which(!(seq_len(arity(S)) %in% dims))
+  }
+  return(asum_sparsetable(S, dims))
+}

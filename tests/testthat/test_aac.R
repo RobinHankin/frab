@@ -1,9 +1,12 @@
 test_that("Test suite aac.R",{
-    x_c <-new("sparsetable",
-              index=structure(letters[c(1,1,1,2,2,2,3,3,3,3,3,1,2,3,1,2,3,1,1,2,2,3,3,2,3,2,3,2,1,3,1,2,3)],
-                              dim=c(11,3),dimnames=list(NULL,c("Jan","Feb","Mar"))),
-              values=c(8,6,16,21,15,9,11,3,15,3,13))
-
+    x_c <- sparsetable(
+        i = matrix(letters[c(
+            1,1,1,2,2,2,3,3,3,3,3,
+            1,2,3,1,2,3,1,1,2,2,3,
+            3,2,3,2,3,2,1,3,1,2,3
+               )], ncol=3,dimnames=list(NULL,c("Jan","Feb","Mar"))),
+        v = c(8,6,16,21,15,9,11,3,15,3,13))
+    
     x <- x_c
     expect_true(is.sparsetable(x))
     expect_true(x == x)
@@ -12,12 +15,20 @@ test_that("Test suite aac.R",{
     expect_true(x+x == sparsetable(index(x),values(x)*2))
     expect_true(is.empty(x-x))
     expect_true(all(dim(as.array(x-x))==0))
+    expect_false(x == x*0)
+    expect_false(x == 0*x)
+    
     expect_error(names(x))
     expect_true(nterms(x) == 11)
     expect_true(all(dim(x) == 3))
     expect_true(as.sparsetable(as.array(x)) == x)
     expect_output(print(x))
     expect_output(print(x*0))
+    expect_error(1/x)
+    expect_error(x*x)
+    expect_error(x^x)
+    expect_error(x^6)
+    expect_error(6^x)
 
     x['a','a','c'] <- 100
     expect_true(x == sparsetable(
@@ -25,6 +36,12 @@ test_that("Test suite aac.R",{
                          c(100,6,16,21,15,9,11,3,15,3,13))
                 )
 
+    expect_false(sparsetable_equality(
+        M1 = matrix(letters[1:9],3,3),
+        d1 = 1:3,
+        M2 = index(x_c),
+        d2 = c(100,6,16,21,15,9,11,3,15,3,13))
+    )
 
     x['a','a','c'] <- 0
     expect_true(
@@ -82,5 +99,57 @@ test_that("Test suite aac.R",{
     x['x','y','a'] <- 99
     expect_false(x == x_c)
     expect_true(x['x','y','a'] == 99)
-    
-} )
+
+# xpc = 'x plus zero'
+    xpz <-sparsetable(    # the 10,10,10 == j,j,j entry is 77-77==0
+        i=matrix(letters[c(
+            1,1,1,2,2,2,3,3,10,3,3,3,10,  
+            1,2,3,1,2,3,1,1,10,2,2,3,10,
+            3,2,3,2,3,2,1,3,10,1,2,3,10
+        )], ncol=3, dimnames=list(NULL,c("Jan","Feb","Mar"))),
+              v=c(8,6,16,21,15,9,11,3,77,15,3,13,-77))
+
+    expect_true(x_c == xpz)
+
+
+
+    jj <-sparsetable(   
+        i=matrix(letters[c(
+            1,1,1,
+            1,2,3,
+            3,9,3
+        )], ncol=3, dimnames=list(NULL,c("Jan","Feb","Mar"))),
+        v=c(77,78,79))
+
+    xpz[] <- jj
+    expect_true(xpz == sparsetable(
+                           i = matrix(c(
+                               "a", "a", "a", "a", "b", "b", "b", "c", "c", "c", "c", "c",
+                               "a", "b", "b", "c", "a", "b", "c", "a", "a", "b", "b", "c",
+                               "c", "b", "i", "c", "b", "c", "b", "a", "c", "a", "b", "c"
+                           ),12, 3),
+                           v = c(77,  6, 78, 79, 21, 15,  9, 11,  3, 15,  3, 13))
+                )
+
+    x <- x_c
+    x[index(x)[1:4,]] <- 0
+    expect_false(x == x_c)
+    expect_false(x_c == x)
+
+    x['c','a','c'] <- 334
+    expect_false(x == x_c)
+    expect_false(x_c == x)
+
+    xas <- asum(x_c,"Feb")
+
+    xas_correct <- sparsetable(matrix(
+        c("a", "a", "b", "b", "c", "c", "c",
+          "b", "c", "b", "c", "a", "b", "c"
+          ), 7,2, dimnames = list(NULL, c("Jan", "Mar"))), c(6, 24, 30, 15, 26, 3, 16))
+
+    expect_true(xas == xas_correct)
+
+
+})
+
+
