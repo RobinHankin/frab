@@ -374,7 +374,7 @@ setMethod("pmax",signature("..."="frab"), function(...){pmax_dots(...)} )
 setMethod("pmin",signature("..."="frab"), function(...){pmin_dots(...)} )
 
 setMethod("pmax",signature("..."="ANY"),function(...,na.rm=FALSE){base::pmax(..., na.rm=na.rm)})
-setMethod("pmin",signature("..."="ANY"),function(...,na.rm=FALSE){base::pmax(..., na.rm=na.rm)})
+setMethod("pmin",signature("..."="ANY"),function(...,na.rm=FALSE){base::pmin(..., na.rm=na.rm)})
 
 setGeneric("is.na")
 setMethod("is.na","frab",function(x){which(is.na(values(x)))})

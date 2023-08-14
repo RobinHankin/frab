@@ -217,5 +217,8 @@ test_that("Test suite aaa.R",{
   expect_true(is.frab(rfrabb()))
   expect_true(is.frab(rfrabbb()))
   expect_output(print(rfrabb()*0))
+
+  expect_true(all(pmax(1:5,5:1) == c(5,4,3,4,5)))
+  expect_true(all(pmin(1:5,5:1) == c(1,2,3,2,1)))
   
 })
