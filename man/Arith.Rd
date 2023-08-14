@@ -13,6 +13,7 @@
 \alias{frab_negative}
 \alias{frab_reciprocal}
 \alias{frab_plus_frab}
+\alias{frab_plus_numeric}
 \alias{frab_multiply_frab}
 \alias{frab_unary}
 \alias{frab_arith_frab}
@@ -43,6 +44,7 @@ frab_power_numeric(e1,e2)
 numeric_power_frab(e1,e2)
 frab_unary(e1,e2)
 frab_arith_frab(e1,e2)
+frab_plus_numeric(e1,e2)
 frab_arith_numeric(e1,e2)
 numeric_arith_frab(e1,e2)
 }

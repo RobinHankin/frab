@@ -4,16 +4,21 @@ test_that("Test suite aaa.R",{
   expect_true(x == frab(c(b=2,a=1,i=4,c=3)))
   expect_true(x + c(a=1) == frab(c(a=2,b=2,i=4,c=3)))
   expect_true(c(a=1) + x == frab(c(a=2,b=2,i=4,c=3)))
+
   expect_true(is.namedvector(as.namedvector(x)))
   expect_true(is.namedlogical(as.namedvector(x)>2))
   expect_true(is.unnamedvector(as.vector(as.namedvector(x))))
   expect_true(x^2 == frab(c(a=1,b=4,c=9,i=16)))
-  expect_true(2^x == frab(c(a=2,b=4,c=8,i=16)))
+  expect_error(2^x)
+  expect_error(x^c(r=3))
 
   doublex <- frab(c(c=6,a=2,i=8,b=4))
   minusx <- frab(c(c=-3,a=-1,i=-4,b=-2))
   expect_true(2*x == doublex)
   expect_true(x*2 == doublex)
+
+  expect_error(x * c(a=1))
+  expect_error(c(a=1) * x)
 
   expect_true(x/0.5 == doublex)
   expect_true(1/frab(c(a=1,b=1,i=1)) == frab(c(a=1,i=1,b=1)))
@@ -27,10 +32,8 @@ test_that("Test suite aaa.R",{
   expect_true(-x ==  minusx)
   expect_true( x == -minusx)
 
-  expect_error(x+5)
-  expect_error(x-5)
-  expect_error(2+x)
-  expect_error(2-x)
+  expect_true(x+5 ==  5+x)
+  expect_true(x-5 == -5+x)
 
   expect_true(sum(x == 2) == 1)
   expect_true(sum(x >  2) == 2)

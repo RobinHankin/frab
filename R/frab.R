@@ -101,9 +101,10 @@ setMethod("as.table","frab",function(x,...){structure(as.namedvector(x),dim=leng
                      elements(names(F2)), elements(values(F2))))
 }
 
-`frab_multiply_numeric` <- function(e1,e2){frab(setNames(elements(values(e1)*e2),elements(names(e1))))}
-`frab_power_numeric`    <- function(e1,e2){frab(setNames(elements(values(e1)^e2),elements(names(e1))))}
-`numeric_power_frab`    <- function(e1,e2){frab(setNames(elements(e1^values(e2)),elements(names(e2))))}
+`frab_plus_numeric`     <- function(e1,e2){if(is.namedvector(e2)){return(e1+frab(e2))}else{return(frab(setNames(elements(values(e1)+e2),elements(names(e1)))))}}
+`frab_multiply_numeric` <- function(e1,e2){if(is.namedvector(e2)){stop("not defined")}else{return(frab(setNames(elements(values(e1)*e2),elements(names(e1)))))}}
+`frab_power_numeric`    <- function(e1,e2){if(is.namedvector(e2)){stop("not defined")}else{return(frab(setNames(elements(values(e1)^e2),elements(names(e1)))))}}
+`numeric_power_frab`    <- function(e1,e2){stop("<numeric> ^ <frab> not defined")}
 
 `frab_unary` <- function(e1,e2){
   switch(.Generic,
@@ -125,8 +126,8 @@ setMethod("as.table","frab",function(x,...){structure(as.namedvector(x),dim=leng
 
 `frab_arith_numeric` <- function(e1,e2){ # e1 frab, e2 numeric; e2 might be a named vector.
   switch(.Generic,
-         "+" = frab_plus_frab(e1, as.frab(e2)),
-         "-" = frab_plus_frab(e1, frab_negative(as.frab(e2))),
+         "+" = frab_plus_numeric(e1, e2),
+         "-" = frab_plus_numeric(e1, -e2),
          "*" = frab_multiply_numeric(e1,e2),
          "/" = frab_multiply_numeric(e1,1/e2),
          "^" = frab_power_numeric(e1,e2),
@@ -135,8 +136,8 @@ setMethod("as.table","frab",function(x,...){structure(as.namedvector(x),dim=leng
 
 `numeric_arith_frab` <- function(e1,e2){ # e1 numeric, e2 frab; e2 _might_ be a named vector.
   switch(.Generic,
-         "+" = frab_plus_frab(as.frab(e1),  e2),
-         "-" = frab_plus_frab(as.frab(e1), -e2),
+         "+" = frab_plus_numeric( e2,e1),
+         "-" = frab_plus_numeric(-e2,e1),
          "*" = frab_multiply_numeric(e2,e1), 
          "/" = frab_multiply_numeric(e2,1/e1),
          "^" = numeric_power_frab(e1,e2),
