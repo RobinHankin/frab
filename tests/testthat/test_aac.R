@@ -143,12 +143,17 @@ test_that("Test suite aac.R",{
     expect_false(x_c == x)
 
     xas <- asum(x_c,"Feb")
-
     xas_correct <- sparsetable(matrix(
         c("a", "a", "b", "b", "c", "c", "c",
           "b", "c", "b", "c", "a", "b", "c"
           ), 7,2, dimnames = list(NULL, c("Jan", "Mar"))), c(6, 24, 30, 15, 26, 3, 16))
+    expect_true(xas == xas_correct)
 
+    xas <- asum(x_c,c(FALSE,TRUE,FALSE))
+    xas_correct <- sparsetable(matrix(
+        c("a", "a", "b", "b", "c", "c", "c",
+          "b", "c", "b", "c", "a", "b", "c"
+          ), 7,2, dimnames = list(NULL, c("Jan", "Mar"))), c(6, 24, 30, 15, 26, 3, 16))
     expect_true(xas == xas_correct)
 
     x <- x_c
@@ -197,6 +202,29 @@ test_that("Test suite aac.R",{
     expect_true(all(x[which(9 == x)] == 9))
     expect_true(all(9 == x[which(x == 9)]))
     expect_true(all(9 == x[which(9 == x)]))
+
+
+    expect_true(all(x[index(x)[c(1,3,5,7),]] %in% c(8,11,15,16)))
+
+    x <- x_c
+    expect_silent(jjx <- x[which(x>9)])
+    expect_true(all(jjx > 9))
+
+    x <- x_c
+    expect_silent(jjx <- x[values(x) > 9])
+    expect_true(all(jjx > 9))
+
+
+    x <- x_c
+    expect_silent(x[which(x>9)] <- 0)
+    expect_true(all(x<=9))
+
+    x <- x_c
+    expect_silent(x[values(x) >= 9] <- 8)
+    expect_true(all(x <= 8))
+
+
+
 
 })
 
