@@ -240,27 +240,6 @@ List sparsetable_asum_include
 }
 
 // [[Rcpp::export]]
-List sparsetable_asum_exclude 
-(
- const CharacterMatrix &M, const NumericVector &d,
- const IntegerVector &n
- ){
-    sparsetable S;
-    mycont v;
-
-    for(int i=0; i<M.nrow() ; i++){
-        v.clear();
-        for(int j=0; j<n.size(); j++){
-            v.push_back(M(i,n[j]-1));   //off-by-one error
-        }
-        S[v] += d[i];
-    }
-    return retval(S);
-}
-
-//sparsetable(matrix(sample(0:5,100,rep=T),ncol=5) )-> S
-
-// [[Rcpp::export]]
 List sparsetable_pmax
 (
  const CharacterMatrix &M1, const NumericVector &d1,

@@ -172,19 +172,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// sparsetable_asum_exclude
-List sparsetable_asum_exclude(const CharacterMatrix& M, const NumericVector& d, const IntegerVector& n);
-RcppExport SEXP _frab_sparsetable_asum_exclude(SEXP MSEXP, SEXP dSEXP, SEXP nSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const CharacterMatrix& >::type M(MSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type d(dSEXP);
-    Rcpp::traits::input_parameter< const IntegerVector& >::type n(nSEXP);
-    rcpp_result_gen = Rcpp::wrap(sparsetable_asum_exclude(M, d, n));
-    return rcpp_result_gen;
-END_RCPP
-}
 // sparsetable_pmax
 List sparsetable_pmax(const CharacterMatrix& M1, const NumericVector& d1, const CharacterMatrix& M2, const NumericVector& d2);
 RcppExport SEXP _frab_sparsetable_pmax(SEXP M1SEXP, SEXP d1SEXP, SEXP M2SEXP, SEXP d2SEXP) {
@@ -213,7 +200,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_frab_sparsetable_setter", (DL_FUNC) &_frab_sparsetable_setter, 4},
     {"_frab_sparsetable_equality", (DL_FUNC) &_frab_sparsetable_equality, 4},
     {"_frab_sparsetable_asum_include", (DL_FUNC) &_frab_sparsetable_asum_include, 3},
-    {"_frab_sparsetable_asum_exclude", (DL_FUNC) &_frab_sparsetable_asum_exclude, 3},
     {"_frab_sparsetable_pmax", (DL_FUNC) &_frab_sparsetable_pmax, 4},
     {NULL, NULL, 0}
 };

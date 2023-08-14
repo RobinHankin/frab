@@ -49,10 +49,6 @@ sparsetable_asum_include <- function(M, d, n) {
     .Call(`_frab_sparsetable_asum_include`, M, d, n)
 }
 
-sparsetable_asum_exclude <- function(M, d, n) {
-    .Call(`_frab_sparsetable_asum_exclude`, M, d, n)
-}
-
 sparsetable_pmax <- function(M1, d1, M2, d2) {
     .Call(`_frab_sparsetable_pmax`, M1, d1, M2, d2)
 }
