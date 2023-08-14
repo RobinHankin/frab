@@ -212,4 +212,10 @@ test_that("Test suite aaa.R",{
   x[is.na(x)] <- 35
   expect_true(x == frab(c(a=1,b=35,c=2,d=5,e=6,f=35)))
 
+  expect_error(list_to_frab(list(names=frab::values(rfrab()))))
+
+  expect_true(is.frab(rfrabb()))
+  expect_true(is.frab(rfrabbb()))
+  expect_output(print(rfrabb()*0))
+  
 })
