@@ -211,12 +211,10 @@ setMethod("show", "sparsetable", function(object){print_sparsetable_matrixform(o
 
 `sparsetable_arith_numeric` <- function(e1,e2){ # e1 sparsetable, e2 numeric; e2 might be a named vector.
   switch(.Generic,
-         "+" = sparsetable_plus_sparsetable(e1, as.sparsetable(e2)),
-         "-" = sparsetable_plus_sparsetable(e1, sparsetable_negative(as.sparsetable(e2))),
          "*" = sparsetable_multiply_numeric(e1,e2),
          "/" = sparsetable_multiply_numeric(e1,1/e2),
          "^" = sparsetable_power_numeric(e1,e2),
-         stop(gettextf("binary operator %s not implemented on sparsetables", dQuote(.Generic)))
+         stop(gettextf("binary operator %s not implemented in this case", dQuote(.Generic)))
          ) }
 
 `numeric_arith_sparsetable` <- function(e1,e2){ # e1 numeric, e2 sparsetable; e2 _might_ be a named vector.
