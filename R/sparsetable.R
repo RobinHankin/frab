@@ -290,7 +290,7 @@ setMethod("[",
 
 setMethod("[",signature(x="sparsetable",i="disord",j="missing"),
           function(x,i){
-              sparsetable(index(x)[i,],values(x)[i])  # the meat
+              sparsetable(index(x)[i,,drop=FALSE],values(x)[i])  # the meat
                  } )
 
 setMethod("[",signature(x="sparsetable",i="disindex",j="missing"),
