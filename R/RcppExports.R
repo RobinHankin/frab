@@ -57,7 +57,3 @@ sparsetable_pmax <- function(M1, d1, M2, d2) {
     .Call(`_frab_sparsetable_pmax`, M1, d1, M2, d2)
 }
 
-sparsetable_pmin <- function(M1, d1, M2, d2) {
-    .Call(`_frab_sparsetable_pmin`, M1, d1, M2, d2)
-}
-
