@@ -297,7 +297,7 @@ setMethod("[",signature(x="sparsetable",i="disindex",j="missing"),
           function(x,i,j){
               vx <- frab::values(x)
               vi <- disordR::values(i)
-              sparsetable(index(x)[vi,], vx[i]) # the meat
+              sparsetable(index(x)[vi,,drop=FALSE], vx[i]) # the meat
           } )
 
 setReplaceMethod("[",signature(x="sparsetable",i="disord",j="missing",value="numeric"),
