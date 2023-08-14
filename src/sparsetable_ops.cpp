@@ -207,14 +207,11 @@ bool sparsetable_equality // S1 == S2
             S2.erase(v);
         }
     }
-    // at this point, S1[v] == S2[v] for every index 'v' of S1;  S1\subseteq S2.
-    // We need to check that every element of S2 has been accounted for:
+    // at this point, S1[v] == S2[v] for every index 'v' of S1; and we
+    // know that S1 and S2 are the same size, so S1 and S2 are identical:
     
-    if(S2.empty()){
-        return TRUE;
-    } else {
-        return FALSE;
-    }
+    return TRUE;
+
 }
 
 // [[Rcpp::export]]
