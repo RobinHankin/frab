@@ -12,3 +12,4 @@
 # frab 0.0-3
 
 - sparsetable functionality
+- near complete test coverage
