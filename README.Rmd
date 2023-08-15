@@ -1,5 +1,5 @@
 ---
-title: "The frab package: how to add two tables"
+title: "The frab package: how to add tables"
 output:
   github_document:
     pandoc_args: --webtex
@@ -133,3 +133,10 @@ to six distinct column headings) even though `x2` and `y2` have only five.
 For more detail, see the package vignette
 
 `vignette("frab")`
+
+## References
+
+* R. K. S. Hankin 2023.  "The free Abelian group in `R`: the `frab`
+  package", arXiv, https://arxiv.org/abs/2307.13184.
+* R. K. S. Hankin 2022. "Disordered vectors in `R`: introducing the
+  `disordR` package", arXiv, https://arxiv.org/abs/2210.03856
