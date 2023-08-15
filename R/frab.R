@@ -313,8 +313,6 @@ setReplaceMethod("[",signature(x="frab",i="disindex",j="missing",value="numeric"
                      return(frab(setNames(elements(p),names(x))))
                  } )
 
-
-
 setReplaceMethod("[",signature(x="frab",i="missing",j="missing",value="numeric"),
                  function(x,i,j,value){
                    v <- values(x)
@@ -324,15 +322,13 @@ setReplaceMethod("[",signature(x="frab",i="missing",j="missing",value="numeric")
 
 setReplaceMethod("[",signature(x="frab",i="missing",j="missing",value="frab"),
                  function(x,i,j,value){
-                   stopifnot(consistent(values(x),values(value)))
-                   return(value)
+                   stop("x[] <- y (with x, y frabs) does not make sense; try x <- y?")
                  } )
 
 setReplaceMethod("[",signature(x="frab",i="missing",j="missing",value="ANY"),
                  function(x,i,j,value){
                    stop("frab,missing,missing,ANY-method not implemented")
                  } )
-
 
 
 setReplaceMethod("[",signature(x="frab",i="ANY",j="ANY",value="ANY"),
