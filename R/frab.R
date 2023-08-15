@@ -381,8 +381,9 @@ setMethod("is.na","frab",function(x){which(is.na(values(x)))})
 setGeneric("is.na<-")
 setReplaceMethod("is.na",signature("frab",value="disord"),
                  function(x,value){
-                   values(x)[value] <- NA
-                   return(x)
+                   v <- values(x)
+                   is.na(v) <- value # the meat
+                   return(setNames(elements(v),elements(names(x))))
                  } )
 
 setGeneric("is.notna",function(x){standardGeneric("is.notna")})

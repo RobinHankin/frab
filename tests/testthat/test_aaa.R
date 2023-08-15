@@ -1,10 +1,18 @@
 test_that("Test suite aaa.R",{
   x <- frab(c(a=1,b=2,c=3,i=4))
   expect_true(is.frab(x))
+  expect_true(is.frab(as.frab(x)))
   expect_true(x == frab(c(b=2,a=1,i=4,c=3)))
   expect_true(x + c(a=1) == frab(c(a=2,b=2,i=4,c=3)))
   expect_true(c(a=1) + x == frab(c(a=2,b=2,i=4,c=3)))
 
+  jjx <- x
+  jjx[] <- 1
+  expect_true(jjx == 1/jjx)
+  expect_error(as.frab(1:5))
+
+  expect_error(x > as.frab(c(a=3,b=4)))
+  
   expect_true(is.namedvector(as.namedvector(x)))
   expect_true(is.namedlogical(as.namedvector(x)>2))
   expect_true(is.unnamedvector(as.vector(as.namedvector(x))))
@@ -35,6 +43,9 @@ test_that("Test suite aaa.R",{
   expect_true(x+5 ==  5+x)
   expect_true(x-5 == -5+x)
 
+  expect_true(-x+5 ==   5-x)
+  expect_true(-x-5 ==  -5-x)
+
   expect_true(sum(x == 2) == 1)
   expect_true(sum(x >  2) == 2)
   expect_true(sum(x >= 2) == 3)
@@ -55,6 +66,7 @@ test_that("Test suite aaa.R",{
   expect_output(print(x))
   options("frab_print_hash" = TRUE)
   expect_output(print(x))
+  expect_output(print(x*0))
   options("frab_print_hash" = FALSE)
   expect_output(print(x))
   options("frab_print_hash" = 233)
@@ -148,6 +160,7 @@ test_that("Test suite aaa.R",{
   expect_error(c_frab_identity(letters[1:6],1:5))
 
   expect_output(print(zero()))
+  expect_output(print(frab(c(a=1,b=3,c=5))*0))
   
   jj <- c(a=3,b=1,d=3)
   expect_false(is.namedlogical(jj))
@@ -215,6 +228,10 @@ test_that("Test suite aaa.R",{
   x[is.na(x)] <- 35
   expect_true(x == frab(c(a=1,b=35,c=2,d=5,e=6,f=35)))
 
+  x <- frab(c(a=1,b=-4,c=2,d=5,e=6,f=-9))
+  expect_silent(is.na(x) <- x>0)
+  expect_true(x["b"] == -4)
+  
   expect_error(list_to_frab(list(names=frab::values(rfrab()))))
 
   expect_true(is.frab(rfrabb()))
