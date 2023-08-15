@@ -383,7 +383,7 @@ setReplaceMethod("is.na",signature("frab",value="disord"),
                  function(x,value){
                    v <- values(x)
                    is.na(v) <- value # the meat
-                   return(setNames(elements(v),elements(names(x))))
+                   return(frab(setNames(elements(v),elements(names(x)))))
                  } )
 
 setGeneric("is.notna",function(x){standardGeneric("is.notna")})
