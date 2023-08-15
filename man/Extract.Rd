@@ -36,6 +36,8 @@
 \alias{[<-,frab,disord,missing,numeric-method}
 \alias{[<-,frab,disindex,missing,numeric,ANY-method}
 \alias{[<-,frab,disindex,missing,numeric-method}
+\alias{[<-,frab,missing,missing,frab-method}
+\alias{[<-,frab,missing,missing,numeric-method}
 \alias{[<-,frab,missing,missing,ANY-method}
 \title{Extraction and replacement methods for class \code{"frab"}}
 \description{
