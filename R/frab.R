@@ -139,7 +139,7 @@ setMethod("as.table","frab",function(x,...){structure(as.namedvector(x),dim=leng
          "+" = frab_plus_numeric( e2,e1),
          "-" = frab_plus_numeric(-e2,e1),
          "*" = frab_multiply_numeric(e2,e1), 
-         "/" = frab_multiply_numeric(e2,1/e1),
+         "/" = frab_multiply_numeric(frab_reciprocal(e2),e1),
          "^" = numeric_power_frab(e1,e2),
          stop(gettextf("binary operator %s not implemented on frabs", dQuote(.Generic)))
          ) }
@@ -158,6 +158,7 @@ setMethod("as.table","frab",function(x,...){structure(as.namedvector(x),dim=leng
 }
 
 `frab_eq_num` <- function(e1,e2){values(e1) == e2}
+`frab_ne_num` <- function(e1,e2){values(e1) != e2}
 `frab_gt_num` <- function(e1,e2){values(e1) >  e2}
 `frab_ge_num` <- function(e1,e2){values(e1) >= e2}
 `frab_lt_num` <- function(e1,e2){values(e1) <  e2}
@@ -166,6 +167,7 @@ setMethod("as.table","frab",function(x,...){structure(as.namedvector(x),dim=leng
 `frab_compare_numeric` <- function(e1,e2){  # rfrab() > 3
   switch(.Generic,
          "==" = frab_eq_num(e1, e2),
+         "!=" = frab_ne_num(e1, e2),
          ">"  = frab_gt_num(e1, e2),
          ">=" = frab_ge_num(e1, e2),
          "<"  = frab_lt_num(e1, e2),
@@ -175,6 +177,7 @@ setMethod("as.table","frab",function(x,...){structure(as.namedvector(x),dim=leng
     
 
 `num_eq_frab` <- function(e1,e2){e1 == values(e2)}
+`num_ne_frab` <- function(e1,e2){e1 != values(e2)}
 `num_gt_frab` <- function(e1,e2){e1 >  values(e2)}
 `num_ge_frab` <- function(e1,e2){e1 >= values(e2)}
 `num_lt_frab` <- function(e1,e2){e1 <  values(e2)}
@@ -183,6 +186,7 @@ setMethod("as.table","frab",function(x,...){structure(as.namedvector(x),dim=leng
 `numeric_compare_frab` <- function(e1,e2){  # 4 <= rfrab()
   switch(.Generic,
          "==" = num_eq_frab(e1, e2),
+         "!=" = num_ne_frab(e1, e2),
          ">"  = num_gt_frab(e1, e2),
          ">=" = num_ge_frab(e1, e2),
          "<"  = num_lt_frab(e1, e2),
@@ -399,3 +403,19 @@ setReplaceMethod("is.na",signature("frab",value="disord"),
 
 setGeneric("is.notna",function(x){standardGeneric("is.notna")})
 setMethod("is.notna","frab",function(x){which(!is.na(values(x)))})
+
+setMethod("Summary", "frab",
+          function(x, ..., na.rm=FALSE){
+            switch(.Generic,
+                   max    = max(values(x)),
+                   min    = min(values(x)),
+                   range  = c(min(values(x)),max(values(x))),
+                   sum    = sum(values(x)),
+                   stop(gettextf("Summary function %s not implemented on frabs", dQuote(.Generic)))
+                   )
+          }
+          )
+
+
+
+

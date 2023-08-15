@@ -47,12 +47,14 @@ test_that("Test suite aaa.R",{
   expect_true(-x-5 ==  -5-x)
 
   expect_true(sum(x == 2) == 1)
+  expect_true(sum(x != 2) == 3)
   expect_true(sum(x >  2) == 2)
   expect_true(sum(x >= 2) == 3)
   expect_true(sum(x <  2) == 1)
   expect_true(sum(x <= 2) == 2)
 
   expect_true(sum(2 == x) == 1)
+  expect_true(sum(2 != x) == 3)
   expect_true(sum(2 <= x) == 3)
   expect_true(sum(2 >  x) == 1)
   expect_true(sum(2 >= x) == 2)
@@ -242,8 +244,24 @@ test_that("Test suite aaa.R",{
   is.na(x) <- x>0
   expect_true(all(x[is.notna(x)] < 0))
 
+  x <- frab(c(a=1,b=-4,c=2,d=5,e=6,f=-9))
+  expect_true(max(x) == 6)
+  expect_true(min(x) == -9)
+  expect_true(sum(x) == 1)
+  expect_true(all(range(x) == c(-9,6)))
+  expect_error(prod(x))
+  values(x) <- 1
+  expect_true(x == 1/x)
 
   expect_true(all(pmax(1:5,5:1) == c(5,4,3,4,5)))
   expect_true(all(pmin(1:5,5:1) == c(1,2,3,2,1)))
+
+
+
+  x <- frab(c(a=1,b=-4,c=2,d=5,e=6,f=-9))
+  expect_error(x[] <- x)
+  expect_error(x[x != 6] <- x)
+  expect_error(x[values(x)] <- x)
+  expect_error(x[x<5] <- 6*x[x<5])
   
 })
