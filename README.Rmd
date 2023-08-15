@@ -1,5 +1,5 @@
 ---
-title: "The frab package: an alternative interpretation of named vectors"
+title: "The frab package: how to add two tables"
 output:
   github_document:
     pandoc_args: --webtex
@@ -21,33 +21,49 @@ set.seed(0)
 
 # Overview
 
-The `frab` package furnishes an alternative interpretation of named
+The `frab` package allows one to "add" tables in a natural way.  It also
+furnishes an alternative interpretation of named
 vectors wherein addition is defined using the (unique) names as the
-primary key.  This allows one to "add" tables in a consistent and
-meaningful way.  The underlying mathematical object is the Free
+primary key.  Support for multi-dimensional tables is included.
+The underlying mathematical object is the Free
 Abelian group.  To cite in publications please use R. K. S. Hankin
 2023.  "The free Abelian group in R: the frab package", arXiv,
 https://arxiv.org/abs/2307.13184.
 
+The package has two S4 classes: `frab` and `sparsetable`. 
+Class `frab` is for one-dimensional tables and is an alternative
+implementation of named vectors; class `sparsetable` handles
+multi-way tables in a natural way.
+
 # The package in use
 
-The package has a single S4 class of objects, `frab`.  Primary
+## One-dimensional tables: class `frab`
+
+Primary
 construction function `frab()` takes a named vector and returns a
 `frab` object:
 
-
 ```{r use1}
 suppressMessages(library("frab"))
-frab(c(x=1,b=2,a=2,b=3,c=7,x=-1))
+p <- c(x=1,b=2,a=2,b=3,c=7,x=-1)
+frab(p)
 ```
 
 Above, we see from the return value that function `frab()` has
 reordered the labels of its argument, calculated the value for entry
 `b` [as $2+3=5$], determined that the entry for `x` has vanished [the
 values cancelling out], and printed the result using a bespoke show
-method.  However, the package's most useful feature is the overloaded
-definition of addition:
+method.  It is useful to think of the input argument as a semi-constructed
+and generalized "table" of observations.  Thus 
 
+```{r show input argument}
+p
+```
+
+Above we see `p` might correspond to a story: "look, we have one `x`, two `b`s,
+two `a`s, another three `b`s, seven `c`s...oh hang on that `x` was a mistake I
+had better subtract one now".  However, the package's most useful feature is the
+overloaded definition of addition:
 
 ```{r label=additionoverload}
 (x <- rfrab())
@@ -55,7 +71,62 @@ definition of addition:
 x+y
 ```
 
+Above we see function `rfrab()` used to generate a random `frab` object, corresponding to a table.  It is _possible_ to add `x` and `y` directly:
 
+```{r showitispossible}
+xn <- as.namedvector(x)
+yn <- as.namedvector(y)
+table(c(rep(names(xn),times=xn),rep(names(yn),times=yn)))
+```
+
+but this is extremely inefficient and cannot deal with fractional (or indeed negative) entries.
+
+# Multi-way tables
+
+Class `sparsetable` deals with multi-way tables.  Taking three-way tables as an example:
+
+```{r showthreewaytable}
+(x3 <- rspar())
+```
+
+Function `rspar()` returns a random `sparsetable` object.  We see that, of the $3^3=27$
+possible entries, only 11 are non-zero.  We may coerce to a regular table:
+
+```{r coercethreearray}
+as.array(x3)
+```
+
+In this case it is hardly worth taking advantage of the sparse representation (which is largely inherited from the `spray` package) but a larger example might be
+
+```{r}
+rspar(n=4,l=10,d=12)
+```
+
+The random `sparsetable` object shown above would require $10^{12}$ floating point numbers in full array form,
+of which only 4 are nonzero.  Multi-way tables may be added in the same way as `frab` objects:
+
+```{r addtwosparsetables}
+y3 <- rspar()
+x3+y3
+```
+
+## Two-way tables
+
+Two-way tables are something of a special case, having their own print method.
+By default, two-dimensional `sparsetable` objects are coerced to a matrix before
+printing, but otherwise operate in the same way as the multi-dimensional case
+discussed above:
+
+```{r addtwotwodimensionalsparsetables}
+(x2 <- rspar2())
+(y2 <- rspar2())
+x2+y2
+```
+
+Above, note how the sizes of the coerced matrices are different ($5\times 5$ for `x2`,
+$6\times 5$ for `y2`) but the addition method copes, using a bespoke sparse
+matrix representation.  Also note that the sum has _six_ columns (corresponding
+to six distinct column headings) even though `x2` and `y2` have only five.
 
 # Further information
 
