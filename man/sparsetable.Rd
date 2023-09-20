@@ -145,7 +145,7 @@ are printed using matrix index form, just the same as any other arity.
 
 Functions \code{rspar()}, \code{rspar2()}, and \code{rsparr()} create
 random \code{sparsetable} objects of increasing complexity.  The
-defaults are chosen to make the values of sensible sizes.
+defaults are chosen so that the returned frabs are of sensible sizes.
 
 Function \code{drop()} takes a sparsetable object of arity one and
 coerces to a \code{frab} object.
@@ -171,7 +171,7 @@ There is a discussion of package idiom in the vignette,
 }
 \note{
   The pronunciation of \dQuote{sparsetable} has the emphasis on the
-  first syllable, so it rhymes with \dQuote{Barnable} or
+  first syllable, so it rhymes with [British river-port town]
   \dQuote{Barnstaple}.
 }
 \author{Robin K. S. Hankin}
