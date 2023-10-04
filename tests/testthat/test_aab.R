@@ -6,6 +6,7 @@
 test_that("Test suite aab.R",{
 
 checker1 <- function(A){
+  expect_true(A == A)
   expect_true(A == +A)    
   expect_true(A + zero() ==  A)
   expect_true(A - zero() ==  A)
