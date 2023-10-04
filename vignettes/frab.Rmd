@@ -17,17 +17,17 @@ library("mvtnorm")
 set.seed(1)
 ```
 
-<p style="text-align: right;">
-![](`r system.file("help/figures/frab.png", package = "frab")`){width=10%}
-</p>
+```{r out.width='20%', out.extra='style="float:right; padding:10px"',echo=FALSE}
+knitr::include_graphics(system.file("help/figures/frab.png", package = "frab"))
+```
 
-**TLDR**: Adding two objects of class `table` has a natural
-interpretation.  However, in base R, adding two tables can give
-plausible but incorrect results.  The `frab` package provides a
-consistent and efficient way to add `table` objects, subject to
-`disordR` discipline [@hankin2022_disordR].  The underlying
-mathematical structure is the Free Abelian group, hence "`frab`".  To
-cite in publications, please use @hankin2023_frab.
+**TLDR**: To cite in publications, please use @hankin2023_frab.
+Adding two objects of class `table` has a natural interpretation.
+However, in base R, adding two tables can give plausible but incorrect
+results.  The `frab` package provides a consistent and efficient way
+to add `table` objects, subject to `disordR` discipline
+[@hankin2022_disordR].  The underlying mathematical structure is the
+Free Abelian group, hence "`frab`".
 
 # Prologue: `table()`
 
@@ -75,10 +75,10 @@ each element, making it easier to refer to specific values within the
 vector using their respective names.
 
 Named vectors are a convenient and useful feature of the R programming
-language [@rcore2022].  However, given the following two named
+language [@rcore2022].  However, consider the following two named
 vectors:
 
-```{r}
+```{r label=twonamedvectors}
 x <- c(a=1,b=2,c=3)
 y <- c(c=4,b=1,a=1)
 ```
@@ -108,7 +108,7 @@ and meaningful way of adding two tables together, using standard R
 syntax.  It uses the names of a named vector as the indexing
 mechanism.  Package idiom is straightforward:
 
-```{r}
+```{r label=coercetofrabs}
 (x <- frab(c(a=1,b=2,d=7)))
 (y <- frab(c(c=4,b=1,a=-1)))
 x+y
@@ -124,7 +124,7 @@ respectively].  The result is presented using the `frab` print method.
 Package idiom includes extraction and replacement methods, all of
 which should work as expected:
 
-```{r}
+```{r label=showextraction}
 x <- frab(c(x=5,d=1,e=2,f=4,a=3,c=3,g=9))
 x
 x>3
@@ -140,7 +140,7 @@ discipline [@hankin2022_disordR].  Results are coerced to `disord`
 objects if needed.  Tables may be added to `frab` objects:
 
 
-```{r}
+```{r label=showrfrab}
 a <- rfrab()
 b <- table(sample(letters[1:8],12,replace=T))
 a
@@ -150,8 +150,6 @@ a+b
 
 Above we see the `+` operator is defined between a `frab` and a
 `table`, coercing tables to `frab` objects to give consistent results.
-
-
 
 # Two dimensional tables
 
