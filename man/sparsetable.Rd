@@ -161,8 +161,8 @@ general expectation is that access and replacement use (character)
 matrices and an index object.  However, indexing by \code{disord} and
 \code{disindex} objects should also work [e.g. \code{x[x>7]}].
 
-The \CRANpkg{spray} source code and the \code{sparstable} functionality
-hve about 90\% overlap; there were enough small differences between the
+The \CRANpkg{spray} source code and the \code{sparsetable} functionality
+have about 90\% overlap; there were enough small differences between the
 codes to make it worth maintaining two sets of source code, IMO.
 
 There is a discussion of package idiom in the vignette,

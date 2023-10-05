@@ -101,11 +101,9 @@ bool equal2_samesize(frab F1, frab F2){
       const string symbol = it->first;
       if(F1[symbol] != F2[symbol]){  // meat 1
 	return false;
-      } else {
-	F2.erase(symbol);
       }
   }
-  return F2.empty();
+  return true;
 }
 
 bool equal(const frab &F1, const frab &F2){
