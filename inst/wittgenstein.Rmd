@@ -1,23 +1,26 @@
 ---
-title: "That of which we cannot speak, we must remain silent"
+title: "That of which we cannot speak, we must remain silent: absent symbols and the `frab` package"
 author: "Robin Hankin"
-date: "2023-07-25"
 output: html_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+suppressMessages(library("frab"))
 ```
 
-## Absent symbols and the `frab` package
+```{r out.width='20%', out.extra='style="float:right; padding:10px"',echo=FALSE}
+knitr::include_graphics(system.file("help/figures/frab.png", package = "frab"))
+```
 
 I do not really understand what Wittgenstein was trying to say in
 proposition 7 of his _Tractatus_, but the interpretation of symbols
 not present in a `frab` object is certainly an interesting problem.
-Consider the canonical use-case for `frab` objects:
+In this short unstructured and informal document, I consider how one
+might consider key-value pairs in associative arrays when a particular
+key is absent.  First, the canonical use-case for `frab` objects:
 
 ```{r frabaplusb}
-suppressMessages(library("frab"))
 (a <- frab(c(u= -5,v=2,w=1)))
 (b <- frab(c(v=1,x=2)))
 a+b
@@ -25,7 +28,7 @@ a+b
 
 Above we see that `a` has no `"x"` term, and `b` has `"x"=2`, the sum
 being `"x"=2`; we are justified in asserting that, in object `b`,
-`"x"=0`.  However, consider this:
+`"x"=0` even though it is not present.  However, consider this:
 
 ```{r frabminus2}
 (x <- frab(c(a=4, b=-3, c=1, d=-1, e=9)))
