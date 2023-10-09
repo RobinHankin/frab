@@ -5,14 +5,12 @@
 \alias{Compare,frab,numeric-method}
 \alias{Compare,numeric,frab-method}
 \alias{frab_eq}
-\alias{frab_compare_frab}
 \alias{frab_eq_num}
 \alias{frab_ne_num}
 \alias{frab_gt_num}
 \alias{frab_ge_num}
 \alias{frab_lt_num}
 \alias{frab_le_num}
-\alias{frab_compare_numeric}
 \alias{num_eq_frab}
 \alias{num_ne_frab}
 \alias{num_gt_frab}
@@ -20,6 +18,8 @@
 \alias{num_lt_frab}
 \alias{num_le_frab}
 \alias{numeric_compare_frab}
+\alias{frab_compare_frab}
+\alias{frab_compare_numeric}
 \title{Comparision methods}
 \description{
   Methods for comparison (greater than, etc) in the \pkg{frab} package.
@@ -39,14 +39,12 @@
 }
 \usage{
 frab_eq(e1,e2)
-frab_compare_frab(e1,e2)
 frab_eq_num(e1,e2)
 frab_ne_num(e1,e2)
 frab_gt_num(e1,e2)
 frab_ge_num(e1,e2)
 frab_lt_num(e1,e2)
 frab_le_num(e1,e2)
-frab_compare_numeric(e1,e2)
 num_eq_frab(e1,e2)
 num_ne_frab(e1,e2)
 num_gt_frab(e1,e2)
@@ -54,6 +52,8 @@ num_ge_frab(e1,e2)
 num_lt_frab(e1,e2)
 num_le_frab(e1,e2)
 numeric_compare_frab(e1,e2)
+frab_compare_frab(e1,e2)
+frab_compare_numeric(e1,e2)
 }
 
 \arguments{
