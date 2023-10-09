@@ -1,5 +1,5 @@
 ---
-title: "Addition of `table` objects with the `frab` package"
+title: "Addition of R `table` objects with the `frab` package"
 author: "Robin K. S. Hankin"
 output: html_vignette
 bibliography: frab.bib
@@ -21,8 +21,8 @@ set.seed(1)
 knitr::include_graphics(system.file("help/figures/frab.png", package = "frab"))
 ```
 
-**TLDR**: To cite in publications, please use @hankin2023_frab.
-Adding two objects of class `table` has a natural interpretation.
+**TLDR**: To cite in publications, please use @hankin2023_frab.  In R,
+adding two objects of class `table` has a natural interpretation.
 However, in base R, adding two tables can give plausible but incorrect
 results.  The `frab` package provides a consistent and efficient way
 to add `table` objects, subject to `disordR` discipline
@@ -31,7 +31,7 @@ Free Abelian group, hence "`frab`".
 
 # Prologue: `table()`
 
-Suppose we have three tables:
+Suppose we have three R tables:
 
 ```{r,label=badtables}
 xl <- c("a","a","b","c","d","d","a")
@@ -104,7 +104,7 @@ attribute of `y` instead of `x`.
 # The `frab` package
 
 The `frab` package furnishes efficient methods to give a consistent
-and meaningful way of adding two tables together, using standard R
+and meaningful way of adding two R tables together, using standard R
 syntax.  It uses the names of a named vector as the indexing
 mechanism.  Package idiom is straightforward:
 
@@ -149,11 +149,11 @@ a+b
 ```
 
 Above we see the `+` operator is defined between a `frab` and a
-`table`, coercing tables to `frab` objects to give consistent results.
+`table`, coercing R tables to `frab` objects to give consistent results.
 
-# Two dimensional tables
+# Two dimensional R tables
 
-The ideas above have a natural generalization to two-dimensional tables.
+The ideas above have a natural generalization to two-dimensional R tables.
 
 ```{r,label=twodeetables}
 (x <- rspar2(9))
@@ -166,9 +166,9 @@ accommodate both addends, and also that entries with nonzero values in
 both `x` and `y` are correctly summed.
 
 
-## Arbitrary-dimensioned tables
+## Arbitrary-dimensioned R tables
 
-The one- and two- dimensional tables above have somewhat specialized
+The one- and two- dimensional R tables above have somewhat specialized
 print methods and the general case with dimension $\geqslant 3$ uses
 methods similar to those of the `spray` package.  We can generate a
 `sparsetable` object quite easily:
@@ -193,5 +193,11 @@ Then the usual semantics for addition operate:
 ```{r label=usualsemantics}
 sx + sz
 ```
+
+## Note on nomenclature
+
+The word "table" means something unrelated in `SQL`.  A short
+discussion of `frab` functionality implemented in `SQL` "table"
+objects is given in `inst/sql.Rmd`.
 
 ## References

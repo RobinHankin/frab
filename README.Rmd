@@ -1,5 +1,6 @@
+
 ---
-title: "The frab package: how to add tables"
+title: "The frab package: how to add R tables"
 output:
   github_document:
     pandoc_args: --webtex
@@ -21,23 +22,23 @@ set.seed(0)
 
 # Overview
 
-The `frab` package allows one to "add" tables in a natural way.  It also
+The `frab` package allows one to "add" R tables in a natural way.  It also
 furnishes an alternative interpretation of named
 vectors wherein addition is defined using the (unique) names as the
-primary key.  Support for multi-dimensional tables is included.
+primary key.  Support for multi-dimensional R tables is included.
 The underlying mathematical object is the Free
 Abelian group.  To cite in publications please use R. K. S. Hankin
 2023.  "The free Abelian group in R: the frab package", arXiv,
 https://arxiv.org/abs/2307.13184.
 
 The package has two S4 classes: `frab` and `sparsetable`. 
-Class `frab` is for one-dimensional tables and is an alternative
+Class `frab` is for one-dimensional R tables and is an alternative
 implementation of named vectors; class `sparsetable` handles
-multi-way tables in a natural way.
+multi-way R tables in a natural way.
 
 # The package in use
 
-## One-dimensional tables: class `frab`
+## One-dimensional R tables: class `frab`
 
 Primary
 construction function `frab()` takes a named vector and returns a
@@ -71,7 +72,9 @@ overloaded definition of addition:
 x+y
 ```
 
-Above we see function `rfrab()` used to generate a random `frab` object, corresponding to a table.  It is _possible_ to add `x` and `y` directly:
+Above we see function `rfrab()` used to generate a random `frab`
+object, corresponding to an R table.  It is _possible_ to add `x` and
+`y` directly:
 
 ```{r showitispossible}
 xn <- as.namedvector(x)
@@ -81,16 +84,17 @@ table(c(rep(names(xn),times=xn),rep(names(yn),times=yn)))
 
 but this is extremely inefficient and cannot deal with fractional (or indeed negative) entries.
 
-# Multi-way tables
+# Multi-way R tables
 
-Class `sparsetable` deals with multi-way tables.  Taking three-way tables as an example:
+Class `sparsetable` deals with multi-way R tables.  Taking three-way R
+tables as an example:
 
 ```{r showthreewaytable}
 (x3 <- rspar())
 ```
 
 Function `rspar()` returns a random `sparsetable` object.  We see that, of the $3^3=27$
-possible entries, only 11 are non-zero.  We may coerce to a regular table:
+possible entries, only 11 are non-zero.  We may coerce to a regular R table:
 
 ```{r coercethreearray}
 as.array(x3)
@@ -102,17 +106,19 @@ In this case it is hardly worth taking advantage of the sparse representation (w
 rspar(n=4,l=10,d=12)
 ```
 
-The random `sparsetable` object shown above would require $10^{12}$ floating point numbers in full array form,
-of which only 4 are nonzero.  Multi-way tables may be added in the same way as `frab` objects:
+The random `sparsetable` object shown above would require $10^{12}$
+floating point numbers in full array form, of which only 4 are
+nonzero.  Multi-way R tables may be added in the same way as `frab`
+objects:
 
 ```{r addtwosparsetables}
 y3 <- rspar()
 x3+y3
 ```
 
-## Two-way tables
+## Two-way R tables
 
-Two-way tables are something of a special case, having their own print method.
+Two-way R tables are something of a special case, having their own print method.
 By default, two-dimensional `sparsetable` objects are coerced to a matrix before
 printing, but otherwise operate in the same way as the multi-dimensional case
 discussed above:
