@@ -1,0 +1,67 @@
+---
+title: "Equivalent functionality with `SQL`"
+author: "Robin Hankin"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+set.seed(0)
+knitr::opts_chunk$set(echo = TRUE)
+suppressMessages(library("frab"))
+suppressMessages(library("sqldf"))
+```
+
+```{r out.width='20%', out.extra='style="float:right; padding:10px"',echo=FALSE}
+knitr::include_graphics(system.file("help/figures/frab.png", package = "frab"))
+```
+
+
+One unexpectedly difficult challenge for me developing the `frab`
+package is search engine discoverability.  Searching for phrases such
+as "add two tables" or "combine two tables" returns a whole bunch of
+SQL hits, not the `frab` package.  Part of the problem is that the
+word "table" means different things to the SQL and R communities.
+Here I demonstrate that `frab` functionality [at least for
+one-dimensional tables] can be replicated using SQL constructs.
+Consider two simple `frab` objects and their sum:
+
+```{r abcdef}
+(a <- rfrab())
+(b <- rfrab())
+a+b
+```
+
+We may coerce `a` and `b` to a dataframe and combine with `rbind()`:
+
+```{r}
+(ab_df <- rbind(as.data.frame(a),as.data.frame(b)))
+```
+
+However, object `ab_df` contains repeated `key` entries.  To frabify
+this, we need to use the `group by` SQL construct:
+
+```{r}
+aplusb <- sqldf('
+SELECT key, sum(value) AS value
+FROM  ab_df
+GROUP BY key
+')
+aplusb
+```
+
+(Note that the above construction would require a little polishing for
+production use as zeros are not removed automatically).  However, the
+resulting data frame can be coerced back to `frab` form:
+
+```{r}
+as.frab(aplusb)
+```
+
+It is straightforward to verify that the two methods give identical
+results:
+
+```{r}
+as.frab(aplusb) == a+b
+```
+
+

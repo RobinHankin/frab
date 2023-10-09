@@ -416,6 +416,17 @@ setMethod("Summary", "frab",
           }
           )
 
+setAs(from="frab",to="data.frame",def=function(from){
+  jj <- as.namedvector(from)
+  data.frame(key = names(jj),value=as.vector(jj))
+} )
 
+setMethod("as.data.frame","frab",function(x){as(x,"data.frame")})
 
+`df_to_frab` <- function(from){
+  stopifnot(identical(sort(colnames(from)),c("key","value")))
+  frab(setNames(from$value,from$key))
+}
 
+setAs(from="data.frame",to="frab",def=df_to_frab)
+setMethod("as.frab","data.frame",function(x){as(x,"frab")})

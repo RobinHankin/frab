@@ -13,3 +13,7 @@
 
 - sparsetable functionality
 - near complete test coverage
+
+# frab 0.0-4
+
+- data frame coercion
