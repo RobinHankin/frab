@@ -254,7 +254,7 @@ setMethod("[",  # x[]
 
 setMethod("[",
           signature("frab", i="ANY",j="missing"),
-          function(x,i,j,drop){stop("not implemented")}
+          function(x,i,j,drop){stop("extraction: frab,ANY,missing-method not implemented")}
           )
 
 setMethod("[",
