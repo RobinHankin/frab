@@ -254,8 +254,12 @@ setMethod("[",  # x[]
 
 setMethod("[",
           signature("frab", i="ANY",j="missing"),
-          function(x,i,j,drop){stop("extraction: frab,ANY,missing-method not implemented")}
-          )
+          function(x,i,j,drop){
+              if(length(i)==0){
+                  return(zero())
+              } else {
+                  stop("extraction: frab,ANY,missing-method not implemented")}
+          } )
 
 setMethod("[",
           signature("frab", i="disindex",j="missing"),

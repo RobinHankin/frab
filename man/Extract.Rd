@@ -73,6 +73,10 @@
  value}, is not currently defined.  In replacement methods, if
  \code{value} is logical it is coerced to numeric (this includes
  \code{NA}).
+
+ Special dispensation is given for extraction of a \code{frab} with a
+ length zero index, as in \code{x[NULL]}, which returns the empty
+ \code{frab} object.
   
 }
 \author{Robin K. S. Hankin}
