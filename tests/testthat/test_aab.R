@@ -50,6 +50,11 @@ checker2 <- function(A,B){
   expect_true(length(A+B) <= length(A) + length(B))
   expect_true(length(A-B) <= length(A) + length(B))
 
+  x <- as.namedvector(A)
+  y <- as.namedvector(B)
+
+  expect_true(frab(c(x,y)) == frab(x) + frab(y))
+
 
 }   # checker2() closes
 
@@ -78,6 +83,8 @@ for(i in seq_len(10)){
   checker3(A,B,zero())
 }
 
+checker2(frab(c(a=1,b=2,c=3)),frab(c(c=6,x=6,z=9)))
+checker2(frab(c(a=1,b=2,c=3)),frab(c(c=6,x=6,c=-3)))
 checker3(frab(c(a=1)),frab(c(a=-1,b=4)),frab(c(b=-4,c=3)))
 
 
