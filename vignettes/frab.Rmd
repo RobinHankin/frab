@@ -151,6 +151,17 @@ a+b
 Above we see the `+` operator is defined between a `frab` and a
 `table`, coercing R tables to `frab` objects to give consistent results.
 
+### Note on repeated entries
+
+If we pass a named vector with repeated names, the values are added:
+
+```{r label=repeatedentries}
+frab(c(a=4,b=2,a=1))
+```
+
+The general rule is, given two named vectors `x` and `y`, that
+`frab(x)+frab(y)` is identical to `frab(c(x,y))`.
+
 # Two dimensional R tables
 
 The ideas above have a natural generalization to two-dimensional R tables.
