@@ -25,7 +25,10 @@ actually calls \code{new("frab", ...)}.
 Function \code{as.frab()} tries a bit harder to be useful and can coerce
 different types of object to a \code{frab}.  If given a list it
 dispatches to \code{list_to_frab()}.  If given a table it dispatches to
-\code{table_to_frab()}, documented at \code{table.Rd}.
+\code{table_to_frab()}, documented at \code{table.Rd}; and if given a
+data frame it dispatches to \code{df_to_frab()}, documented at
+\code{dataframe.Rd}.
+
 }
 \value{Returns a \code{frab}, or a boolean}
 \author{Robin K. S. Hankin}
