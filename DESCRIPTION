@@ -16,7 +16,7 @@ License: GPL (>= 2)
 Depends: R (>= 3.5.0)
 Suggests: knitr, markdown, rmarkdown, testthat, mvtnorm
 VignetteBuilder: knitr
-Imports: Rcpp (>= 1.0-7), mathjaxr, disordR (>= 0.9-8-1), methods
+Imports: Rcpp (>= 1.0-7), mathjaxr, disordR (>= 0.9-8-2), methods
 LinkingTo: Rcpp
 URL: https://github.com/RobinHankin/frab
 BugReports: https://github.com/RobinHankin/frab
