@@ -6,9 +6,7 @@
 \alias{as.data.frame,frab-method}
 \alias{as.frab,data.frame-method}
 \title{Coerce a data frame to a frab}
-\description{
-Coerce a data frame to a frab
-}
+\description{Coerce a data frame to a frab}
 \usage{
 df_to_frab(from)
 \S4method{as.frab}{data.frame}(x)
@@ -22,7 +20,7 @@ df_to_frab(from)
   appropriate frab object.  Repeated \code{key}s are summed.
   
 }
-\value{Returns a frab object}
+\value{Returns a frab object or a dataframe.}
 \author{Robin K. S. Hankin}
 \examples{
 
