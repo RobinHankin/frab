@@ -43,3 +43,23 @@ element was extracted).  But this is not consistent with the `a+b`
 example above, in which absent symbols have the very definite and very
 known value of zero.
 
+One might wonder what happens if we try to coerce a named _logical_
+vector to a `frab`:
+
+
+```{r trytocoercelog,error=TRUE}
+(logvec <- c(x=TRUE,y=FALSE,z=TRUE))
+frab(logvec)
+```
+
+[earlier versions of the package allowed the coercion].  However, we
+may coerce `logvec` to numeric (observe that `as.numeric()` loses the
+names):
+
+```{r coercetonum}
+(logvec <- +logvec)   # NB as.numeric() loses names
+frab(logvec)
+```
+
+Above, we see that `logvec["y"]` vanishes, being zero.  So logical
+`frab` objects do not make sense as `FALSE` entries are discarded.

@@ -29,12 +29,16 @@ Function \code{is.namedvector()} returns a boolean, function
 \code{as.namedvector()} returns a named vector.
 }
 \author{Robin K. S. Hankin}
+\note{
+
+The issue of named logical vectors in the `frab` package is discussed
+briefly at `inst/wittgenstein.Rmd`.
+
+}
 \examples{
 x <- c(a=5, b=3, c=-2,b=-3, x=33)
 is.namedvector(x)
 as.namedvector(frab(x))
-
-
 
 x <- c(a=5, b=3, c=-2)
 y <- c(p=1, c=2, d= 6)
