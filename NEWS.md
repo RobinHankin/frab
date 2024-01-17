@@ -17,3 +17,5 @@
 # frab 0.0-4
 
 - data frame coercion
+- improved vignette
+- include covr in Suggests
