@@ -31,6 +31,15 @@ checker1 <- function(A){
   expect_true(pmax(A,A) == A)
   expect_true(pmin(A,A) == A)
 
+  expect_true(A[NULL] + A == A)
+  
+
+  dA <- as.data.frame(A)
+  Adash <- as.frab(dA)
+  expect_true(is.data.frame(dA))
+  expect_true(is.frab(Adash))
+  expect_true(A == Adash)
+
 }   # checker1() closes
   
 checker2 <- function(A,B){
