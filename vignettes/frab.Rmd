@@ -21,30 +21,28 @@ set.seed(1)
 knitr::include_graphics(system.file("help/figures/frab.png", package = "frab"))
 ```
 
-**TLDR**: To cite in publications, please use @hankin2023_frab.  In R,
-adding two objects of class `table` has a natural interpretation.
-However, in base R, adding two tables can give plausible but incorrect
-results.  The `frab` package provides a consistent and efficient way
-to add `table` objects, subject to `disordR` discipline
-[@hankin2022_disordR].  The underlying mathematical structure is the
-Free Abelian group, hence "`frab`".
+To cite in publications, please use @hankin2023_frab.
+
+**TLDR**: In R, adding two objects of class `table` has a natural
+interpretation.  However, in base R, adding two tables can give
+plausible but incorrect results.  The `frab` package provides a
+consistent and efficient way to add `table` objects, subject to
+`disordR` discipline [@hankin2022_disordR].  The underlying
+mathematical structure is the Free Abelian group, hence "`frab`".
 
 # Prologue: `table()`
 
 Suppose we have three R tables:
 
 ```{r,label=badtables}
-xl <- c("a","a","b","c","d","d","a")
-yl <- c("a","a","b","d","d","d","e")
-zl <- c("a","a","b","d","d","e","f")
-x <- table(xl)
-y <- table(yl)
-z <- table(zl)
+x <- table(c("a","a","b","c","d","d","a"))
+y <- table(c("a","a","b","d","d","d","e"))
+z <- table(c("a","a","b","d","d","e","f"))
 ```
 
-Can we ascribe any meaning to `x+y` without reference to `xl` and
-`yl`?  Well yes, we should simply sum the counts of the various
-letters.  However:
+Can we ascribe any meaning to `x+y` without referring to the arguments
+sent to `table()`?  Well yes, we should simply sum the counts of the
+various letters.  However:
 
 ```{r label=addtableswrong}
 x
@@ -66,17 +64,18 @@ z
 x+z
 ```
 
+Above we see that `x` and `z` do not have a well-defined sum, in the
+sense that `x+z` returns, quite reasonably, an error.
+
 # Named vectors
 
-A _named vector_ is a vector with a `names` attribute.  Each
-element of a named vector is associated with a name or label.  The
-names are not necessarily unique.  It allows you to assign a name to
-each element, making it easier to refer to specific values within the
-vector using their respective names.
-
-Named vectors are a convenient and useful feature of the R programming
-language [@rcore2022].  However, consider the following two named
-vectors:
+A _named vector_ is a vector with a `names` attribute.  Each element
+of a named vector is associated with a name or label.  The names are
+not necessarily unique.  It allows you to assign a name to each
+element, making it easier to refer to specific values within the
+vector using their respective names.  Named vectors are a convenient
+and useful feature of the R programming language [@rcore2022].
+However, consider the following two named vectors:
 
 ```{r label=twonamedvectors}
 x <- c(a=1,b=2,c=3)
