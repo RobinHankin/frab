@@ -14,7 +14,7 @@ Description: Methods to "add" two R tables; also an alternative
      <arxiv:2307:13184>.
 License: GPL (>= 2)
 Depends: R (>= 3.5.0)
-Suggests: knitr, markdown, rmarkdown, testthat, mvtnorm
+Suggests: knitr, markdown, rmarkdown, testthat, mvtnorm, covr
 VignetteBuilder: knitr
 Imports: Rcpp (>= 1.0-7), mathjaxr, disordR (>= 0.9-8-2), methods
 LinkingTo: Rcpp
