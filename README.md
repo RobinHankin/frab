@@ -7,13 +7,12 @@ The frab package: how to add R tables
 
 # Overview
 
-The `frab` package allows one to “add” R tables in a natural way. It
-also furnishes an alternative interpretation of named vectors wherein
+To cite the `frab` package in publications please use Hankin (2023). The
+`frab` package allows one to “add” R tables in a natural way. It also
+furnishes an alternative interpretation of named vectors wherein
 addition is defined using the (unique) names as the primary key. Support
 for multi-dimensional R tables is included. The underlying mathematical
-object is the Free Abelian group. To cite in publications please use R.
-K. S. Hankin 2023. “The free Abelian group in R: the frab package”,
-arXiv, <https://arxiv.org/abs/2307.13184>.
+object is the Free Abelian group.
 
 The package has two S4 classes: `frab` and `sparsetable`. Class `frab`
 is for one-dimensional R tables and is an alternative implementation of
