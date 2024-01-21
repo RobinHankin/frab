@@ -8,13 +8,15 @@
 \usage{
 rfrab(n = 9, v = seq_len(5), symb = letters[seq_len(9)])
 rfrabb(n = 100, v = -5:5, symb = letters)
-rfrabbb(n = 5000, v = -10:10, symb = letters,i=3)
+rfrabbb(n = 5000, v = -10:10, symb = letters, i=3)
 }
 \arguments{
   \item{n}{Length of object to return}
   \item{v}{Values to assign to symbols (see details)}
   \item{symb}{Symbols to use}
-  \item{i}{Exponentiating index for \code{rfrabbb()}}
+  \item{i}{Exponentiating index for \code{rfrabbb()}.  Symbols in
+    returned value will be \code{i} concatenated elements of \code{symb}
+  }
 }
 \details{
   What you see is what you get, basically.  If a symbol is chosen more
