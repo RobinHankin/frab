@@ -20,6 +20,7 @@
 \alias{numeric_compare_frab}
 \alias{frab_compare_frab}
 \alias{frab_compare_numeric}
+\alias{Compare}
 \title{Comparison methods}
 \description{
   Methods for comparison (greater than, etc) in the \pkg{frab} package.

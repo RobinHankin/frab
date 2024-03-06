@@ -28,11 +28,11 @@
 \description{
 
   The \code{frab} class provides basic arithmetic methods for frab
-  objects.  Low-level helper functions \code{c_frab_eq()} amd
+  objects.  Low-level helper functions \code{c_frab_eq()} and
   \code{c_frab_pmax()} are documented here for consistency; but
   technically \code{c_frab_eq()} is a Comparison operator, and
   \code{c_frab_pmax()} is an \dQuote{Extremes} function.  They are
-  documented at \code{Compare.Rd} and \code{pmax.Rd} respectively.
+  documented at \link{Compare} and \link{pmax} respectively.
   
 }
 \usage{
