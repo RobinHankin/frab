@@ -27,17 +27,26 @@
 
   Functions \code{frab_gt_num()} etc follow a consistent naming
   convention; the mnemonic is the old Fortran \code{.GT.} scheme [for
-  \dQuote{greater than}].
+  \dQuote{greater than}].  This allows one to use idiom such as \code{f
+  >= 3}.
 
-  Function \code{frab_eq()} is an odd-ball, formally documented at
-  \code{Arith.Rd}.  It is slightly different from the other comparisons:
-  it calls low-level helper function \code{c_frab_eq()}, which calls its
-  \proglang{C} namesake which is written for speed (specifically,
+  Arithmetic comparison of two frabs does not make sense, in general.
+  Idiom like \dQuote{\code{e1 >= e2}}, for example, is meaningless and
+  returns an error.  There are no vectorised methods for comparing a
+  \code{frab} with another \code{frab}.
+
+  The only comparison that makes any sense is whether two frabs are
+  identical: this is detected by \dQuote{\code{e1 == e2}} and its
+  negation \dQuote{\code{e1 != e2}}.  Internally, equality is tested in
+  \proglang{C} using a routine written for speed (specifically,
   returning \code{FALSE} as soon as it spots a difference between its
-  two arguments).  Note that if any value is \code{NA}, \code{frab_eq()}
-  will return \code{FALSE}.
-  
+  two arguments); this is modelled on its equivalent in the
+  \CRANpkg{spray} package.  If any value is \code{NA}, equality checks
+  will return \code{FALSE}.  Functions \code{frab_eq()} and
+  \code{c_frab_eq()} are just wrappers.
+
 }
+
 \usage{
 frab_eq(e1,e2)
 frab_eq_num(e1,e2)
