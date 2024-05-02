@@ -58,10 +58,16 @@ labels.  We would expect `x+y` to respect the fact that we have 5 `d`
 entries, even though element `d` is the fourth entry of `x` and the
 third of `y`.  Further:
 
-```{r label=addtablesgiveserror,error=TRUE}
+```{r, label=addtablesgiveserror}
 x
 z
+```
+
+```
 x+z
+```
+```
+## Error in x + z: non-conformable arrays
 ```
 
 Above we see that `x` and `z` do not have a well-defined sum, in the
