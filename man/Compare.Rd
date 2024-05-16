@@ -25,10 +25,16 @@
 \description{
   Methods for comparison (greater than, etc) in the \pkg{frab} package.
 
-  Frabs may be compared with length-one numeric vectors.  Functions
-  \code{frab_gt_num()} etc follow a consistent naming convention; the
-  mnemonic is the old Fortran \code{.GT.} scheme [for \dQuote{greater
-  than}].  This allows one to use idiom such as \code{f >= 3}.
+  Frabs and sparsetables may be compared with length-one numeric
+  vectors.  Functions \code{frab_gt_num()} etc follow a consistent
+  naming convention; the mnemonic is the old Fortran \code{.GT.} scheme
+  [for \dQuote{greater than}].  This allows one to use idiom such as
+  \code{f >= 3}.  For sparsetables, comparison with scalars is possible:
+  but the result is flattened to a \code{disord} object (this can be
+  confusing for two dimensional tables when the default matrix-like
+  print method is used, because zero entries are not \dQuote{real}.  For
+  example, if \code{s} is a sparsetable, then \code{s==0} will return
+  all \code{FALSE}).
 
   Arithmetic comparison of two frabs does not make sense, in general.
   Idiom like \dQuote{\code{e1 >= e2}}, for example, is meaningless and
