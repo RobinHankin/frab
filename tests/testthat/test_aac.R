@@ -20,6 +20,9 @@ test_that("Test suite aac.R",{
     expect_false(x == x*0)
     expect_false(x == 0*x)
     expect_true(x != 0*x)
+
+    expect_true(sum(x_c == 3) == 2)
+    expect_true(all(xor(x_c == 3, x_c != 3)))
     
     expect_error(names(x))
     expect_true(nterms(x) == 11)
