@@ -46,9 +46,9 @@ setReplaceMethod("values",signature(x="frab",value="disord"),
 setGeneric("namedvector",function(x){standardGeneric("namedvector")})
 setMethod("namedvector","frab",function(x){x@x})
 
-`as.namedvector`   <- function(v){namedvector(v)}
-`is.namedvector`   <- function(v){is.vector(v) && is.numeric(v) && !is.null(names(v))}
-`is.unnamedvector` <- function(v){is.vector(v) && is.numeric(v) &&  is.null(names(v))}
+`as.namedvector`    <- function(v){namedvector(v)}
+`is.namedvector`    <- function(v){is.vector(v) && is.numeric(v) && !is.null(names(v))}
+`is.unnamedvector`  <- function(v){is.vector(v) && is.numeric(v) &&  is.null(names(v))}
 `is.namedlogical`   <- function(v){is.vector(v) && is.logical(v) && !is.null(names(v))}
 `is.unnamedlogical` <- function(v){is.vector(v) && is.logical(v) &&  is.null(names(v))}
 
