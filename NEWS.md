@@ -19,3 +19,7 @@
 - data frame coercion
 - improved vignette
 - include covr in Suggests
+
+# frab 0.0-5
+
+- citation now points to arXiv preprint

@@ -1,0 +1,8 @@
+bibentry(bibtype = "misc",
+         title = "The free Abelian group in R: the frab package",
+         author = person("Robin K. S. Hankin"),
+         year = "2024", publisher = "arXiv",
+         doi = "10.48550/ARXIV.2307.13184",
+         url = "https://arxiv.org/abs/2307.13184"
+         )
+  
