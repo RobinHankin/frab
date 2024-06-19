@@ -101,9 +101,42 @@ setMethod("as.table","frab",function(x,...){structure(as.namedvector(x),dim=leng
                      elements(names(F2)), elements(values(F2))))
 }
 
-`frab_plus_numeric`     <- function(e1,e2){if(is.namedvector(e2)){return(e1+frab(e2))}else{return(frab(setNames(elements(values(e1)+e2),elements(names(e1)))))}}
-`frab_multiply_numeric` <- function(e1,e2){if(is.namedvector(e2)){stop("not defined")}else{return(frab(setNames(elements(values(e1)*e2),elements(names(e1)))))}}
-`frab_power_numeric`    <- function(e1,e2){if(is.namedvector(e2)){stop("not defined")}else{return(frab(setNames(elements(values(e1)^e2),elements(names(e1)))))}}
+`frab_plus_numeric`     <- function(e1,e2){
+    if(is.namedvector(e2)){
+        return(e1+frab(e2))
+    } else {  # e2 is an unnamed numeric vector
+        if(allsame(e2)){
+            return(frab(setNames(elements(values(e1))+e2,elements(names(e1)))))
+        } else {
+            stop("disord violation")
+        }
+    }
+}
+
+`frab_multiply_numeric` <- function(e1,e2){
+    if(is.namedvector(e2)){
+        stop("not defined")
+    } else {
+         if(allsame(e2)){
+            return(frab(setNames(elements(values(e1))*e2,elements(names(e1)))))
+        } else {
+            stop("disord violation")
+        }
+    }
+}
+
+`frab_power_numeric` <- function(e1,e2){
+    if(is.namedvector(e2)){
+        stop("not defined")
+    } else {
+        if(allsame(e2)){
+            return(frab(setNames(elements(values(e1))^e2,elements(names(e1)))))
+        } else {
+            stop("disord violation")
+        }
+    }
+}
+        
 `numeric_power_frab`    <- function(e1,e2){stop("<numeric> ^ <frab> not defined")}
 
 `frab_unary` <- function(e1,e2){

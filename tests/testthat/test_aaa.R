@@ -5,6 +5,9 @@ test_that("Test suite aaa.R",{
   expect_true(x == frab(c(b=2,a=1,i=4,c=3)))
   expect_true(x + c(a=1) == frab(c(a=2,b=2,i=4,c=3)))
   expect_true(c(a=1) + x == frab(c(a=2,b=2,i=4,c=3)))
+  expect_error(x + 1:4)
+  expect_error(x * 1:4)
+  expect_error(x ^ 1:4)
 
   jjx <- x
   jjx[] <- 1
