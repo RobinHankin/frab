@@ -112,7 +112,7 @@ setMethod("show", "sparsetable", function(object){print_sparsetable_matrixform(o
     if(is.sparsetable(x)){
         return(x)
     } else if(is.frab(x)){
-        return(sparsetable(cbind(names(x)),values(x)))
+        return(sparsetable(cbind(elements(names(x))),elements(values(x))))
     } else if(is.list(x)){
         return(sparsetable(x$index,x$value))
     } else if(is.table(x)){
