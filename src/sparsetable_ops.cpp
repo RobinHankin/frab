@@ -50,11 +50,11 @@ CharacterMatrix makeindex(const sparsetable &S){  // takes a sparsetable, return
     const unsigned int ncol = S.begin()->first.size();
     CharacterMatrix  out(S.size(),ncol);   // index
     mycont v;
-    unsigned int row=0, col=0;
+    unsigned int row=0;
 
     for(auto it=S.begin(); it != S.end(); ++it){
         v = it->first;
-        col = 0;
+        unsigned int col = 0;
         for(auto ci=v.begin() ; ci != v.end() ; ++ci){
             out(row,col++) = *ci;
         }
