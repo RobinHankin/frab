@@ -10,6 +10,7 @@ Named vectors are closely related to \code{frab} objects, but are not
 the same.  However, there is a natural coercion from one to the other.
 }
 \usage{
+as.namedvector(v)
 is.namedvector(v)
 is.namedlogical(v)
 is.unnamedlogical(v)
