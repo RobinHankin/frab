@@ -13,7 +13,7 @@
 }
 \section{Methods}{
 \describe{\item{\code{signature(x = "frab")}}{Dispatches to
-    to \code{max(values(x))} etc.}}
+\code{max(values(x))} etc.}}
 }
 \keyword{methods}
 \examples{
