@@ -20,6 +20,7 @@
 \alias{numeric_compare_frab}
 \alias{frab_compare_frab}
 \alias{frab_compare_numeric}
+\alias{c_frab_eq}
 \alias{Compare}
 \title{Comparison methods}
 \description{
@@ -36,18 +37,18 @@
   example, if \code{s} is a sparsetable, then \code{s==0} will return
   all \code{FALSE}).
 
-  Arithmetic comparison of two frabs does not make sense, in general.
-  Idiom like \dQuote{\code{e1 >= e2}}, for example, is meaningless and
-  returns an error.  There are no vectorised methods for comparing a
-  \code{frab} with another \code{frab}.  The only comparison that makes
-  any sense is whether two frabs are identical: this is detected by
-  \dQuote{\code{e1 == e2}} and its negation \dQuote{\code{e1 != e2}}.
-  Internally, equality is tested in \proglang{C} using a routine written
-  for speed (specifically, returning \code{FALSE} as soon as it spots a
-  difference between its two arguments); this is modelled on its
-  equivalent in the \CRANpkg{spray} package.  If any value is \code{NA},
-  equality checks will return \code{FALSE}.  Functions \code{frab_eq()}
-  and \code{c_frab_eq()} are just wrappers.
+  Comparing a \code{frab} with another \code{frab} is generally
+  meaningless.  Idiom like \dQuote{\code{e1 >= e2}}, for example,
+  returns an error.  The only comparison that makes any sense is whether
+  two frabs are identical: this is detected by \dQuote{\code{e1 == e2}}
+  and its negation \dQuote{\code{e1 != e2}}.  Internally, equality is
+  tested in \proglang{C} using a routine written for speed
+  (specifically, returning \code{FALSE} as soon as it spots a difference
+  between its two arguments); this is modelled on its equivalent in the
+  \CRANpkg{spray} package.  If any value is \code{NA}, equality checks
+  will return \code{FALSE}.  Functions \code{frab_eq()} and
+  \code{c_frab_eq()} are just \proglang{R} wrappers for the \proglang{C}
+  routine \code{equal()}.
 
 }
 
