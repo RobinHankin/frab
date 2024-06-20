@@ -26,7 +26,7 @@ pmin_dots(x, ...)
 \arguments{
   \item{F1, F2, x, ...}{Frab objects}
 }
-\details{\loadmathjax
+\details{
 
 Pairwise minima and maxima for frabs, using names as the primary key.
 
