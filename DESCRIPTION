@@ -20,4 +20,3 @@ Imports: Rcpp (>= 1.0-7), mathjaxr, disordR (>= 0.9-8-2), methods
 LinkingTo: Rcpp
 URL: https://github.com/RobinHankin/frab
 BugReports: https://github.com/RobinHankin/frab
-RdMacros: mathjaxr

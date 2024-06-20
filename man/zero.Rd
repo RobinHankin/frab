@@ -4,7 +4,7 @@
 \alias{empty}
 \alias{is.empty}
 \title{The zero frab object}
-\description{\loadmathjax
+\description{
   Test for a \code{frab} object's being zero (empty).
 }
 \usage{
@@ -19,7 +19,7 @@ is.empty(x)
 \details{
 
   Function \code{zero()} returns the empty \code{frab} object; this is
-  the additive identity \mjseqn{0} with property \mjseqn{x+0=0+x=x}.
+  the additive identity \eqn{0} with property \eqn{x+0=0+x=x}.
 
   Function \code{is.zero()} returns \code{TRUE} if its argument is
   indeed the zero object.
