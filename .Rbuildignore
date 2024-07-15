@@ -5,3 +5,5 @@
 ^inst/frab_stickermaker.R$
 ^inst/frab.png$
 ^vignettes/*.html$
+^.github$
+^.devcontainer$
