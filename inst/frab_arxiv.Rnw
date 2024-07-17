@@ -206,7 +206,7 @@ frab(c(t=3,q=2,t=4,q=-1,p=6,a=3,t=5))
 \begin{itemize}
 \item Function {\tt frab()} coerces its argument, a named
 vector, to an object of class {\tt frab}
-\item Element {\tt t}  and {\tt t} are summed, with values $3+5=8$ and 
+\item Elements {\tt q}  and {\tt t} are summed, with values $2-1=1$ and 
 $3+4+5=12$ respectively
 \end{itemize}
 \color{black}
