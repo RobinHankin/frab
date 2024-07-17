@@ -372,7 +372,7 @@ values(a)
 Above we see that {\tt names(a)} and {\tt values(a)} return {\tt
 disord} objects, in this case with the same hash code which indicates
 that the objects are consistent with one another in the sense of {\tt
-disordR::consitent()}.  These objects may be displayed and
+disordR::consistent()}.  These objects may be displayed and
 subsequently manipulated, subject to disord discipline:
 
 \vphantom{f}\\[2\baselineskip]
