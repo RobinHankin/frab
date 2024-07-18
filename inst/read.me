@@ -1,28 +1,35 @@
-To create frab_arxiv.pdf, first  use Sweave:
+To create frab_arxiv.pdf
+
+
+File frab_arxiv.Rnw is basically the same as the vignette
+(vignettes/frab.Rmd) but modified for arxiv.  The bib file is a
+modified version of vignettes/frab.bib, now under version control.
+There might be a better way to do this.
+
+Weave  'frab_arxiv.Rnw' with something like
 
 R CMD Sweave frab_arxiv.Rnw
 
-this will create frab_arxiv.tex
+(that takes about a minute).  This will create frab_arxiv.tex.
 
-To process this with latex, you will need various auxiliary files such
-as arxiv.sty and orcid.pdf.  These are not under version control, you
-will have to find these on the web.  File frab.png (the hex sticker)
-is in the man/figures directory.  Copy these files to this directory,
-inst/
+To latex frab_arxiv.tex, you will need a couple of auxiliary files:
 
-There are two distinct versions of frab.bib, which use slightly
-different markup.
+* arxiv.sty from https://github.com/kourgeorge/arxiv-style
+* orcid.png, from https://orcid.org/signin
+* frab.png, the hexsticker, copied from man/figures
+* frab.bib, the bibtex file, copied from  vignettes/
 
-
-Then to create frab_arxiv.pdf:
+Then 
 
 pdflatex frab_arxiv
-bibtex   frab_arxiv
+bibtex frab_arxiv
 pdflatex frab_arxiv
 pdflatex frab_arxiv
 
-should work.
+will create frab_arxiv.pdf and frab_arxiv.bbl
 
+These files will have to be uploaded to arxiv for it to process
+frab_arxiv.tex; remember to upload frab_arxiv.bbl as well.
 
-For arxiv, upload frab_arxiv.tex which will be processed online.  For
-arxiv to process the file, you need to upload Sweave.sty as well.
+NOTE: the tex file, frab_arxiv.tex, is NOT under version control.
+
