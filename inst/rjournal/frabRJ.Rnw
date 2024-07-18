@@ -288,10 +288,10 @@ Thus, extraction can operate with a disord object; here we extract
 every element greater than 3.  The package furnishes equivalent
 replacement methods, but note that new entries can be added if needed:
 
-```{r disordreplacementnew}
+<<disordreplacementnew>>=
 x["a", "x", "y"] <- 1000
 x
-```
+@
 
 Above we create a new entry corresponding to \code{a x y} with value
 $1000$; the new entry is placed in its own implementation-specific
@@ -359,9 +359,9 @@ group on $S$} is a group such that for any Abelian group $G$ and map
 $f\colon S\longrightarrow G$, there exists a unique homomorphism
 $\phi$ such that the following diagram commutes:
 
-\begin{centering}
+\begin{center}
 \includegraphics[width=0.25\linewidth]{commuting_diagram.pdf}
-\end{centering}
+\end{center}
 
 For general (non-Abelian) free groups in the context of R, the
 \CRANpkg{freegroup} package \citep{hankin2022_freegroup_rnews}
