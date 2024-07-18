@@ -1,9 +1,8 @@
-<<>>=
+<<echo=FALSE>>=
 library("frab")
 set.seed(0)
 @
 
-\cite{hankin2022_disordR}
 
 
 \section{Prologue: \code{table()}}
@@ -106,7 +105,7 @@ vectors in which addition is indexed by name, not position.
 
 The \CRANpkg{frab} package associates a numerical value with each of a
 set of arbitrary (character string) symbols.  This is accomplished
-using the \code{STL} map class, a container that stores key-value
+using the STL map class, a container that stores key-value
 pairs and allows fast lookup and insertion based on the key.  Here we
 have keys as character strings and values are double-precision
 numbers.
@@ -157,31 +156,13 @@ order, as per \CRANpkg{disordR} discipline (discussed below).
 Further, note that \code{a+b} has length 4, while \code{a} and
 \code{b} have length 3.
 
-\subsection{Extensions of \code{frab} objects to floating-point values}
-
-The \code{frab} class is sufficiently flexible to incorporate
-floating-point values, although one has to be a little careful with
-numerical round-off errors:
-
-<<showfrabroundofferrors>>=
-x <- frab(c(a = 4, u = pi, p = exp(pi)))
-y <- frab(c(p = -exp(pi)/3, u = -pi))
-z <- frab(c(p = -exp(pi)*2/3))
-x+y+z
-@
-
-Above, the sum \code{x+y+z} should have zero entries for \code{u} and
-\code{p}; we see the entry for \code{u} vanishes, but the entry for
-\code{p} is nonzero, being subject to (small) numerical roundoff
-error.
-
 \section{The \CRANpkg{frab} package and \CRANpkg{disordR} discipline}
 
 The \CRANpkg{frab} package conforms to disord discipline
 \citep{hankin2022_disordR}.  Here I present some discussion of the
 motivation for this design decision in the context of the
 \CRANpkg{frab} package; a more general discussion is given in
-\cite{hankin2022_disordR}; the original motivating use-case is
+\cite{hankin2022_disordR}.  The original motivating use-case is
 presented in \cite{hankin2022_mvp_rjournal}.  Consider the following
 short R session:
 
@@ -198,14 +179,12 @@ Error in .local(x, i, j = j, ..., drop) : disordR discipline violation
 \end{Soutput}
 \end{Schunk}
 
-
-
 Above we see a \CRANpkg{disordR} violation: there is no such thing as
 "\code{a[1]}", for the elements of \code{a} are stored in an
-implementation-specific order.  The \code{STL} map class stores value-key
-pairs in an undefined order; thus, extracting the value for \code{x} is
-fine, but because the order is not defined it makes no sense to
-extract the ``first" element (and attempting to do so results in a
+implementation-specific order.  The STL map class stores value-key
+pairs in an undefined order; thus, extracting the value for \code{x}
+is fine, but because the order is not defined it makes no sense to
+extract the "first" element (and attempting to do so results in a
 disord discipline error).
 
 Observe that we cannot dispense with order of the values entirely,
@@ -257,6 +236,127 @@ a[a>10] <- 19
 a
 @
 
+Thus, we set any value exceeding 10 to 19.
+
+\section{Higher-dimensional tables}
+
+The ideas above have a natural generalization to multi-dimensional
+tables.  The relevant \code{S4} class is \code{sparsetable}, and this
+has arithmetic methods implemented.  We start with three-dimensional
+tables (two-dimensional \code{sparstable} objects have a print method
+that coerces them to arrays before displaying, and the general case is
+easier to understand).
+
+<<threedeeexample>>=
+abcd <- letters[1:4]
+jj <- sample(abcd,99,repl=T,prob=1/(1:4)^2)
+I <- matrix(jj,33,3)
+head(I)
+nrow(I)
+(x <- sparsetable(I))
+@
+
+Thus, random matrix \code{I} has has 33 rows and elements a-d.
+Coercing \code{I} to \code{sparsetable} object \code{x} shows the
+counts of each type of row.  Object \code{x} has 13 rows; not all
+$4^3=64$ possible row types are represented.  Standard extraction and
+replacement operations work as expected:
+
+<<standardextraction>>=
+x["a","a","b"]
+x[rbind(c("a","b","b"),c("a","b","c"))]
+@
+
+Thus, extraction can operate with the arguments sent separately, or as
+a matrix.  However, other more specialised extraction methods are also
+provided:
+
+<<disordextraction>>=
+x[x>3]
+@
+
+Thus, extraction can operate with a disord object; here we extract
+every element greater than 3.  The package furnishes equivalent
+replacement methods, but note that new entries can be added if needed:
+
+```{r disordreplacementnew}
+x["a","x","y"] <- 1000
+x
+```
+
+Above we create a new entry corresponding to \code{a x y} with value
+$1000$; the new entry is placed in its own implementation-specific
+location, as per \CRANpkg{disordR} discipline.
+
+\subsection{Two dimensional tables}
+
+If a \code{sparsetable} object has arity 2, it is coerced to matrix
+form before printing.  Otherwise, the semantics are the same as for
+any other \code{sparsetable} object.
+
+<<twodeetable>>=
+(x <- rspar2(9))
+(y <- rspar2(9))
+x+y
+@
+
+Above, \code{rspar()} gives a random 2D sparse table.  Package idiom
+allows sparse tables to be added even if the tables are different
+sizes; the resulting sum is automatically resized to accommodate both
+addends.  Entries with nonzero values in both \code{x} and \code{y}
+are correctly summed.
+
+\appendix
+\section{Appendix: the Free Abelian Group}
+
+The \dfn{Free Abelian group} is an interesting and useful mathematical
+object \citep{cohn1984}: it is a direct sum of infinite cyclic groups.
+If these cyclic goups are generated by $\left\lbrace x_i\colon
+i\in\mathcal{I}\right\rbrace$ for some (finite) index set
+$\mathcal{I}$, then the Free Abelian group $F$ will be
+
+\begin{equation}\label{fab_def}
+F=\bigoplus_{i\in\mathcal{I}}\left\langle x_i\right\rangle.
+\end{equation}
+
+Because $\left|\mathcal{I}\right| =k < \infty$, elements of $F$ will
+be of the form
+
+\begin{equation}\label{formalform}
+g=n_1x_1+n_2x_2+\cdots+n_kx_k
+\end{equation}
+
+where $n_i\in\mathbb{Z}$, $1\leqslant i\leqslant k$.  The group
+operation (conventionally one uses additive notation) is then defined
+by componentwise addition.  If
+
+\begin{equation}\nonumber
+g=n_1x_1+n_2x_2+\cdots+n_kx_k\qquad
+h=r_1x_1+r_2x_2+\cdots+r_kx_k,
+\end{equation}
+
+then 
+\begin{equation}\label{formalhplusg}
+h+g=(n_1+r_1)x_1+(n_2+r_2)x_2+\cdots+(n_k+r_k)x_k
+\end{equation}
+
+One can define $F$ formally by starting with a generating set
+$X=\left\lbrace x_1,\ldots,x_k\right\rbrace$ of symbols.  Then $F$ is
+the set of all formal expressions of the form \ref{formalform} under
+the addition defined in equation \ref{formalhplusg}; the group axioms
+follow immediately.  Alternatively, one can adopt the somewhat more
+abstract category-theoretic approach.  For any set $S$ the \dfn{free
+group on $S$} is a group such that for any Abelian group $G$ and map
+$f\colon S\longrightarrow G$, there exists a unique homomorphism
+$\phi$ such that the following diagram commutes:
+
+\begin{centering}
+\includegraphics[width=0.25\linewidth]{commuting_diagram.pdf}
+\end{centering}
+
+For general (non-Abelian) free groups in the context of R, the
+\CRANpkg{freegroup} package \citep{hankin2022_freegroup_rnews}
+provides functionality.
 
 
 \bibliography{frab}
