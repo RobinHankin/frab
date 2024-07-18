@@ -399,6 +399,4 @@ knitr::include_graphics("./commuting_diagram.pdf")
 For general (non-Abelian) free groups in the context of R, see the
 `freegroup` package [@hankin2022_freegroup_rnews].
 
-
-
 # References
