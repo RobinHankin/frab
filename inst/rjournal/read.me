@@ -1,15 +1,31 @@
-Various auxiliary files are needed to create frabRJ.pdf.
+The rjtools package contains numerous show-stopping bugs and I have
+given up trying to use it, after several days of fruitless and
+frustrating effort (file frabRJ.Rmd was the working source file).
+
+I am using the more dependable workflow here:
+
+https://journal.r-project.org/share/author-guide.pdf
 
 The bibliography file, frab.bib, is under version control in the
-vignettes/ package directory.  Copy it here to process frabRJ.Rmd.
-The figure, commuting_diagram.pdf, is created from
-commuting_diagram.tex (which is under version control) by running
+vignettes/ package directory.  Copy it here.  The figure,
+commuting_diagram.pdf, is created from commuting_diagram.tex (which is
+under version control) by running
 
 pdflatex commuting_diagram
 
-Use 
 
-rmarkdown::render("frabRJ.Rmd")
+Then:
 
-In an R session to create frabRJ.Rmd and frabRJ.html
+R CMD Sweave frabRJ.Rnw
+
+creates frabRJ.tex
+
+Then
+
+pdflatex RJwrapper
+bibtex RJwrapper
+pdflatex RJwrapper
+pdflatex RJwrapper
+
+creates RJwrapper.pdf
 

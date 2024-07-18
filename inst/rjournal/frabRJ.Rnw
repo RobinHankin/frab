@@ -1,0 +1,262 @@
+<<>>=
+library("frab")
+set.seed(0)
+@
+
+\cite{hankin2022_disordR}
+
+
+\section{Prologue: \code{table()}}
+
+Objects of class \code{table} are created by function \code{
+table::base()}.  Their behaviour is discussed here.  Suppose we have
+three tables:
+
+<<label=tables123>>=
+x <- table(c("a","a","b","c","d","d","a"))
+y <- table(c("a","a","b","d","d","d","e"))
+z <- table(c("a","a","b","d","d","e","f"))
+x
+@
+
+
+Can we ascribe any meaning to \code{x+y} without referring to the
+arguments sent to \code{table()}?  Well yes, we should simply sum the
+counts of the various letters.  However:
+
+<<label=tablesaddwrong>>=
+x
+y
+x+y
+@
+
+
+The sum is defined in this case.  However, close inspection shows that
+the result is clearly incorrect.  Although entries for \code{a} and
+\code{b} are correct, the third and fourth entries are not as
+expected: in this case R idiom simply adds the entries elementwise
+with no regard to labels.  We would expect \code{x+y} to respect the
+fact that we have 5 \code{d} entries, even though element \code{d} is
+the fourth entry of \code{x} and the third of \code{y}.  Further:
+
+\begin{Schunk}
+\begin{Sinput}
+> x
+\end{Sinput}
+\begin{Soutput}
+a b c d 
+3 1 1 2 
+\end{Soutput}
+\begin{Sinput}
+> z
+\end{Sinput}
+\begin{Soutput}
+a b d e f 
+2 1 2 1 1 
+\end{Soutput}
+\begin{Sinput}
+> x+z
+\end{Sinput}
+\begin{Soutput}
+Error in x + z : non-conformable arrays
+\end{Soutput}
+\end{Schunk}
+
+
+Above we see that \code{x} and \code{z} do not have a well-defined
+sum, in the sense that \code{x+z} returns, quite reasonably, an error.
+
+
+\subsection{Named vectors}
+
+
+A \dfn{named vector} is a vector with a \code{names} attribute.  Each
+element of a named vector is associated with a name or label.  The
+names are not necessarily unique.  This makes it easier to refer to
+specific values within the vector using their respective names.  Named
+vectors are a convenient and useful feature of the R programming
+language [@rcore2022].  However, consider the following two named
+vectors:
+
+<<twonamedvectors>>=
+x <- c(a=1,b=2,c=3)
+y <- c(c=4,b=1,a=1)
+@
+
+Given that \code{x+y} returns a named vector, there are at least two
+plausible values that it might give, viz:
+
+<<plausible1,echo=FALSE>>=
+c(a=5,b=3,c=4)
+c(a=2,b=3,c=7)
+@
+
+
+In the first case the elements of \code{x} and \code{y} are added
+pairwise, and the \code{names} attribute is taken from the {\em first}
+of the addends.  In the second, the names are considered to be primary
+and the value of each name in the sum is the sum of the values of that
+name of the addends.  Note further that there is no good reason why
+the first answer could not be \code{c(c=5,b=3,a=4)}, obtained by using
+the names attribute of \code{y} instead of \code{x}.  The
+\CRANpkg{frab} package provides a consistent interpretation for named
+vectors in which addition is indexed by name, not position.
+
+\section{The \CRANpkg{frab} package}
+
+The \CRANpkg{frab} package associates a numerical value with each of a
+set of arbitrary (character string) symbols.  This is accomplished
+using the \code{STL} map class, a container that stores key-value
+pairs and allows fast lookup and insertion based on the key.  Here we
+have keys as character strings and values are double-precision
+numbers.
+
+The package uses \code{S4} class, \code{frab}, for which a variety of
+methods is defined.  There are several ways to create \code{frab}
+objects, but the most straightforward is to coerce a named vector
+using the \code{frab()} function:
+
+<<frabzyx>>=
+frab(c(z=2,y=7,x=1))
+@
+
+Above, see how \code{frab()} takes a named numeric vector, possibly
+reordering the names of its arguments, and returns a \code{frab} object.
+Function \code{frab()} considers the names of the elements to be the
+primary extraction and replacement mechanism.  If the argument has
+repeated names, \code{frab()} sums them:
+
+<<frab_show_addition>>=
+frab(c(t=3,q=2,t=4,q=-1,p=6,a=3,t=5))
+@
+
+Above we see that the entries for \code{t} and \code{q} are summed.
+Zero entries are discarded:
+
+<<frab_show_zero_discarded>>=
+frab(c(pear=1,kiwi=0,fig=3,lime=2,fig=-3))
+@
+
+
+Above we see that zero entries [\code{kiwi} and \code{fig}] are
+discarded, irrespective of whether a zero is explicitly given, or
+repeated values cancel.  However, the main motivation for using
+\code{frab} objects is that they may be added:
+
+<<howfrabaddition>>=
+a <- frab(c(x=2,y=1,z=3))
+b <- frab(c(y=3,x=3,u=1))
+a+b
+@
+
+Above we see that the sum of \code{a} and \code{b} is defined in terms
+of the keys of the summands, not position.  Thus, \code{a+b} has 5
+($=2+3$) for its \code{x} entry and 4 ($=1+3$) for its \code{y} entry.
+Observe that \code{a+b} has its entries in implementation-specific
+order, as per \CRANpkg{disordR} discipline (discussed below).
+Further, note that \code{a+b} has length 4, while \code{a} and
+\code{b} have length 3.
+
+\subsection{Extensions of \code{frab} objects to floating-point values}
+
+The \code{frab} class is sufficiently flexible to incorporate
+floating-point values, although one has to be a little careful with
+numerical round-off errors:
+
+<<showfrabroundofferrors>>=
+x <- frab(c(a = 4, u = pi, p = exp(pi)))
+y <- frab(c(p = -exp(pi)/3, u = -pi))
+z <- frab(c(p = -exp(pi)*2/3))
+x+y+z
+@
+
+Above, the sum \code{x+y+z} should have zero entries for \code{u} and
+\code{p}; we see the entry for \code{u} vanishes, but the entry for
+\code{p} is nonzero, being subject to (small) numerical roundoff
+error.
+
+\section{The \CRANpkg{frab} package and \CRANpkg{disordR} discipline}
+
+The \CRANpkg{frab} package conforms to disord discipline
+\citep{hankin2022_disordR}.  Here I present some discussion of the
+motivation for this design decision in the context of the
+\CRANpkg{frab} package; a more general discussion is given in
+\cite{hankin2022_disordR}; the original motivating use-case is
+presented in \cite{hankin2022_mvp_rjournal}.  Consider the following
+short R session:
+
+<<shortsession>>=
+(a <- frab(c(x=2,y=1,u=8,z=3,v=5)))
+a["x"]
+@
+\begin{Schunk}
+\begin{Sinput}
+a[1]
+\end{Sinput}
+\begin{Soutput}
+Error in .local(x, i, j = j, ..., drop) : disordR discipline violation
+\end{Soutput}
+\end{Schunk}
+
+
+
+Above we see a \CRANpkg{disordR} violation: there is no such thing as
+"\code{a[1]}", for the elements of \code{a} are stored in an
+implementation-specific order.  The \code{STL} map class stores value-key
+pairs in an undefined order; thus, extracting the value for \code{x} is
+fine, but because the order is not defined it makes no sense to
+extract the ``first" element (and attempting to do so results in a
+disord discipline error).
+
+Observe that we cannot dispense with order of the values entirely,
+because sometimes one is interested in the vector of keys, or their
+values, in isolation.  If we want to work with the names or values of
+a  \code{frab} object, then the \code{disord} print methods are used:
+
+<<frabnamesisolation>>=
+a <- frab(c(x=2,y=1,z=3))
+names(a)
+values(a)
+@
+
+Above we see that \code{names(a)} and \code{values(a)} return
+\code{disord} objects, in this case with the same hash code which
+indicates that the objects are consistent with one another in the
+sense of \code{disordR::consistent()}.  These objects may be displayed
+and subsequently manipulated, subject to disord discipline:
+
+<<frabnamereplace>>=
+(a <- frab(c(x=2,y=1,z=3)))
+names(a) <- toupper(names(a))
+a
+@
+
+We see that replacement methods are defined, in this case the names of
+`a` become their uppercase equivalents.
+Again observe that there is no meaning to the operation "extract the
+first element of \code{names(a)}", because the elements of \code{names(a)},
+being a \code{disord} object, are stored in an implementation-specific
+order.  We may manipulate the values of a \code{frab} object, if we are
+careful to be consistent with disord discipline.  The package includes
+a number of convenient replacement idioms:
+
+<<frabvaluemanipulate>>=
+(a <- frab(c(x=2,y=-1,z=3,p=-4,u=20)))
+values(a) <- values(a)^2
+a
+@
+
+Thus, we may square the \code{values()} of \code{a} using the replacement
+method, and object \code{a} is altered appropriately.  Further, we may use
+the \code{disindex} class of the \code{disordR} package to replace certain
+values using standard square bracket replacement idiom:
+
+<<frabvaluemanipulate2>>=
+(a <- frab(c(x=2,y=-1,z=11,p=-4,u=20)))
+a[a>10] <- 19
+a
+@
+
+
+
+\bibliography{frab}
