@@ -1,8 +1,17 @@
+\abstract{
+In R, adding two objects of class \code{table} has a natural
+interpretation.  However, in base R, adding two tables can give
+plausible but incorrect results.  The \CRANpkg{frab} package provides
+a consistent and efficient way to add \code{table} objects.  The
+underlying mathematical structure is the Free Abelian group, hence
+"\code{frab}".
+}
+
+
 <<echo=FALSE>>=
 library("frab")
 set.seed(0)
 @
-
 
 
 \section{Prologue: \code{table()}}
@@ -12,9 +21,9 @@ table::base()}.  Their behaviour is discussed here.  Suppose we have
 three tables:
 
 <<label=tables123>>=
-x <- table(c("a","a","b","c","d","d","a"))
-y <- table(c("a","a","b","d","d","d","e"))
-z <- table(c("a","a","b","d","d","e","f"))
+x <- table(c("a", "a", "b", "c", "d", "d", "a"))
+y <- table(c("a", "a", "b", "d", "d", "d", "e"))
+z <- table(c("a", "a", "b", "d", "d", "e", "f"))
 x
 @
 
@@ -74,20 +83,20 @@ element of a named vector is associated with a name or label.  The
 names are not necessarily unique.  This makes it easier to refer to
 specific values within the vector using their respective names.  Named
 vectors are a convenient and useful feature of the R programming
-language [@rcore2022].  However, consider the following two named
+language \citep{rcore2022}.  However, consider the following two named
 vectors:
 
 <<twonamedvectors>>=
-x <- c(a=1,b=2,c=3)
-y <- c(c=4,b=1,a=1)
+x <- c(a = 1, b = 2, c = 3)
+y <- c(c = 4, b = 1, a = 1)
 @
 
 Given that \code{x+y} returns a named vector, there are at least two
 plausible values that it might give, viz:
 
 <<plausible1,echo=FALSE>>=
-c(a=5,b=3,c=4)
-c(a=2,b=3,c=7)
+c(a = 5, b = 3, c = 4)
+c(a = 2, b = 3, c = 7)
 @
 
 
@@ -96,7 +105,7 @@ pairwise, and the \code{names} attribute is taken from the {\em first}
 of the addends.  In the second, the names are considered to be primary
 and the value of each name in the sum is the sum of the values of that
 name of the addends.  Note further that there is no good reason why
-the first answer could not be \code{c(c=5,b=3,a=4)}, obtained by using
+the first answer could not be \code{c(c = 5, b = 3, a = 4)}, obtained by using
 the names attribute of \code{y} instead of \code{x}.  The
 \CRANpkg{frab} package provides a consistent interpretation for named
 vectors in which addition is indexed by name, not position.
@@ -116,7 +125,7 @@ objects, but the most straightforward is to coerce a named vector
 using the \code{frab()} function:
 
 <<frabzyx>>=
-frab(c(z=2,y=7,x=1))
+frab(c(z = 2, y = 7, x = 1))
 @
 
 Above, see how \code{frab()} takes a named numeric vector, possibly
@@ -126,14 +135,14 @@ primary extraction and replacement mechanism.  If the argument has
 repeated names, \code{frab()} sums them:
 
 <<frab_show_addition>>=
-frab(c(t=3,q=2,t=4,q=-1,p=6,a=3,t=5))
+frab(c(t = 3, q = 2, t = 4, q = -1, p = 6, a = 3, t = 5))
 @
 
 Above we see that the entries for \code{t} and \code{q} are summed.
 Zero entries are discarded:
 
 <<frab_show_zero_discarded>>=
-frab(c(pear=1,kiwi=0,fig=3,lime=2,fig=-3))
+frab(c(pear = 1, kiwi = 0, fig = 3, lime = 2, fig = -3))
 @
 
 
@@ -143,8 +152,8 @@ repeated values cancel.  However, the main motivation for using
 \code{frab} objects is that they may be added:
 
 <<howfrabaddition>>=
-a <- frab(c(x=2,y=1,z=3))
-b <- frab(c(y=3,x=3,u=1))
+a <- frab(c(x = 2, y = 1, z = 3))
+b <- frab(c(y = 3, x = 3, u = 1))
 a+b
 @
 
@@ -167,7 +176,7 @@ presented in \cite{hankin2022_mvp_rjournal}.  Consider the following
 short R session:
 
 <<shortsession>>=
-(a <- frab(c(x=2,y=1,u=8,z=3,v=5)))
+(a <- frab(c(x = 2, y = 1, u = 8, z = 3, v = 5)))
 a["x"]
 @
 \begin{Schunk}
@@ -193,7 +202,7 @@ values, in isolation.  If we want to work with the names or values of
 a  \code{frab} object, then the \code{disord} print methods are used:
 
 <<frabnamesisolation>>=
-a <- frab(c(x=2,y=1,z=3))
+a <- frab(c(x = 2, y = 1, z = 3))
 names(a)
 values(a)
 @
@@ -205,7 +214,7 @@ sense of \code{disordR::consistent()}.  These objects may be displayed
 and subsequently manipulated, subject to disord discipline:
 
 <<frabnamereplace>>=
-(a <- frab(c(x=2,y=1,z=3)))
+(a <- frab(c(x = 2, y = 1, z = 3)))
 names(a) <- toupper(names(a))
 a
 @
@@ -220,7 +229,7 @@ careful to be consistent with disord discipline.  The package includes
 a number of convenient replacement idioms:
 
 <<frabvaluemanipulate>>=
-(a <- frab(c(x=2,y=-1,z=3,p=-4,u=20)))
+(a <- frab(c(x = 2, y = -1, z = 3, p = -4, u = 20)))
 values(a) <- values(a)^2
 a
 @
@@ -231,7 +240,7 @@ the \code{disindex} class of the \code{disordR} package to replace certain
 values using standard square bracket replacement idiom:
 
 <<frabvaluemanipulate2>>=
-(a <- frab(c(x=2,y=-1,z=11,p=-4,u=20)))
+(a <- frab(c(x = 2, y = -1, z = 11, p = -4, u = 20)))
 a[a>10] <- 19
 a
 @
@@ -249,8 +258,8 @@ easier to understand).
 
 <<threedeeexample>>=
 abcd <- letters[1:4]
-jj <- sample(abcd,99,repl=T,prob=1/(1:4)^2)
-I <- matrix(jj,33,3)
+jj <- sample(abcd, 99, repl = T, prob = 1/(1:4)^2)
+I <- matrix(jj, 33, 3)
 head(I)
 nrow(I)
 (x <- sparsetable(I))
@@ -263,8 +272,8 @@ $4^3=64$ possible row types are represented.  Standard extraction and
 replacement operations work as expected:
 
 <<standardextraction>>=
-x["a","a","b"]
-x[rbind(c("a","b","b"),c("a","b","c"))]
+x["a", "a", "b"]
+x[rbind(c("a", "b", "b"), c("a", "b", "c"))]
 @
 
 Thus, extraction can operate with the arguments sent separately, or as
@@ -280,7 +289,7 @@ every element greater than 3.  The package furnishes equivalent
 replacement methods, but note that new entries can be added if needed:
 
 ```{r disordreplacementnew}
-x["a","x","y"] <- 1000
+x["a", "x", "y"] <- 1000
 x
 ```
 
