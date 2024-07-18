@@ -1,0 +1,15 @@
+Various auxiliary files are needed to create frabRJ.pdf.
+
+The bibliography file, frab.bib, is under version control in that
+vignettes/ package directory.  Copy it here to process frabR.Rmd.  The
+figure, commuting_diagram.pdf, is created from commuting_diagram.tex
+(which is under version control) by running
+
+pdflatex commuting_diagram
+
+Use 
+
+rmarkdown::render("frabRJ.Rmd")
+
+In an R session to create frabRJ.Rmd and frabRJ.html
+
