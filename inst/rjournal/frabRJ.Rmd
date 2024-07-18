@@ -1,0 +1,404 @@
+---
+title: "frab: An R Package for Adding Tables"
+date: "2024-07-18"
+abstract: >
+
+  In R, adding two objects of class `table` has a natural
+  interpretation.  However, in base R, adding two tables can give
+  plausible but incorrect results.  The `frab` package provides a
+  consistent and efficient way to add `table` objects, subject to
+  `disordR` discipline [@hankin2022_disordR].  In this short article I
+  introduce the `frab` package which allows one to add tables; it
+  also  provides an alternative interpretation of named vectors.  The
+  underlying mathematical structure is the Free Abelian
+  group, hence "`frab`".
+draft: true
+author:  
+  - name: Robin K. S. Hankin
+    affiliation: University of Stirling
+    address:
+    - Compute and Mathematical Sciences, University of Stirling, Scotland
+    url: https://www.stir.ac.uk/people/1966824
+    orcid: 0000-0001-5982-0415
+    email: hankin.robin@gmail.com
+type: package
+output: 
+  rjtools::rjournal_article:
+    self_contained: yes
+    toc: no
+bibliography: frab.bib
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+library("frab")
+set.seed(0)
+```
+
+
+# Prologue: `table()`
+
+Suppose we have three R tables:
+
+```{r,label=badtables}
+x <- table(c("a","a","b","c","d","d","a"))
+y <- table(c("a","a","b","d","d","d","e"))
+z <- table(c("a","a","b","d","d","e","f"))
+```
+
+Can we ascribe any meaning to `x+y` without referring to the arguments
+sent to `table()`?  Well yes, we should simply sum the counts of the
+various letters.  However:
+
+```{r label=addtableswrong}
+x
+y
+x+y
+```
+
+The sum is defined in this case.  However, close inspection shows that
+the result is clearly incorrect.  Although entries for `a` and `b` are
+correct, the third and fourth entries are not as expected: in this
+case R idiom simply adds the entries elementwise with no regard to
+labels.  We would expect `x+y` to respect the fact that we have 5 `d`
+entries, even though element `d` is the fourth entry of `x` and the
+third of `y`.  Further:
+
+```{r, label=addtablesgiveserror,error=TRUE}
+x
+z
+x+z
+```
+
+Above we see that `x` and `z` do not have a well-defined sum, in the
+sense that `x+z` returns, quite reasonably, an error.
+
+# Named vectors
+
+A _named vector_ is a vector with a `names` attribute.  Each element
+of a named vector is associated with a name or label.  The names are
+not necessarily unique.  It allows you to assign a name to each
+element, making it easier to refer to specific values within the
+vector using their respective names.  Named vectors are a convenient
+and useful feature of the R programming language [@rcore2022].
+However, consider the following two named vectors:
+
+```{r label=twonamedvectors}
+x <- c(a=1,b=2,c=3)
+y <- c(c=4,b=1,a=1)
+```
+
+Given that `x+y` returns a named vector, there are at least two
+plausible values that it might give, viz:
+
+`c(a=5,b=3,c=4)`
+
+or
+
+`c(a=2,b=3,c=7)`.
+
+In the first case the elements of `x` and `y` are added pairwise, and
+the `names` attribute is taken from the _first_ of the addends.  In
+the second, the names are considered to be primary and the value of
+each name in the sum is the sum of the values of that name of the
+addends.  Note further that there is no good reason why the first
+answer could not be `c(c=5,b=3,a=4)`, obtained by using the names
+attribute of `y` instead of `x`.  The `frab` package provides a
+consistent interpretation for named vectors in which addition is
+indexed by name, not position.
+
+
+## Package internals
+
+The package uses the `STL map` class for efficiency.  This class
+maps strings (symbols) to doubles; the declaration
+
+```
+typedef std::map <std::string, double> frab; 
+```
+
+appears in the `src/` package directory.  Such maps are limited
+only by memory availability.
+
+## The `frab` package in use
+
+The `frab` package associates a numerical value with each of a set
+of arbitrary (character string) symbols.  This is accomplished using
+the `STL map` class, a container that stores key-value pairs
+and allows fast lookup and insertion based on the key.  Here we have
+keys as character strings and values are double-precision numbers.
+
+
+The package uses a single `S4` class, `frab`, for which a variety of
+methods is defined.  There are several ways to create `frab`
+objects, but the most straightforward is to coerce a named vector
+using the `frab()` function:
+
+```{r frabzyx}
+frab(c(z=2,y=7,x=1))
+```
+
+Above, see how `frab()` takes a named numeric vector and returns
+an object of class `frab`.  It takes the names of its argument,
+possibly reordering them, and returns a `frab` object.  Function
+`frab()` considers the names of the elements to be the primary
+extraction and replacement mechanism.  If the argument has repeated
+names, function `frab()` sums them:
+
+```{r frab_show_addition}
+frab(c(t=3,q=2,t=4,q=-1,p=6,a=3,t=5))
+```
+
+Above we see that the entries for `t` and `q` are summed.
+Zero entries are discarded:
+
+```{r frab_show_zero_discarded}
+frab(c(pear=1,kiwi=0,fig=3,lime=2,fig=-3))
+```
+
+
+Above we see that zero entries [`kiwi` and `fig`] are discarded,
+irrespective of whether a zero is explicitly given, or repeated values
+cancel.  However, the main motivation for using `frab` objects is
+that they may be added:
+
+```{r howfrabaddition}
+a <- frab(c(x=2,y=1,z=3))
+b <- frab(c(y=3,x=3,u=1))
+a+b
+```
+
+Above we see that the sum of `a` and `b` is defined in terms of the
+keys of the summands, not position. Thus, `a+b` has 5 ($=2+3$) for its
+`x` entry and 4 ($=1+3$) for its `y` entry.  Observe that `a+b` has
+its entries in implementation-specific order, as per `disordR`
+discipline.  Further, note that `a+b` has length 4, while `a` and `b`
+have length 3
+
+
+# Extensions of `frab` objects to floating-point values
+
+The `frab` class is sufficiently flexible to incorporate
+floating-point values, although one has to be a little careful with
+numerical round-off errors:
+
+```{r showfrabroundofferrors}
+x <- frab(c(a=4,u=pi,p=exp(pi)))
+y <- frab(c(p=-exp(pi)/3,u=-pi))
+z <- frab(c(p=-exp(pi)*2/3))
+x+y+z
+```
+
+Above, the sum `x+y+z` should have zero entries for `u` and `p`; we
+see the entry for `u` vanishes, but the entry
+for `p` is nonzero, being subject to (small) numerical roundoff
+error.
+
+# The `frab` package and `disordR` discipline
+
+The `frab` package conforms to disord discipline
+[@hankin2022_disordR].  Here I present some discussion of the
+motivation for this design decision.  Consider the following short R
+session:
+
+```{r shortsession, error = TRUE}
+(a <- frab(c(x=2,y=1,u=8,z=3,v=5)))
+a["x"]
+a[1]
+```
+
+Above we see a `disordR` violation: there is no such thing as
+"`a[1]`", for the elements of `a` are stored in an
+implementation-specific order.  The `STL map` class stores value-key
+pairs in an undefined order; thus, extracting the value for `x` is
+fine, but because the order is not defined it makes no sense to
+extract the ``first" element (and attempting to do so results in a
+disord discipline error).
+
+Observe that we cannot dispense with order of the values entirely,
+because sometimes I am interested in the vector of keys, or their
+values, in isolation.  If we want to work with the names or values of
+a `frab` object, then the `disord` print methods are used:
+
+```{r frabnamesisolation}
+a <- frab(c(x=2,y=1,z=3))
+names(a)
+values(a)
+```
+
+Above we see that `names(a)` and `values(a)` return `disord` objects,
+in this case with the same hash code which indicates that the objects
+are consistent with one another in the sense of
+`disordR::consistent()`.  These objects may be displayed and
+subsequently manipulated, subject to disord discipline:
+
+```{r frabnamereplace}
+(a <- frab(c(x=2,y=1,z=3)))
+names(a) <- toupper(names(a))
+a
+```
+
+We see that replacement methods are defined, in this case `toupper()`
+returns a `disord` object and the names of `a` become their uppercase
+equivalents.
+
+Again observe that there is no meaning to the operation ``extract the
+first element of `names(a)`", because the elements of `names(a)`,
+being a `disord` object, are stored in an implementation-specific
+order.  We may manipulate the values of a `frab` object, if we are
+careful to be consistent with disord discipline.  The package includes
+a number of convenient replacement idioms:
+
+```{r frabvaluemanipulate}
+(a <- frab(c(x=2,y=-1,z=3,p=-4,u=20)))
+values(a) <- values(a)^2
+a
+```
+
+Thus, we may square the `values()` of `a` using the replacement
+method, and object `a` is altered appropriately.  Further, we may use
+the `disindex` class of the `disordR` package to replace certain
+values using standard square bracket replacement idiom:
+
+```{r frabvaluemanipulate2}
+(a <- frab(c(x=2,y=-1,z=11,p=-4,u=20)))
+a[a>10] <- 19
+a
+```
+
+Thus, we set any value exceeding 10 to 19.
+
+# Higher-dimensional tables
+
+The ideas above have a natural generalization to multi-dimensional
+tables.  The relevant `frab` package `S4` class is `sparsetable`, and
+this has arithmetic methods implemented.  We start with
+three-dimensional tables (two-dimensional `sparstable` objects have a
+print method that coerces them to arrays before displaying, and the
+general case is easier to understand).
+
+```{r threedeeexample}
+abcd <- letters[1:4]
+jj <- sample(abcd,99,repl=T,prob=1/(1:4)^2)
+I <- matrix(jj,33,3)
+head(I)
+nrow(I)
+(x <- sparsetable(I))
+```
+
+
+Thus, random matrix `I` has has 33 rows and elements a-d .Coercing `I`
+to `sparsetable` object `x` shows the counts of each type of row.
+Object `x` has 13 rows; not all $4^3=64$ possible row types are
+represented.  Standard extraction and replacement operations work as
+expected on `sparsetable` object `x`:
+
+```{r standardextraction}
+x["a","a","b"]
+x[rbind(c("a","b","b"),c("a","b","c"))]
+```
+
+Thus, extraction can operate with the arguments sent separately, or as
+a matrix.  However, other more specialised extraction methods are also
+provided:
+
+```{r disordextraction}
+x[x>3]
+```
+
+
+Thus, extraction can operate with a disord object; here we extract
+every element greater than 3.  Replacement methods are also defined:
+
+```{r disordreplacement}
+x[x==1] <- 0
+x
+```
+
+Also, replacement methods can add new entries if needed:
+
+```{r disordreplacementnew}
+x["a","x","y"] <- 1000
+x
+```
+
+Above we create a new entry corresponding to `a x y` with value
+$1000$; the new entry is placed in its own implementation-specific
+location, as per `disordR` discipline.
+
+
+# Two dimensional tables
+
+If a `sparsetable` object has arity 2, it is coerced to matrix
+form before printing.  Otherwise, the semantics are the same as for
+any other `sparsetable` object.
+
+```{r twodeetable}
+(x <- rspar2(9))
+(y <- rspar2(9))
+x+y
+```
+
+Above, `rspar()` gives a random 2D sparse table.  Package idiom allows
+sparse tables to be added even if the tables are different sizes; the
+resulting sum is automatically resized to accommodate both
+addends. Entries with nonzero values in both `x` and `y` are
+correctly summed.
+
+
+
+
+# Appendix: the Free Abelian Group
+
+The _Free Abelian group_ is an interesting and useful mathematical
+object [@cohn1984]: it is a direct sum of infinite cyclic groups.  If
+these cyclic goups are generated by $\left\lbrace x_i\colon
+i\in\mathcal{I}\right\rbrace$ for some (finite) index set
+$\mathcal{I}$, then the Free Abelian group $F$ will be
+
+\begin{equation}\label{fab_def}
+F=\bigoplus_{i\in\mathcal{I}}\left\langle x_i\right\rangle.
+\end{equation}
+
+Because $\left|\mathcal{I}\right| =k < \infty$, elements of $F$ will
+be of the form
+
+\begin{equation}\label{formalform}
+g=n_1x_1+n_2x_2+\cdots+n_kx_k
+\end{equation}
+
+where $n_i\in\mathbb{Z}$, $1\leqslant i\leqslant k$.  The group
+operation (conventionally one uses additive notation) is then defined
+by componentwise addition.  If
+
+\begin{equation}\nonumber
+g=n_1x_1+n_2x_2+\cdots+n_kx_k\qquad
+h=r_1x_1+r_2x_2+\cdots+r_kx_k,
+\end{equation}
+
+then 
+\begin{equation}\label{formalhplusg}
+h+g=(n_1+r_1)x_1+(n_2+r_2)x_2+\cdots+(n_k+r_k)x_k
+\end{equation}
+
+One can define $F$ formally by starting with a generating set
+$X=\left\lbrace x_1,\ldots,x_k\right\rbrace$ of symbols.  Then $F$ is
+the set of all formal expressions of the form \ref{formalform} under
+the addition defined in equation \ref{formalhplusg}; the group axioms
+follow immediately.  Alternatively, one can adopt the somewhat more
+abstract category-theoretic approach.  For any set $S$ the _free group
+on $S$_ is a group such that for any Abelian group $G$ and map
+$f\colon S\longrightarrow G$, there exists a unique homomorphism
+$\phi$ such that the following diagram commutes:
+
+```{r echo=FALSE}
+knitr::include_graphics("./commuting_diagram.pdf")
+```
+
+For general (non-Abelian) free groups in the context of R, see the
+`freegroup` package [@hankin2022_freegroup_rnews].
+
+
+
+# References

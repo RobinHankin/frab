@@ -291,7 +291,8 @@ setMethod("[",
               if(length(i)==0){
                   return(zero())
               } else {
-                  stop("extraction: frab,ANY,missing-method not implemented")}
+                  stop("disordR discipline violation")
+              }
           } )
 
 setMethod("[",
