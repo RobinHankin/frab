@@ -199,8 +199,10 @@ error.
 
 The `frab` package conforms to disord discipline
 [@hankin2022_disordR].  Here I present some discussion of the
-motivation for this design decision.  Consider the following short R
-session:
+motivation for this design decision in the context of the `frab`
+package; a more general discussion is given in [@hankin2022_disordR];
+the motivating use-case is presented in [@hankin2022_mvp_rjournal].
+Consider the following short R session:
 
 ```{r shortsession, error = TRUE}
 (a <- frab(c(x=2,y=1,u=8,z=3,v=5)))
@@ -243,7 +245,7 @@ We see that replacement methods are defined, in this case `toupper()`
 returns a `disord` object and the names of `a` become their uppercase
 equivalents.
 
-Again observe that there is no meaning to the operation ``extract the
+Again observe that there is no meaning to the operation "extract the
 first element of `names(a)`", because the elements of `names(a)`,
 being a `disord` object, are stored in an implementation-specific
 order.  We may manipulate the values of a `frab` object, if we are
