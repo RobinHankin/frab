@@ -104,7 +104,7 @@ c(a = 2, b = 3, c = 7)
 
 
 In the first case the elements of \code{x} and \code{y} are added
-pairwise, and the \code{names} attribute is taken from the {\em first}
+pairwise, and the \code{names} attribute is taken from the \emph{first}
 of the addends.  In the second, the names are considered to be primary
 and the value of each name in the sum is the sum of the values of that
 name of the addends.  Note further that there is no good reason why
@@ -115,7 +115,7 @@ vectors in which addition is indexed by name, not position.
 
 \section{The package in use}
 
-The \CRANpkg{frab} package associates a numerical value with each of a
+The \pkg{frab} package associates a numerical value with each of a
 set of arbitrary (character string) symbols.  This is accomplished
 using the STL map class, a container that stores key-value
 pairs and allows fast lookup and insertion based on the key.  Here we
@@ -164,16 +164,16 @@ Above we see that the sum of \code{a} and \code{b} is defined in terms
 of the keys of the summands, not position.  Thus, \code{a+b} has 5
 ($=2+3$) for its \code{x} entry and 4 ($=1+3$) for its \code{y} entry.
 Observe that \code{a+b} has its entries in implementation-specific
-order, as per \CRANpkg{disordR} discipline (discussed below).
-Further, note that \code{a+b} has length 4, while \code{a} and
-\code{b} have length 3.
+order, as per \CRANpkg{disordR} discipline \citep{hankin2022_disordR},
+discussed below.  Further, note that \code{a+b} has length 4, while
+\code{a} and \code{b} have length 3.
 
-\section{The {frab} package and \CRANpkg{disordR} discipline}
+\section{The {frab} package and \pkg{disordR} discipline}
 
-The \CRANpkg{frab} package conforms to disord discipline
+The \pkg{frab} package conforms to disord discipline
 \citep{hankin2022_disordR}.  Here I present some discussion of the
 motivation for this design decision in the context of the
-\CRANpkg{frab} package; a more general discussion is given in
+\pkg{frab} package; a more general discussion is given in
 \cite{hankin2022_disordR}.  The original motivating use-case is
 presented in \cite{hankin2022_mvp_rjournal}.  Consider the following
 short R session:
@@ -191,7 +191,7 @@ Error in .local(x, i, j = j, ..., drop) : disordR discipline violation
 \end{Soutput}
 \end{Schunk}
 
-Above we see a \CRANpkg{disordR} violation: there is no such thing as
+Above we see a \pkg{disordR} violation: there is no such thing as
 "\code{a[1]}", for the elements of \code{a} are stored in an
 implementation-specific order.  The STL map class stores value-key
 pairs in an undefined order; thus, extracting the value for \code{x}
@@ -298,7 +298,7 @@ x
 
 Above we create a new entry corresponding to \code{a x y} with value
 $1000$; the new entry is placed in its own implementation-specific
-location, as per \CRANpkg{disordR} discipline.
+location, as per \pkg{disordR} discipline.
 
 \subsection{Two dimensional tables}
 
@@ -372,3 +372,10 @@ provides functionality.
 
 
 \bibliography{frabRJ}
+
+\address{Robin K. S. Hankin\\
+University of Stirling\\
+Scotland\\
+orcid: 0000-0001-5982-0415\\
+\email{hankin.robin@gmail.com}
+}
