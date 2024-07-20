@@ -15,7 +15,7 @@ set.seed(0)
 @
 
 
-\section{Prologue: \code{table()}}
+\section{Prologue: Adding two \code{table()} objects in base R}
 
 Objects of class \code{table} are created by function \code{
 table::base()}.  Their behaviour is discussed here.  Suppose we have
@@ -111,7 +111,7 @@ the names attribute of \code{y} instead of \code{x}.  The
 \CRANpkg{frab} package provides a consistent interpretation for named
 vectors in which addition is indexed by name, not position.
 
-\section{The \CRANpkg{frab} package}
+\section{The package in use}
 
 The \CRANpkg{frab} package associates a numerical value with each of a
 set of arbitrary (character string) symbols.  This is accomplished
@@ -166,7 +166,7 @@ order, as per \CRANpkg{disordR} discipline (discussed below).
 Further, note that \code{a+b} has length 4, while \code{a} and
 \code{b} have length 3.
 
-\section{The \CRANpkg{frab} package and \CRANpkg{disordR} discipline}
+\section{The {frab} package and \CRANpkg{disordR} discipline}
 
 The \CRANpkg{frab} package conforms to disord discipline
 \citep{hankin2022_disordR}.  Here I present some discussion of the
@@ -317,7 +317,7 @@ addends.  Entries with nonzero values in both \code{x} and \code{y}
 are correctly summed.
 
 \appendix
-\section{Appendix: the Free Abelian Group}
+\section{Appendix: The free abelian group}
 
 The \dfn{Free Abelian group} is an interesting and useful mathematical
 object \citep{cohn1984}: it is a direct sum of infinite cyclic groups.
