@@ -360,7 +360,7 @@ $f\colon S\longrightarrow G$, there exists a unique homomorphism
 $\phi$ such that the following diagram commutes:
 
 \begin{center}
-\includegraphics[width=0.25\linewidth]{commuting_diagram.pdf}
+\includegraphics[width=0.25\linewidth]{figures/commuting_diagram.pdf}
 \end{center}
 
 For general (non-Abelian) free groups in the context of R, the
