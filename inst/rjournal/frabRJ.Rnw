@@ -1,4 +1,6 @@
-\title{Addition of R Table Objects with the \pkg{frab} Package}
+\title{Addition of R Table Objects with the \CRANpkg{frab} Package}
+\author{Robin K. S. Hankin}
+\maketitle
 \abstract{
 In R, adding two objects of class \code{table} has a natural
 interpretation.  However, in base R, adding two tables can give
