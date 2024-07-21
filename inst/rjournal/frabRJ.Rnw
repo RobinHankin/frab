@@ -20,7 +20,7 @@ set.seed(0)
 \section{Prologue: Adding two \code{table()} objects in base R}
 
 Objects of class \code{table} are created by function \code{
-table::base()}.  Their behavior is discussed here.  Suppose we have
+base::table()}.  Their behavior is discussed here.  Suppose we have
 three tables:
 
 <<label=tables123>>=
