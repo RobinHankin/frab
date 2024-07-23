@@ -86,7 +86,7 @@ element of a named vector is associated with a name or label.  The
 names are not necessarily unique.  This makes it easier to refer to
 specific values within the vector using their respective names.  Named
 vectors are a convenient and useful feature of the R programming
-language \citep{rcore2022}.  However, consider the following two named
+language \citep{rcore2024}.  However, consider the following two named
 vectors:
 
 <<twonamedvectors>>=
@@ -371,7 +371,7 @@ For general (non-Abelian) free groups in the context of R, the
 provides functionality.
 
 
-\bibliography{frabRJ}
+\bibliography{hankin_frab}
 
 \address{Robin K. S. Hankin\\
 University of Stirling\\
