@@ -1,6 +1,7 @@
 \title{Addition of R Table Objects with the \CRANpkg{frab} Package}
 \author{Robin K. S. Hankin}
 \maketitle
+\date{2024-07-24}
 \abstract{
 In R, adding two objects of class \code{table} has a natural
 interpretation.  However, in base R, adding two tables can give
@@ -86,7 +87,7 @@ element of a named vector is associated with a name or label.  The
 names are not necessarily unique.  This makes it easier to refer to
 specific values within the vector using their respective names.  Named
 vectors are a convenient and useful feature of the R programming
-language \citep{rcore2024}.  However, consider the following two named
+language.  However, consider the following two named
 vectors:
 
 <<twonamedvectors>>=
