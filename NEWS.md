@@ -25,3 +25,8 @@
 - citation now points to arXiv preprint
 - bugfix [frab(c(a=1,b=1)) + 1:2 now returns an error]
 - consistentification of docs
+
+# frab 0.0-6
+
+- github workflows
+- tersification of code of conduct and contributing documents
