@@ -1,6 +1,5 @@
 useDynLib(frab, .registration=TRUE)
 exportPattern("^[[:alpha:]]+")
-import("mathjaxr")
 
 importFrom(Rcpp,evalCpp) 
 importFrom("stats", "setNames")
