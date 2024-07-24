@@ -4,6 +4,8 @@
 ^\.travis\.yml$
 ^inst/frab_stickermaker.R$
 ^inst/frab.png$
+^inst/rjournal
+^inst/arxiv
 ^vignettes/*.html$
 ^.github$
 ^.devcontainer$
