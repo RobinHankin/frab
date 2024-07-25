@@ -23,7 +23,7 @@ The manuscript introduces the new `frab` package that provides new
 low-level functionality for working with single- and multi-
 dimensional tables in R.  It also gives a new interpretation for named
 vectors.  The package has potentially wide applications in that it
-provides new R infrastructure.
+provides new R infrastructure and invites re-use.
 
 \bigskip
 \bigskip
