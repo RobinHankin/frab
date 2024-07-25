@@ -1,5 +1,8 @@
 ---
-output: pdf_document
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
 fontsize: 12pt
 ---
 
@@ -16,12 +19,11 @@ Dear Professor Loo,
 Please consider my article titled "Adding tables in R: Introducing the
 `frab` package" for publication in the R Journal.
 
-The manuscript introduces the new `frab` package that provides
-functionality for working with single- and multi- dimensional tables
-in R.  It also gives a new interpretation for named vectors.
-
-The package has potentially wide applications in that it provides new
-R infrastructure.
+The manuscript introduces the new `frab` package that provides new
+low-level functionality for working with single- and multi-
+dimensional tables in R.  It also gives a new interpretation for named
+vectors.  The package has potentially wide applications in that it
+provides new R infrastructure.
 
 \bigskip
 \bigskip
