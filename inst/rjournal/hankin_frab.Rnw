@@ -17,12 +17,12 @@ library("frab")
 set.seed(0)
 @
 
+\section{Introduction}
 
-\section{Prologue: Adding two \code{table()} objects in base R}
-
-Objects of class \code{table} are created by function \code{
-base::table()}.  Their behavior is discussed here.  Suppose we have
-three tables:
+Objects of class \code{table} are created by function
+\code{base::table()}.  Arithmetic methods on \code{table} objects
+include addition (as in ``\code{t1 + t2}''), but the interpretation of
+this operation is problematic.  Consider the following R session:
 
 <<label=tables123>>=
 x <- table(c("a", "a", "b", "c", "d", "d", "a"))
@@ -30,7 +30,6 @@ y <- table(c("a", "a", "b", "d", "d", "d", "e"))
 z <- table(c("a", "a", "b", "d", "d", "e", "f"))
 x
 @
-
 
 Can we ascribe any meaning to \code{x+y} without referring to the
 arguments sent to \code{table()}?  Well yes, we should simply sum the
@@ -41,7 +40,6 @@ x
 y
 x+y
 @
-
 
 The sum is defined in this case.  However, close inspection shows that
 the result is clearly incorrect.  Although entries for \code{a} and
@@ -78,7 +76,6 @@ Error in x + z : non-conformable arrays
 Above we see that \code{x} and \code{z} do not have a well-defined
 sum, in the sense that \code{x+z} returns, quite reasonably, an error.
 
-
 \subsection{Named vectors}
 
 
@@ -113,6 +110,65 @@ the first answer could not be \code{c(c = 5, b = 3, a = 4)}, obtained by using
 the names attribute of \code{y} instead of \code{x}.  The
 \CRANpkg{frab} package provides a consistent interpretation for named
 vectors in which addition is indexed by name, not position.
+
+\section{Related functionality}
+
+There does not seem to be this type of facility available in native R;
+one difficulty is the multiple interpretations of the word ``table''.
+For example, function \code{dplyr::bind\_rows()} ~\citep{dplyr2023}
+might appear to offer related functionality, but this operates on data
+frames such as tibbles, not on R objects of class \code{table} in base
+R.  There is no sense in which \code{bind\_rows()} adds elements of a
+table.  Some \pkg{frab} functionality can be replicated using
+\acronym{SQL} constructs.  Consider two simple \code{frab} objects and
+their sum:
+
+<<abforSQL>>=
+a <- frab(c(x = 9, y = 7, z = 7))
+b <- frab(c(y = 9, x = 8, u = 9))
+a+b
+@ 
+
+These objects may be added [in the sense of \pkg{frab}] using
+\code{SQL} formalism.  The first step would be coercion of \code{a}
+and \code{b} to dataframes and combine with \code{rbind()}:
+
+<<coerce_and_combine>>=
+(ab_df <- rbind(as.data.frame(a),as.data.frame(b)))
+@
+
+Now object \code{ab\_df} contains repeated \code{key} entries.  To
+frabify this, we need to use the ``group by'' \acronym{SQL} construct:
+
+<<usegroupby>>=
+library("sqldf")
+aplusb <- sqldf('
+SELECT key, sum(value) AS value
+FROM  ab_df
+GROUP BY key
+')
+aplusb
+@
+
+(Note that the above construction would require a little polishing for
+production use as zeros are not removed automatically).  The resulting
+data frame can be coerced back to \code{frab} form:
+
+<<asfrab>>=
+as.frab(aplusb)
+@
+
+It is straightforward to verify that the two methods give identical
+results:
+
+<<verifyidentical>>=
+as.frab(aplusb) == a+b
+@
+
+
+
+
+
 
 \section{The package in use}
 
@@ -165,91 +221,91 @@ Above we see that the sum of \code{a} and \code{b} is defined in terms
 of the keys of the summands, not position.  Thus, \code{a+b} has 5
 ($=2+3$) for its \code{x} entry and 4 ($=1+3$) for its \code{y} entry.
 Observe that \code{a+b} has its entries in implementation-specific
-order, as per \CRANpkg{disordR} discipline \citep{hankin2022_disordR},
-discussed below.  Further, note that \code{a+b} has length 4, while
-\code{a} and \code{b} have length 3.
+order, as per \CRANpkg{disordR} discipline \citep{hankin2022_disordR}.
+Further, note that \code{a+b} has length 4, while \code{a} and
+\code{b} have length 3.
 
-\section{The {frab} package and \pkg{disordR} discipline}
-
-The \pkg{frab} package conforms to disord discipline
-\citep{hankin2022_disordR}.  Here I present some discussion of the
-motivation for this design decision in the context of the
-\pkg{frab} package; a more general discussion is given in
-\cite{hankin2022_disordR}.  The original motivating use-case is
-presented in \cite{hankin2022_mvp_rjournal}.  Consider the following
-short R session:
-
-<<shortsession>>=
-(a <- frab(c(x = 2, y = 1, u = 8, z = 3, v = 5)))
-a["x"]
-@
-\begin{Schunk}
-\begin{Sinput}
-a[1]
-\end{Sinput}
-\begin{Soutput}
-Error in .local(x, i, j = j, ..., drop) : disordR discipline violation
-\end{Soutput}
-\end{Schunk}
-
-Above we see a \pkg{disordR} violation: there is no such thing as
-"\code{a[1]}", for the elements of \code{a} are stored in an
-implementation-specific order.  The STL map class stores value-key
-pairs in an undefined order; thus, extracting the value for \code{x}
-is fine, but because the order is not defined it makes no sense to
-extract the "first" element (and attempting to do so results in a
-disord discipline error).
-
-Observe that we cannot dispense with order of the values entirely,
-because sometimes one is interested in the vector of keys, or their
-values, in isolation.  If we want to work with the names or values of
-a  \code{frab} object, then the \code{disord} print methods are used:
-
-<<frabnamesisolation>>=
-a <- frab(c(x = 2, y = 1, z = 3))
-names(a)
-values(a)
-@
-
-Above we see that \code{names(a)} and \code{values(a)} return
-\code{disord} objects, in this case with the same hash code which
-indicates that the objects are consistent with one another in the
-sense of \code{disordR::consistent()}.  These objects may be displayed
-and subsequently manipulated, subject to disord discipline:
-
-<<frabnamereplace>>=
-(a <- frab(c(x = 2, y = 1, z = 3)))
-names(a) <- toupper(names(a))
-a
-@
-
-We see that replacement methods are defined, in this case the names of
-`a` become their uppercase equivalents.
-Again observe that there is no meaning to the operation "extract the
-first element of \code{names(a)}", because the elements of \code{names(a)},
-being a \code{disord} object, are stored in an implementation-specific
-order.  We may manipulate the values of a \code{frab} object, if we are
-careful to be consistent with disord discipline.  The package includes
-a number of convenient replacement idioms:
-
-<<frabvaluemanipulate>>=
-(a <- frab(c(x = 2, y = -1, z = 3, p = -4, u = 20)))
-values(a) <- values(a)^2
-a
-@
-
-Thus, we may square the \code{values()} of \code{a} using the replacement
-method, and object \code{a} is altered appropriately.  Further, we may use
-the \code{disindex} class of the \code{disordR} package to replace certain
-values using standard square bracket replacement idiom:
-
-<<frabvaluemanipulate2>>=
-(a <- frab(c(x = 2, y = -1, z = 11, p = -4, u = 20)))
-a[a>10] <- 19
-a
-@
-
-Thus, we set any value exceeding 10 to 19.
+%  \section{The {frab} package and \pkg{disordR} discipline}
+%  
+%  The \pkg{frab} package conforms to disord discipline
+%  \citep{hankin2022_disordR}.  Here I present some discussion of the
+%  motivation for this design decision in the context of the
+%  \pkg{frab} package; a more general discussion is given in
+%  \cite{hankin2022_disordR}.  The original motivating use-case is
+%  presented in \cite{hankin2022_mvp_rjournal}.  Consider the following
+%  short R session:
+%  
+%  <<shortsession>>=
+%  (a <- frab(c(x = 2, y = 1, u = 8, z = 3, v = 5)))
+%  a["x"]
+%  @
+%  \begin{Schunk}
+%  \begin{Sinput}
+%  a[1]
+%  \end{Sinput}
+%  \begin{Soutput}
+%  Error in .local(x, i, j = j, ..., drop) : disordR discipline violation
+%  \end{Soutput}
+%  \end{Schunk}
+%  
+%  Above we see a \pkg{disordR} violation: there is no such thing as
+% "\code{a[1]}", for the elements of \code{a} are stored in an
+% implementation-specific order.  The STL map class stores value-key
+% pairs in an undefined order; thus, extracting the value for \code{x}
+% is fine, but because the order is not defined it makes no sense to
+% extract the "first" element (and attempting to do so results in a
+% disord discipline error).
+% 
+% Observe that we cannot dispense with order of the values entirely,
+% because sometimes one is interested in the vector of keys, or their
+% values, in isolation.  If we want to work with the names or values of
+% a  \code{frab} object, then the \code{disord} print methods are used:
+% 
+% <<frabnamesisolation>>=
+% a <- frab(c(x = 2, y = 1, z = 3))
+% names(a)
+% values(a)
+% @
+% 
+% Above we see that \code{names(a)} and \code{values(a)} return
+% \code{disord} objects, in this case with the same hash code which
+% indicates that the objects are consistent with one another in the
+% sense of \code{disordR::consistent()}.  These objects may be displayed
+% and subsequently manipulated, subject to disord discipline:
+% 
+% <<frabnamereplace>>=
+% (a <- frab(c(x = 2, y = 1, z = 3)))
+% names(a) <- toupper(names(a))
+% a
+% @
+% 
+% We see that replacement methods are defined, in this case the names of
+% `a` become their uppercase equivalents.
+% Again observe that there is no meaning to the operation "extract the
+% first element of \code{names(a)}", because the elements of \code{names(a)},
+% being a \code{disord} object, are stored in an implementation-specific
+% order.  We may manipulate the values of a \code{frab} object, if we are
+% careful to be consistent with disord discipline.  The package includes
+% a number of convenient replacement idioms:
+% 
+% <<frabvaluemanipulate>>=
+% (a <- frab(c(x = 2, y = -1, z = 3, p = -4, u = 20)))
+% values(a) <- values(a)^2
+% a
+% @
+% 
+% Thus, we may square the \code{values()} of \code{a} using the replacement
+% method, and object \code{a} is altered appropriately.  Further, we may use
+% the \code{disindex} class of the \code{disordR} package to replace certain
+% values using standard square bracket replacement idiom:
+% 
+% <<frabvaluemanipulate2>>=
+% (a <- frab(c(x = 2, y = -1, z = 11, p = -4, u = 20)))
+% a[a>10] <- 19
+% a
+% @
+% 
+% Thus, we set any value exceeding 10 to 19.
 
 \section{Higher-dimensional tables}
 
@@ -288,9 +344,9 @@ provided:
 x[x>3]
 @
 
-Thus, extraction can operate with a disord object; here we extract
-every element greater than 3.  The package furnishes equivalent
-replacement methods, but note that new entries can be added if needed:
+Above, we extract every element greater than 3.  The package furnishes
+equivalent replacement methods, but note that new entries can be added
+if needed:
 
 <<disordreplacementnew>>=
 x["a", "x", "y"] <- 1000
@@ -298,8 +354,7 @@ x
 @
 
 Above we create a new entry corresponding to \code{a x y} with value
-$1000$; the new entry is placed in its own implementation-specific
-location, as per \pkg{disordR} discipline.
+$1000$.
 
 \subsection{Two dimensional tables}
 
@@ -319,58 +374,31 @@ sizes; the resulting sum is automatically resized to accommodate both
 addends.  Entries with nonzero values in both \code{x} and \code{y}
 are correctly summed.
 
+\section{Conclusion}
+
+In base R, addition of objects of class \code{table} has a natural
+interpretation.  This is implemented by the \CRANpkg{frab} package,
+which gives a consistent and efficient way to add \code{table}
+objects.  Extensions to higher-dimensional arrays is included.  A
+range of extraction and replacement methods is provided.
+
 \appendix
-\section{Appendix: The free abelian group}
+\section*{Appendix: The free abelian group}
 
-The \dfn{Free Abelian group} is an interesting and useful mathematical
+The \dfn{free abelian group} is an interesting and useful mathematical
 object \citep{cohn1984}: it is a direct sum of infinite cyclic groups.
-If these cyclic groups are generated by $\left\lbrace x_i\colon
-i\in\mathcal{I}\right\rbrace$ for some (finite) index set
-$\mathcal{I}$, then the Free Abelian group $F$ will be
-
-\begin{equation}\label{fab_def}
-F=\bigoplus_{i\in\mathcal{I}}\left\langle x_i\right\rangle.
-\end{equation}
-
-Because $\left|\mathcal{I}\right| =k < \infty$, elements of $F$ will
-be of the form
-
-\begin{equation}\label{formalform}
-g=n_1x_1+n_2x_2+\cdots+n_kx_k
-\end{equation}
-
-where $n_i\in\mathbb{Z}$, $1\leqslant i\leqslant k$.  The group
-operation (conventionally one uses additive notation) is then defined
-by componentwise addition.  If
-
-\begin{equation}\nonumber
-g=n_1x_1+n_2x_2+\cdots+n_kx_k\qquad
-h=r_1x_1+r_2x_2+\cdots+r_kx_k,
-\end{equation}
-
-then 
-\begin{equation}\label{formalhplusg}
-h+g=(n_1+r_1)x_1+(n_2+r_2)x_2+\cdots+(n_k+r_k)x_k
-\end{equation}
-
-One can define $F$ formally by starting with a generating set
-$X=\left\lbrace x_1,\ldots,x_k\right\rbrace$ of symbols.  Then $F$ is
-the set of all formal expressions of the form \ref{formalform} under
-the addition defined in equation \ref{formalhplusg}; the group axioms
-follow immediately.  Alternatively, one can adopt the somewhat more
-abstract category-theoretic approach.  For any set $S$ the \dfn{free
-group on $S$} is a group such that for any Abelian group $G$ and map
-$f\colon S\longrightarrow G$, there exists a unique homomorphism
-$\phi$ such that the following diagram commutes:
-
-\begin{center}
-\includegraphics[width=0.25\linewidth]{figures/commuting_diagram.pdf}
-\end{center}
-
-For general (non-Abelian) free groups in the context of R, the
-\CRANpkg{freegroup} package \citep{hankin2022_freegroup_rnews}
-provides functionality.
-
+If these cyclic groups are generated by $\left\lbrace
+x_1,\ldots,x_n\right\rbrace$, then the free abelian group $F$ will be
+$F=\bigoplus_{1\leqslant i\leqslant k}\left\langle x_i\right\rangle$
+and elements of $F$ will be of the form $n_1x_1+\cdots+n_kx_k$ where
+$n_i\in\mathbb{Z}$, $1\leqslant i\leqslant k$.  The group operation
+(conventionally one uses additive notation) is then defined by
+componentwise addition.  If $g=n_1x_1+\cdots+n_kx_k$ and
+$h=r_1x_1+\cdots+r_kx_k$, then $-g=(-n_1)x_1+\cdots+(-n_k)x_k$ and $
+h+g=(n_1+r_1)x_1+\cdots+(n_k+r_k)x_k$; the group axioms follow
+immediately.  For general (non-abelian) free groups in the context of
+R, the \CRANpkg{freegroup} package \citep{hankin2022_freegroup_rnews}
+provides equivalent functionality.
 
 \bibliography{hankin_frab}
 
