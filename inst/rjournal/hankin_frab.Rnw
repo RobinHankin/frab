@@ -6,9 +6,10 @@
 In R, adding two objects of class \code{table} has a natural
 interpretation.  However, in base R, adding two tables can give
 plausible but incorrect results.  The \CRANpkg{frab} package provides
-a consistent and efficient way to add \code{table} objects.  The
-underlying mathematical structure is the Free Abelian group, hence
-"\code{frab}".
+a consistent and efficient way to add \code{table} objects.  Extension
+to multi-way tables is given; a discussion of prior art is presented
+at the end.  The underlying mathematical structure is the Free Abelian
+group, hence "\code{frab}".
 }
 
 
@@ -22,7 +23,9 @@ set.seed(0)
 Objects of class \code{table} are created by function
 \code{base::table()}.  Arithmetic methods on \code{table} objects
 include addition (as in ``\code{t1 + t2}''), but the interpretation of
-this operation is problematic.  Consider the following R session:
+this operation is problematic in base R.  Consider the following R
+session:
+
 
 <<label=tables123>>=
 x <- table(c("a", "a", "b", "c", "d", "d", "a"))
@@ -72,7 +75,6 @@ Error in x + z : non-conformable arrays
 \end{Soutput}
 \end{Schunk}
 
-
 Above we see that \code{x} and \code{z} do not have a well-defined
 sum, in the sense that \code{x+z} returns, quite reasonably, an error.
 
@@ -88,11 +90,11 @@ language.  However, consider the following two named
 vectors:
 
 <<twonamedvectors>>=
-x <- c(a = 1, b = 2, c = 3)
-y <- c(c = 4, b = 1, a = 1)
+u <- c(a = 1, b = 2, c = 3)
+v <- c(c = 4, b = 1, a = 1)
 @
 
-Given that \code{x+y} returns a named vector, there are at least two
+Given that \code{u+v} returns a named vector, there are at least two
 plausible values that it might give, viz:
 
 <<plausible1,echo=FALSE>>=
@@ -101,83 +103,25 @@ c(a = 2, b = 3, c = 7)
 @
 
 
-In the first case the elements of \code{x} and \code{y} are added
-pairwise, and the \code{names} attribute is taken from the \emph{first}
-of the addends.  In the second, the names are considered to be primary
-and the value of each name in the sum is the sum of the values of that
-name of the addends.  Note further that there is no good reason why
-the first answer could not be \code{c(c = 5, b = 3, a = 4)}, obtained by using
-the names attribute of \code{y} instead of \code{x}.  The
-\CRANpkg{frab} package provides a consistent interpretation for named
-vectors in which addition is indexed by name, not position.
-
-\section{Related functionality}
-
-There does not seem to be this type of facility available in native R;
-one difficulty is the multiple interpretations of the word ``table''.
-For example, function \code{dplyr::bind\_rows()} ~\citep{dplyr2023}
-might appear to offer related functionality, but this operates on data
-frames such as tibbles, not on R objects of class \code{table} in base
-R.  There is no sense in which \code{bind\_rows()} adds elements of a
-table.  Some \pkg{frab} functionality can be replicated using
-\acronym{SQL} constructs.  Consider two simple \code{frab} objects and
-their sum:
-
-<<abforSQL>>=
-a <- frab(c(x = 9, y = 7, z = 7))
-b <- frab(c(y = 9, x = 8, u = 9))
-a+b
-@ 
-
-These objects may be added [in the sense of \pkg{frab}] using
-\code{SQL} formalism.  The first step would be coercion of \code{a}
-and \code{b} to dataframes and combine with \code{rbind()}:
-
-<<coerce_and_combine>>=
-(ab_df <- rbind(as.data.frame(a),as.data.frame(b)))
-@
-
-Now object \code{ab\_df} contains repeated \code{key} entries.  To
-frabify this, we need to use the ``group by'' \acronym{SQL} construct:
-
-<<usegroupby>>=
-library("sqldf")
-aplusb <- sqldf('
-SELECT key, sum(value) AS value
-FROM  ab_df
-GROUP BY key
-')
-aplusb
-@
-
-(Note that the above construction would require a little polishing for
-production use as zeros are not removed automatically).  The resulting
-data frame can be coerced back to \code{frab} form:
-
-<<asfrab>>=
-as.frab(aplusb)
-@
-
-It is straightforward to verify that the two methods give identical
-results:
-
-<<verifyidentical>>=
-as.frab(aplusb) == a+b
-@
-
-
-
-
-
+In the first case the elements of \code{u} and \code{v} are added
+pairwise, and the \code{names} attribute is taken from the
+\emph{first} of the addends.  In the second, the names are considered
+to be primary and the value of each name in the sum is the sum of the
+values of that name of the addends.  Note further that there is no
+good reason why the first answer could not be \code{c(c = 5, b = 3, a
+  = 4)}, obtained by using the names attribute of \code{v} instead of
+\code{u}.  The \CRANpkg{frab} package provides a consistent
+interpretation for named vectors in which addition is indexed by name,
+not position.
 
 \section{The package in use}
 
 The \pkg{frab} package associates a numerical value with each of a set
 of arbitrary (character string) symbols.  This is accomplished using
-the STL map class~\citep{ISO17882,josuttis1999}, a container that
-stores key-value pairs and allows fast lookup and insertion based on
-the key.  Here we have keys as character strings and values are
-double-precision numbers.
+the STL map class~\citep{josuttis1999}, a container that stores
+key-value pairs and allows fast lookup and insertion based on the key.
+Here we have keys as character strings and values are double-precision
+numbers.
 
 The package uses \code{S4} class, \code{frab}, for which a variety of
 methods is defined.  There are several ways to create \code{frab}
@@ -224,6 +168,7 @@ Observe that \code{a+b} has its entries in implementation-specific
 order, as per \CRANpkg{disordR} discipline \citep{hankin2022_disordR}.
 Further, note that \code{a+b} has length 4, while \code{a} and
 \code{b} have length 3.
+
 
 %  \section{The {frab} package and \pkg{disordR} discipline}
 %  
@@ -307,6 +252,63 @@ Further, note that \code{a+b} has length 4, while \code{a} and
 % 
 % Thus, we set any value exceeding 10 to 19.
 
+\section{Related functionality}
+
+We note in passing that base R can indeed construct \code{x+y}: one
+would reconstruct the vectors, concatenate them, and then use
+\code{table()} to tabulate them:
+
+<<userep>>=
+x
+y
+table(c(rep(names(x),times=x),rep(names(y),times=y)))
+@
+
+However, this is inefficient (especially if entries are large), cannot
+handle negative or fractional entries, and does not generalize easily
+to multi-way tables.
+
+When investigating prior art, one difficulty is the multiple
+interpretations of the word ``table''.  For example, function
+\code{dplyr::bind\_rows()} ~\citep{dplyr2023} might appear to offer
+related functionality, but this operates on data frames such as
+tibbles, not on R objects of class \code{table} in base R.  There is
+no sense in which \code{bind\_rows()} adds elements of a table.  Some
+\pkg{frab} functionality can be replicated using \acronym{SQL}
+constructs.  Consider two simple \code{frab} objects and their sum:
+
+<<abforSQL>>=
+a <- frab(c(x = 9, y =  7, z = 7))
+b <- frab(c(y = 9, x = -9, u = 9))
+a+b
+@ 
+
+These objects may be added [in the sense of \pkg{frab}] using
+\acronym{SQL} formalism.  First we coerce \code{a} and \code{b} to
+dataframes and then combine with \code{rbind()}:
+
+<<coerce_and_combine>>=
+(ab_df <- rbind(as.data.frame(a),as.data.frame(b)))
+@
+
+Now object \code{ab\_df} contains repeated \code{key} entries.  To
+frabify this, we need to use the ``group by'' \acronym{SQL} construct:
+
+<<usegroupby>>=
+library("sqldf")
+aplusb <- sqldf('
+SELECT key, sum(value) AS value
+FROM  ab_df
+GROUP BY key
+')
+aplusb
+@
+
+(Note that the above construction would require a little polishing for
+production use as zeros are not removed automatically).  Also, further
+work would be required to replicate frab funcationaity for
+higher-dimensional tables, discussed below.
+
 \section{Higher-dimensional tables}
 
 The ideas above have a natural generalization to multi-dimensional
@@ -316,14 +318,20 @@ tables (two-dimensional \code{sparstable} objects have a print method
 that coerces them to arrays before displaying, and the general case is
 easier to understand).
 
+
+<<<setseedthreedee,echo=FALSE>>=
+set.seed(0)
+@ 
+
 <<threedeeexample>>=
 abcd <- letters[1:4]
-jj <- sample(abcd, 99, repl = T, prob = 1/(1:4)^2)
-I <- matrix(jj, 33, 3)
+jj <- sample(abcd, 60, repl = TRUE, prob = 1/(1:4)^3)
+I <- matrix(jj, 20, 3)
 head(I)
 nrow(I)
 (x <- sparsetable(I))
 @
+
 
 Thus, random matrix \code{I} has has 33 rows and elements a-d.
 Coercing \code{I} to \code{sparsetable} object \code{x} shows the
@@ -332,8 +340,8 @@ $4^3=64$ possible row types are represented.  Standard extraction and
 replacement operations work as expected:
 
 <<standardextraction>>=
-x["a", "a", "b"]
-x[rbind(c("a", "b", "b"), c("a", "b", "c"))]
+x["a", "a", "a"]
+x[rbind(c("b", "a", "a"), c("d", "a", "a"))]
 @
 
 Thus, extraction can operate with the arguments sent separately, or as

@@ -21,11 +21,9 @@ have reworked it as you suggest and believe it is stronger and more
 effective as a result.
 
 * Rewording for clarity
-* Inclusion of introduction to problem by way of an illustrative R
+* Inclusion of an introduction to problem by way of an illustrative R
   session showing the motivation for the package
-* Discussion of `dplyr::bind_rows()` as suggested [although I would
-  suggest that most of the confusion surrounding the package may be
-  "adding rows" and indeed the multiple definitions of "table"].
+* Discussion of `dplyr::bind_rows()` as suggested
 * Discussion of related R functionality added, including a section on
   SQL formalism.  One unexpectedly difficult challenge for me
   developing the `frab` package is search engine discoverability.
@@ -35,15 +33,16 @@ effective as a result.
   to the R and SQL communities.
 * After long thought, I have removed the section on disordR
   discipline.  The `disordR` package is a low-level R infrastructure
-  project that obviates a particular type of math/coding error.  Its
-  use has saved my bacon more than once, but on sober reflection
-  emphasising this aspect of the `frab` package is a distraction.
-  Disord discipline is difficult to understand and, if implemented
-  correctly, transparent to the user [unless it flags a violation, in
-  which case it generally highlights a user-level logic error].  As
-  such, it either: (a), deserves an R Journal article of its own or
-  (b), should be relegated to a footnote.  I've chosen the latter,
-  with a heavy heart.
+  project that obviates a particular type of logical coding error;
+  nine CRAN packages now depend on it.  Its use has saved my bacon
+  more than once, but on sober reflection emphasising this aspect of
+  the `frab` package is a distraction.  Disord discipline is difficult
+  to understand and, if implemented correctly, transparent to the user
+  [unless it flags a violation, in which case it generally highlights
+  a logic error].  As such, it either: (a), deserves an R Journal
+  article of its own or (b), should be relegated to a footnote.  I've
+  chosen the latter, with a heavy heart, but would be happy to take
+  advice on this issue.
 * added a conclusions section
 
 \bigskip
