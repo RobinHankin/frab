@@ -172,12 +172,12 @@ as.frab(aplusb) == a+b
 
 \section{The package in use}
 
-The \pkg{frab} package associates a numerical value with each of a
-set of arbitrary (character string) symbols.  This is accomplished
-using the STL map class, a container that stores key-value
-pairs and allows fast lookup and insertion based on the key.  Here we
-have keys as character strings and values are double-precision
-numbers.
+The \pkg{frab} package associates a numerical value with each of a set
+of arbitrary (character string) symbols.  This is accomplished using
+the STL map class~\citep{ISO17882,josuttis1999}, a container that
+stores key-value pairs and allows fast lookup and insertion based on
+the key.  Here we have keys as character strings and values are
+double-precision numbers.
 
 The package uses \code{S4} class, \code{frab}, for which a variety of
 methods is defined.  There are several ways to create \code{frab}
@@ -374,7 +374,7 @@ sizes; the resulting sum is automatically resized to accommodate both
 addends.  Entries with nonzero values in both \code{x} and \code{y}
 are correctly summed.
 
-\section{Conclusion}
+\section{Conclusions}
 
 In base R, addition of objects of class \code{table} has a natural
 interpretation.  This is implemented by the \CRANpkg{frab} package,
