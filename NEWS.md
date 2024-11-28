@@ -1,24 +1,7 @@
-# frab 0.0-1
+# frab 0.0-6
 
-- initial release
-
-
-# frab 0.0-2
-
-- multiplication method
-- new arxiv preprint
-- new draft vignette in inst/
-
-# frab 0.0-3
-
-- sparsetable functionality
-- near complete test coverage
-
-# frab 0.0-4
-
-- data frame coercion
-- improved vignette
-- include covr in Suggests
+- github workflows
+- tersification of code of conduct and contributing documents
 
 # frab 0.0-5
 
@@ -26,7 +9,25 @@
 - bugfix [frab(c(a=1,b=1)) + 1:2 now returns an error]
 - consistentification of docs
 
-# frab 0.0-6
+# frab 0.0-4
 
-- github workflows
-- tersification of code of conduct and contributing documents
+- data frame coercion
+- improved vignette
+- include covr in Suggests
+
+# frab 0.0-3
+
+- sparsetable functionality
+- near complete test coverage
+
+# frab 0.0-2
+
+- multiplication method
+- new arxiv preprint
+- new draft vignette in inst/
+
+
+# frab 0.0-1
+
+- initial release
+
