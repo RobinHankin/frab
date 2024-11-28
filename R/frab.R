@@ -454,6 +454,12 @@ setMethod("Summary", "frab",
           }
           )
 
+setMethod("abs","frab",function(x){
+    values(x) <- abs(values(x))
+    return(x)
+} )
+
+
 setAs(from="frab",to="data.frame",def=function(from){
   jj <- as.namedvector(from)
   data.frame(key = names(jj),value=as.vector(jj))
@@ -468,3 +474,5 @@ setMethod("as.data.frame","frab",function(x){as(x,"data.frame")})
 
 setAs(from="data.frame",to="frab",def=df_to_frab)
 setMethod("as.frab","data.frame",function(x){as(x,"frab")})
+
+setMethod("sort","frab",function(x,...){stop("sort() does not make sense for frabs")})

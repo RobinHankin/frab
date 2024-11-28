@@ -20,6 +20,8 @@
 \alias{!,frab-method}
 \alias{which,frab-method}
 \alias{which,disindex-method}
+\alias{abs,frab-method}
+\alias{sort,frab-method}
 \title{Miscellaneous functions}
 \usage{
 \S4method{length}{frab}(x)
@@ -42,7 +44,11 @@ little more involved:
   given a Boolean \code{disord} object.  This is useful for idiom such
   as \code{x[x>0]}
   \item Functions \code{is.na()} and \code{is.notna()} return a
-  \code{disind} object}
+  \code{disind} object
+  \item Function \code{abs()} returns a \code{frab} with entries being
+  the absolute value of those of its argument
+  \item\code{sort()} does not make sense for \code{frab} objects.
+}
 }
 \value{Generally return frabs}
 \author{Robin K. S. Hankin}
