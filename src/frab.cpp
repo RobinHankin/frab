@@ -32,15 +32,13 @@ frab remove_zeros(frab F){// might be better to call this "nonzero_entries()"
 
 frab sum2(frab F1, frab F2){
   if(F1.size() > F2.size()){
-    for(auto it = F2.begin() ; it != F2.end() ; ++it){ // iterate through the smaller one
-      const string symbol = it->first;
-      F1[symbol] += F2[symbol];
+    for(const auto& [symbol, power] : F2 ){
+      F1[symbol] += power;
     }
     return remove_zeros(F1);
   } else { 
-    for(auto it = F1.begin() ; it != F1.end() ; ++it){
-      const string symbol = it->first;
-      F2[symbol] += F1[symbol];
+    for(const auto& [symbol, power] : F1 ){
+      F2[symbol] += power;
     }
     return remove_zeros(F2);
   }
