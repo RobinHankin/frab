@@ -3,6 +3,7 @@ title: "Addition of R `table` objects with the `frab` package"
 author: "Robin K. S. Hankin"
 output: html_vignette
 bibliography: frab.bib
+link-citations: true
 vignette: >
   %\VignetteIndexEntry{The free Abelian group}
   %\VignetteEngine{knitr::rmarkdown}
