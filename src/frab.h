@@ -2,9 +2,8 @@
 
 #include <Rcpp.h>
 
+using std::string;
 using namespace Rcpp;
-using namespace std;
-
-typedef std::map <std::string, double> frab; 
+using frab = std::map <std::string, double>;
 
 
