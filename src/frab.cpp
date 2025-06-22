@@ -20,11 +20,9 @@ Rcpp::CharacterVector names(const frab &F){
 
 frab remove_zeros(frab F){// might be better to call this "nonzero_entries()"
   frab out;
-  for(frab::iterator it = F.begin() ; it != F.end() ; ++it){
-    const string symbol = it->first;
-    const double power =  it->second;
+  for(const auto& [symbol, power] : F){
     if(power != 0){
-      out[symbol] = power; // the meat
+      out.emplace(symbol, power);
     }
   }
   return out;
