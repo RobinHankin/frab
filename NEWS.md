@@ -1,3 +1,9 @@
+# frab 0.0-7
+
+- improved github workflows
+- formal documentation of concatenation
+- better C++ practice
+
 # frab 0.0-6
 
 - github workflows
