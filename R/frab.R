@@ -1,50 +1,50 @@
-setClass("frab",slots=c(x="numeric"))  # x is a named vector
+setClass("frab", slots=c(x="numeric"))  # x is a named vector
 
-`is.frab` <- function(x){inherits(x,"frab")}
+`is.frab` <- function(x){inherits(x, "frab")}
 
 setGeneric("names")
-setMethod("names","frab",
+setMethod("names", "frab",
           function(x){
-              return(disord(names(x@x),h=hashcal(x@x)))
+              return(disord(names(x@x), h=hashcal(x@x)))
           } )
 
-setReplaceMethod("names",signature(x="frab",value="disord"),
-                 function(x,value){
+setReplaceMethod("names", signature(x="frab", value="disord"),
+                 function(x, value){
                      v <- values(x)
-                     stopifnot(consistent(v,value))
-                     frab(setNames(elements(v),elements(value)))
+                     stopifnot(consistent(v, value))
+                     frab(setNames(elements(v), elements(value)))
                  } )
 
-setReplaceMethod("names",signature(x="frab",value="character"),
-                 function(x,value){
-                     stopifnot(length(x)==1)
-                     frab(setNames(values(x),value))
+setReplaceMethod("names", signature(x="frab", value="character"),
+                 function(x, value){
+                     stopifnot(length(x) == 1)
+                     frab(setNames(values(x), value))
                  } )
 
 setGeneric("values",function(x){standardGeneric("values")})
-setMethod("values","frab",
+setMethod("values", "frab",
           function(x){
-            return(disord(as.numeric(x@x),h=hashcal(x@x)))
+            return(disord(as.numeric(x@x), h=hashcal(x@x)))
             ## no occurrences of "@" below this line; accessor methods end
           } )
 
-setGeneric("values<-",function(x,value){standardGeneric("values<-")})
-setReplaceMethod("values",signature(x="frab",value="numeric"),
-                 function(x,value){
+setGeneric("values<-",function(x, value){standardGeneric("values<-")})
+setReplaceMethod("values", signature(x="frab", value="numeric"),
+                 function(x, value){
                      v <- values(x)
                      v[] <- value
-                     frab(setNames(elements(v),elements(names(x))))
+                     frab(setNames(elements(v), elements(names(x))))
                  } )
 
-setReplaceMethod("values",signature(x="frab",value="disord"),
-                 function(x,value){
+setReplaceMethod("values", signature(x="frab", value="disord"),
+                 function(x, value){
                      n <- names(x)
-                     stopifnot(consistent(n,value))
-                     frab(setNames(elements(value),elements(n)))
+                     stopifnot(consistent(n, value))
+                     frab(setNames(elements(value), elements(n)))
                  } )
 
-setGeneric("namedvector",function(x){standardGeneric("namedvector")})
-setMethod("namedvector","frab",function(x){x@x})
+setGeneric("namedvector", function(x){standardGeneric("namedvector")})
+setMethod("namedvector", "frab", function(x){x@x})
 
 `as.namedvector`    <- function(v){namedvector(v)}
 `is.namedvector`    <- function(v){is.vector(v) && is.numeric(v) && !is.null(names(v))}
@@ -54,8 +54,8 @@ setMethod("namedvector","frab",function(x){x@x})
 
 `frab` <- function(x){ # nv == named vector
   stopifnot(is.namedvector(x))
-  jj <- c_frab_identity(names(x),x)
-  new("frab", x=setNames(jj$values,jj$names))  # this is the only place new() is called
+  jj <- c_frab_identity(names(x), x)
+  new("frab", x=setNames(jj$values, jj$names))  # this is the only place new() is called
 }
 
 `list_to_frab` <- function(L){
@@ -64,14 +64,14 @@ setMethod("namedvector","frab",function(x){x@x})
   if(inherits(n,"disord") || inherits(v,"disord")){
     stop("not currently implemented")
   }
-  frab(setNames(v,n))
+  frab(setNames(v, n))
 }
 
 `is.1dtable` <- function(x){is.table(x) && length(dim(x)==1)}
   
 `table_to_frab` <- function(x){frab(setNames(as.vector(x),names(x)))}
 setGeneric("as.table")
-setMethod("as.table","frab",function(x,...){structure(as.namedvector(x),dim=length(x),dimnames=structure(list(names(x)),names=""),class="table")})
+setMethod("as.table", "frab", function(x,...){structure(as.namedvector(x), dim=length(x), dimnames=structure(list(names(x)), names=""), class="table")})
 
 `as.frab` <- function(x){
   if(is.namedvector(x)){ 
@@ -89,57 +89,57 @@ setMethod("as.table","frab",function(x,...){structure(as.namedvector(x),dim=leng
   }
 }
 
-`frab_negative` <- function(x){frab(setNames(elements(-values(x)),elements(names(x)))) }
-`frab_reciprocal` <- function(x){frab(setNames(elements(1/values(x)),elements(names(x)))) }
-`frab_plus_frab` <- function(F1,F2){
+`frab_negative` <- function(x){frab(setNames(elements(-values(x)), elements(names(x)))) }
+`frab_reciprocal` <- function(x){frab(setNames(elements(1/values(x)), elements(names(x)))) }
+`frab_plus_frab` <- function(F1, F2){
   as.frab(c_frab_add(elements(names(F1)), elements(values(F1)),
                      elements(names(F2)), elements(values(F2))))
 }
 
-`frab_multiply_frab` <- function(F1,F2){
+`frab_multiply_frab` <- function(F1, F2){
   as.frab(c_frab_multiply(elements(names(F1)), elements(values(F1)),
                      elements(names(F2)), elements(values(F2))))
 }
 
-`frab_plus_numeric`     <- function(e1,e2){
+`frab_plus_numeric`     <- function(e1, e2){
     if(is.namedvector(e2)){
-        return(e1+frab(e2))
+        return(e1 + frab(e2))
     } else {  # e2 is an unnamed numeric vector
         if(allsame(e2)){
-            return(frab(setNames(elements(values(e1))+e2,elements(names(e1)))))
+            return(frab(setNames(elements(values(e1))+e2, elements(names(e1)))))
         } else {
             stop("disord violation")
         }
     }
 }
 
-`frab_multiply_numeric` <- function(e1,e2){
+`frab_multiply_numeric` <- function(e1, e2){
     if(is.namedvector(e2)){
         stop("not defined")
     } else {
          if(allsame(e2)){
-            return(frab(setNames(elements(values(e1))*e2,elements(names(e1)))))
+            return(frab(setNames(elements(values(e1))*e2, elements(names(e1)))))
         } else {
             stop("disord violation")
         }
     }
 }
 
-`frab_power_numeric` <- function(e1,e2){
+`frab_power_numeric` <- function(e1, e2){
     if(is.namedvector(e2)){
         stop("not defined")
     } else {
         if(allsame(e2)){
-            return(frab(setNames(elements(values(e1))^e2,elements(names(e1)))))
+            return(frab(setNames(elements(values(e1))^e2, elements(names(e1)))))
         } else {
             stop("disord violation")
         }
     }
 }
         
-`numeric_power_frab`    <- function(e1,e2){stop("<numeric> ^ <frab> not defined")}
+`numeric_power_frab`    <- function(e1, e2){stop("<numeric> ^ <frab> not defined")}
 
-`frab_unary` <- function(e1,e2){
+`frab_unary` <- function(e1, e2){
   switch(.Generic,
          "+" = e1,
          "-" = frab_negative(e1),
@@ -147,7 +147,7 @@ setMethod("as.table","frab",function(x,...){structure(as.namedvector(x),dim=leng
          )
 }
 
-`frab_arith_frab` <- function(e1,e2){
+`frab_arith_frab` <- function(e1, e2){
   e1 <- as.frab(e1)
   e2 <- as.frab(e2)
   switch(.Generic,
@@ -476,3 +476,4 @@ setAs(from="data.frame",to="frab",def=df_to_frab)
 setMethod("as.frab","data.frame",function(x){as(x,"frab")})
 
 setMethod("sort","frab",function(x,...){stop("sort() does not make sense for frabs")})
+setMethod("c","frab",function(x,...){stop("c() does not make sense for frabs")})
