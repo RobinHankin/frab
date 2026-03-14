@@ -39,7 +39,7 @@ zero() + zero()
 
 x <- rfrab()
 
-x+zero() == x
+x + zero() == x
 
 is.zero(zero())
 }
