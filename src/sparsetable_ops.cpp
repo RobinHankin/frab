@@ -134,11 +134,10 @@ NumericVector sparsetable_accessor // returns S1[]
  const CharacterMatrix &M, const NumericVector &d,
  const CharacterMatrix &Mindex
  ){
-    sparsetable S;
-    mycont v;
+    sparsetable S = prepare(M, d);
     NumericVector out(Mindex.nrow());
-    
-    S = prepare(M, d);
+    mycont v;
+    v.reserve(Mindex.ncol());
 
     for(int i=0; i<Mindex.nrow() ; i++){
         v.clear();
@@ -147,11 +146,7 @@ NumericVector sparsetable_accessor // returns S1[]
         }
 
         auto it = S.find(v);
-        if (it != S.end()) {
-            out[i] = it->second;
-        } else {
-            out[i] = 0.0; // Key not found, return 0 (standard sparse behavior)
-        }
+        out[i] = (it != S.end())? it->second : 0.0;
     }
     return out;
 }
