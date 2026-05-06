@@ -21,7 +21,6 @@ typedef std::map<mycont, double > sparsetable;
 
 sparsetable prepare(const CharacterMatrix M, const NumericVector d){
     sparsetable S;
-    sparsetable::iterator it;
     mycont v;
 
     for(int i=0; i<M.nrow() ; i++){
@@ -34,15 +33,9 @@ sparsetable prepare(const CharacterMatrix M, const NumericVector d){
         }
     }  // i loop closes
 
-    // Now remove zero entries:
-    it = S.begin();
-    while(it != S.end()){
-        if(it->second == 0){
-            it = S.erase(it); //  in C++11, erase() returns *next* iterator
-        } else {
-            ++it;  // else just increment the iterator
-        }
-    }
+    std::erase_if(S, [](const auto& item) {
+        return item.second == 0;
+    });
     return S;
 }
 
@@ -109,16 +102,14 @@ List sparsetable_add
  ){
      sparsetable S1 = prepare(M1, d1);
      sparsetable S2 = prepare(M2, d2);
-    
-     for (sparsetable::const_iterator it=S2.begin(); it != S2.end(); ++it){
-       const mycont v = it->first;
-       S1[v] += S2[v]; // the meat:  S1=S1+S2 (S1 += S2)
-       if(S1[v]==0){S1.erase(v);}
+
+     for (const auto& [key, val2] : S2) {
+         double& val1 = S1[key]; 
+         val1 += val2;
+         if (val1 == 0) { S1.erase(key); }
      }
-     
      return retval(S1);
 }
-
 
 // [[Rcpp::export]]
 List sparsetable_overwrite // something like S1[ind(S2)] <- S2
@@ -127,11 +118,10 @@ List sparsetable_overwrite // something like S1[ind(S2)] <- S2
  const CharacterMatrix &M2, const NumericVector &d2
  ){
     sparsetable S1 = prepare(M1, d1);
-    sparsetable S2 = prepare(M2, d2);    
-    
-    for (sparsetable::const_iterator it=S2.begin(); it != S2.end(); ++it){
-      const mycont v = it->first;
-      S1[v] = S2[v];   // the meat
+    sparsetable S2 = prepare(M2, d2);
+
+    for (const auto& [key, value] : S2) {
+        S1.insert_or_assign(key, value);
     }
 
     return retval(S1);
@@ -145,7 +135,6 @@ NumericVector sparsetable_accessor // returns S1[]
  ){
     sparsetable S;
     mycont v;
-    signed int k=0;
     NumericVector out(Mindex.nrow());
     
     S = prepare(M, d);
@@ -155,7 +144,13 @@ NumericVector sparsetable_accessor // returns S1[]
         for(int j=0; j<Mindex.ncol(); j++){
             v.push_back(Mindex(i,j));
         }
-        out[k++] = S[v];
+
+        auto it = S.find(v);
+        if (it != S.end()) {
+            out[i] = it->second;
+        } else {
+            out[i] = 0.0; // Key not found, return 0 (standard sparse behavior)
+        }
     }
     return out;
 }
@@ -169,18 +164,20 @@ List sparsetable_setter // effectively S[M] <- d; return S
     mycont v;
     
     sparsetable S1 = prepare(M1, d1);
-    sparsetable S2 = prepare(M2, d2);
 
-    for(int i=0; i<M2.nrow() ; i++){
+    for(int i = 0; i < M2.nrow(); i++) {
         v.clear();
-        for(int j=0; j<M2.ncol(); j++){
-            v.push_back(M2(i,j));
-        }
-        S1[v] = S2[v];
+        for(int j = 0; j < M2.ncol(); j++) { v.push_back(M2(i, j)); }
+        S1.insert_or_assign(v, d2[i]);
     }
+    
+    std::erase_if(S1, [](const auto& item) {
+        auto const& [key, value] = item;
+        return value == 0;
+    });
+
     return retval(S1);
 }
-
 
 // [[Rcpp::export]]
 bool sparsetable_equality // S1 == S2
@@ -191,27 +188,7 @@ bool sparsetable_equality // S1 == S2
     sparsetable S1 = prepare(M1, d1);
     sparsetable S2 = prepare(M2, d2);
 
-    if(S1.size() != S2.size()){
-        return FALSE;  /* this line is never executed in normal
-                          package idiom, because different-sized
-                          objects are trapped by R.  But it might get
-                          executed if frab::sparsetable_equality() is
-                          called [for example, in test_aac.R]*/
-    }
-
-    for(sparsetable::const_iterator it=S1.begin(); it != S1.end(); ++it){
-        const mycont v = it->first;
-        if(S1[v] != S2[v]){
-            return FALSE;
-        } else {
-            S2.erase(v);
-        }
-    }
-    // at this point, S1[v] == S2[v] for every index 'v' of S1; and we
-    // know that S1 and S2 are the same size, so S1 and S2 are identical:
-    
-    return TRUE;
-
+    return S1 == S2;
 }
 
 // [[Rcpp::export]]
