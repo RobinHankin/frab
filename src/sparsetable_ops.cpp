@@ -105,8 +105,10 @@ List sparsetable_add
      for (const auto& [key, val2] : S2) {
          double& val1 = S1[key]; 
          val1 += val2;
-         if (val1 == 0) { S1.erase(key); }
      }
+     std::erase_if(S1, [](const auto& item){
+         return item.second == 0;
+     });
      return retval(S1);
 }
 
