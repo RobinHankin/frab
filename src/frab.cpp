@@ -1,24 +1,24 @@
 #include "frab.h"
 
 Rcpp::NumericVector values(const frab &F){
-  NumericVector out(F.size());
+  Rcpp::NumericVector out = Rcpp::no_init(F.size());
   size_t i=0;
-  for(auto it=F.begin(); it != F.end(); ++it){
-        out(i++) = it->second; // cf names() below
+  for (const auto& item : F) {
+    out[i++] = item.second;
   }
   return out;
 }
 
 Rcpp::CharacterVector names(const frab &F){
-  CharacterVector out(F.size());
+  Rcpp::CharacterVector out = Rcpp::no_init(F.size());
   size_t i=0;
   for(auto it=F.begin(); it != F.end(); ++it){
-    out(i++) = it->first;  // cf power() above
+    out[i++] = it->first;  // cf power() above
   }
   return out;
 }
 
-frab remove_zeros(frab F){// might be better to call this "nonzero_entries()"
+frab remove_zeros(frab &F){// might be better to call this "nonzero_entries()"
   frab out;
   for(const auto& [symbol, power] : F){
     if(power != 0){
@@ -44,19 +44,20 @@ frab sum2(frab F1, frab F2){
 
 frab prod2(frab F1, frab F2){
   frab out;
-  if(F1.size() > F2.size()){
-    for(auto it = F2.begin() ; it != F2.end() ; ++it){ // iterate through the smaller one
-      const string symbol = it->first;
-      out[symbol] = F1[symbol] * F2[symbol];
+
+  const frab &smaller = (F1.size() < F2.size()) ? F1 : F2;
+  const frab &larger  = (F1.size() < F2.size()) ? F2 : F1;
+  
+  for(const auto& [symbol, power] : smaller){
+    auto it = larger.find(symbol);
+    if(it != larger.end()){
+      double result = power * it->second;
+      if(result != 0){
+	out[symbol] = result;
+      }
     }
-    return remove_zeros(out);
-  } else { 
-    for(auto it = F1.begin() ; it != F1.end() ; ++it){
-      const string symbol = it->first;
-      out[symbol] = F2[symbol] * F1[symbol];
-    }
-    return remove_zeros(out);
   }
+  return out;
 }
 
 frab frabmaker(const CharacterVector names, const NumericVector values){
@@ -92,10 +93,12 @@ List retval(const frab &F){  // used to return a frab to R
 		      );
 }
 
-bool equal2_samesize(frab F1, frab F2){
-  for (auto it=F1.begin(); it != F1.end(); ++it){
-      const string symbol = it->first;
-      if(F1[symbol] != F2[symbol]){  // meat 1
+bool equal2_samesize(const frab &F1, const frab &F2){
+  auto it1 = F1.begin();
+  auto it2 = F2.begin();
+
+  for (; it1 !=F1.end(); ++it1, ++it2){
+    if( (it1->first != it2->first) || (it1->second != it2->second)){
 	return false;
       }
   }
