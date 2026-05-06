@@ -43,7 +43,7 @@ sparsetable prepare(const CharacterMatrix M, const NumericVector d){
             ++it;  // else just increment the iterator
         }
     }
-    return(S);
+    return S;
 }
 
 CharacterMatrix makeindex(const sparsetable &S){  // takes a sparsetable, returns the matrix of indices
@@ -60,7 +60,7 @@ CharacterMatrix makeindex(const sparsetable &S){  // takes a sparsetable, return
         }
         row++;
     }
-    return(out);
+    return out;
 }
 
 NumericVector makevalue(const sparsetable &S){  // takes a sparsetable, returns data
@@ -71,7 +71,7 @@ NumericVector makevalue(const sparsetable &S){  // takes a sparsetable, returns 
     for(it=S.begin(); it != S.end(); ++it){
         out(i++) = it->second;   // initialize-and-fill is more efficient than  out.push_back(it->second) 
     }
-    return(out);
+    return out;
 }
 
 List retval (const sparsetable &S){  // used to return a list to R
