@@ -40,16 +40,15 @@ sparsetable prepare(const CharacterMatrix M, const NumericVector d){
 }
 
 CharacterMatrix makeindex(const sparsetable &S){  // takes a sparsetable, returns the matrix of indices
-    const unsigned int ncol = S.begin()->first.size();
-    CharacterMatrix  out(S.size(),ncol);   // index
-    mycont v;
-    unsigned int row=0;
-
-    for(auto it=S.begin(); it != S.end(); ++it){
-        v = it->first;
-        unsigned int col = 0;
-        for(auto ci=v.begin() ; ci != v.end() ; ++ci){
-            out(row,col++) = *ci;
+    if (S.empty()) return CharacterMatrix(0, 0); // Safety first
+    
+    const size_t ncol = S.begin()->first.size();
+    CharacterMatrix out(S.size(), ncol);
+    int row = 0;
+    
+    for (const auto& [key, value] : S) {
+        for (size_t col = 0; col < ncol; ++col) {
+            out(row, col) = key[col];
         }
         row++;
     }
