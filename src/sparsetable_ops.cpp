@@ -19,6 +19,21 @@ using namespace Rcpp;
 typedef std::container<String> mycont;  // a mycont  is a container [vector or deque] of strings
 typedef std::map<mycont, double > sparsetable;
 
+
+void erase_zeros(sparsetable &S){
+    for (auto it = S.begin(); it != S.end(); ) {
+        if (it->second == 0) {
+            it = S.erase(it);
+        } else {
+            ++it;
+        }
+    }
+}
+
+// Function erase_zeros() should be:
+//  std::erase_if(S, [](const auto& item) { return item.second == 0;});
+//  but although this is OK on winbuilder, github workflow does not accept it
+
 sparsetable prepare(const CharacterMatrix M, const NumericVector d){
     sparsetable S;
     mycont v;
@@ -33,9 +48,7 @@ sparsetable prepare(const CharacterMatrix M, const NumericVector d){
         }
     }  // i loop closes
 
-    std::erase_if(S, [](const auto& item) {
-        return item.second == 0;
-    });
+    erase_zeros(S);
     return S;
 }
 
@@ -106,9 +119,8 @@ List sparsetable_add
          double& val1 = S1[key]; 
          val1 += val2;
      }
-     std::erase_if(S1, [](const auto& item){
-         return item.second == 0;
-     });
+
+     erase_zeros(S1);
      return retval(S1);
 }
 
@@ -167,11 +179,7 @@ List sparsetable_setter // effectively S[M] <- d; return S
         S1.insert_or_assign(v, d2[i]);
     }
     
-    std::erase_if(S1, [](const auto& item) {
-        auto const& [key, value] = item;
-        return value == 0;
-    });
-
+    erase_zeros(S1);
     return retval(S1);
 }
 
