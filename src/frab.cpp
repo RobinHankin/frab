@@ -33,12 +33,14 @@ frab sum2(frab F1, frab F2){
     for(const auto& [symbol, power] : F2 ){
       F1[symbol] += power;
     }
-    return remove_zeros(F1);
+    remove_zeros(F1);
+    return F1;
   } else { 
     for(const auto& [symbol, power] : F1 ){
       F2[symbol] += power;
     }
-    return remove_zeros(F2);
+    remove_zeros(F2);
+    return F2;
   }
 }
 
@@ -70,7 +72,8 @@ frab frabmaker(const CharacterVector names, const NumericVector values){
       out[(string) names[i]] += values[i];  // the meat
     }
   }
-  return remove_zeros(out);  // remove_zeros() needed here if, eg, c(a=1,b=3,a=-1)
+  remove_zeros(out);  // remove_zeros() needed here if, eg, c(a=1,b=3,a=-1)
+  return out;
 }
 
 frab pmax(frab F1, frab F2){
@@ -84,7 +87,8 @@ frab pmax(frab F1, frab F2){
     const string symbol = it->first;
     F1[symbol] = std::max(F2[symbol], (double) 0);
   }
-    return remove_zeros(F1);
+  remove_zeros(F1);
+  return F1;
 }
 
 List retval(const frab &F){  // used to return a frab to R
