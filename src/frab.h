@@ -3,7 +3,13 @@
 #include <Rcpp.h>
 
 using std::string;
-using namespace Rcpp;
+
+using Rcpp::NumericVector;
+using Rcpp::IntegerVector;
+using Rcpp::CharacterVector;
+using Rcpp::List;
+using Rcpp::Named;
+
 using frab = std::map <std::string, double>;
 
 
