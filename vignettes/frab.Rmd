@@ -217,4 +217,8 @@ The word "table" means something unrelated in `SQL`.  A short
 discussion of `frab` functionality implemented in `SQL` "table"
 objects is given in `inst/sql.Rmd`.
 
+If scalar multiplication is admitted, the resulting mathematical
+object has sligthly more structure than the free Abelian group, and
+becomes a free vector space.
+
 ## References
