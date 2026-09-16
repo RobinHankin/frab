@@ -53,7 +53,6 @@ frab prod2(frab F1, frab F2){
 
     if(it != larger.end()){
       double result = power * it->second;
-      auto it = larger.find(symbol);
       if(result != 0){
 	out.emplace(symbol, result);
       }
