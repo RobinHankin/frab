@@ -35,14 +35,14 @@ data frame it dispatches to \code{df_to_frab()}, documented at
 \seealso{\code{\link{frab-class}}}
 \examples{
 
-frab(c(x=6,y=6,z=-4,u=0,x=3))
+frab(c(x=6, y=6, z=-4, u=0, x=3))
 
-as.frab(c(a=2,b=1,c=77))
+as.frab(c(a=2, b=1, c=77))
 
-as.frab(list(names=letters[5:2],values=1:4))
+as.frab(list(names=letters[5:2], values=1:4))
 
 x <- rfrab()
 y <- rfrab()
-x+y
+x + y
 
 }
