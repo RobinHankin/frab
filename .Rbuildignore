@@ -3,7 +3,7 @@
 ^README\.Rmd$
 ^\.travis\.yml$
 ^inst/frab_stickermaker.R$
-^inst/frab.png$
+^inst/logo.png$
 ^inst/rjournal
 ^inst/arxiv
 ^vignettes/*.html$

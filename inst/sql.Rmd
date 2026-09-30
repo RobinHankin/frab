@@ -12,7 +12,7 @@ suppressMessages(library("sqldf"))
 ```
 
 ```{r out.width='20%', out.extra='style="float:right; padding:10px"',echo=FALSE}
-knitr::include_graphics(system.file("help/figures/frab.png", package = "frab"))
+knitr::include_graphics(system.file("help/figures/logo.png", package = "frab"))
 ```
 
 

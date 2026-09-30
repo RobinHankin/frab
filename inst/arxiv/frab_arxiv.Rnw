@@ -58,7 +58,7 @@ pdfkeywords={The free Abelian group, named vectors}
 \setlength{\intextsep}{0pt}
 \begin{wrapfigure}{r}{0.2\textwidth}
   \begin{center}
-\includegraphics[width=1in]{frab.png}
+\includegraphics[width=1in]{logo.png}
   \end{center}
 \end{wrapfigure}
 

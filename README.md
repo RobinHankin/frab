@@ -3,7 +3,7 @@ The frab package: how to add R tables
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# <img src="man/figures/frab.png" width = "150" align="right" />
+# <img src="man/figures/logo.png" width = "150" align="right" />
 
 # Overview
 
